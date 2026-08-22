@@ -113,7 +113,7 @@ function Index() {
 
       <AutoReveal>
       {/* Hero */}
-      <section className="mx-auto max-w-[1400px] px-6 md:px-10">
+      <section className="mx-auto flex min-h-screen max-w-[1400px] flex-col justify-center px-6 md:px-10">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
             <p className="label-xs animate-fade-up text-primary">Dressy / Bangladesh</p>
