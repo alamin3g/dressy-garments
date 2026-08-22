@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import ogImage from "@/assets/dressy-og.jpg.asset.json";
+
 import {
   Menu,
   X,
