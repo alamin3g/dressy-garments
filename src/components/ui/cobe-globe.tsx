@@ -251,7 +251,6 @@ export function Globe({
               isHovered ? "scale-125 font-bold" : "scale-100"
             }`}
             style={{
-              // @ts-expect-error CSS Anchor Positioning
               positionAnchor: `--cobe-${m.id}`,
               bottom: "anchor(top)",
               left: "anchor(center)",
