@@ -160,14 +160,16 @@ function Index() {
       <section className="border-y border-border">
         <div className="mx-auto grid max-w-[1400px] divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
           {[
-            { icon: Users, value: "1000+", label: "People" },
-            { icon: Shirt, value: "5M+", label: "Pcs / Year" },
-            { icon: Factory, value: "7", label: "Production Lines" },
-          ].map(({ icon: Icon, value, label }) => (
+            { icon: Users, value: 1000, suffix: "+", label: "People" },
+            { icon: Shirt, value: 5, suffix: "M+", label: "Pcs / Year" },
+            { icon: Factory, value: 7, suffix: "", label: "Production Lines" },
+          ].map(({ icon: Icon, value, suffix, label }) => (
             <div key={label} className="flex items-center justify-center gap-6 px-6 py-12">
               <Icon className="size-10 text-primary" strokeWidth={1.2} />
               <div>
-                <p className="display text-5xl">{value}</p>
+                <p className="display text-5xl">
+                  <AnimatedCounter value={value} suffix={suffix} />
+                </p>
                 <p className="label-xs mt-2 text-muted-foreground">{label}</p>
               </div>
             </div>
