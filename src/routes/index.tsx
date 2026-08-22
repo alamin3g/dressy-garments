@@ -153,24 +153,6 @@ function Index() {
             />
           </div>
         </div>
-
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-6 pb-10">
-          <div className="flex items-center gap-8">
-            {["01", "02", "03", "04"].map((n, i) => (
-              <span
-                key={n}
-                className={`label-xs pb-2 ${
-                  i === 0 ? "border-b-2 border-primary text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {n}
-              </span>
-            ))}
-          </div>
-          <p className="label-xs text-muted-foreground">
-            Dhaka, Bangladesh &nbsp;/&nbsp; Global Production
-          </p>
-        </div>
       </section>
 
       {/* Stats */}
