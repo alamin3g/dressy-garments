@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import ogImage from "@/assets/dressy-og.jpg.asset.json";
+
 import {
   Menu,
   X,
@@ -53,8 +55,21 @@ export const Route = createFileRoute("/")({
         content:
           "Design development, sourcing and garment manufacturing from Bangladesh to global fashion markets.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressy-garments.lovable.app/" },
+      {
+        property: "og:image",
+        content: "https://dressy-garments.lovable.app" + ogImage.url,
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:image",
+        content: "https://dressy-garments.lovable.app" + ogImage.url,
+      },
     ],
+    links: [{ rel: "canonical", href: "https://dressy-garments.lovable.app/" }],
   }),
+
   component: Index,
 });
 
