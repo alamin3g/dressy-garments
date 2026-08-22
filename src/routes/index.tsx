@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
+import mainLogo from "@/assets/dressy-logo.jpeg.asset.json";
 
 import {
   Menu,
@@ -129,11 +130,11 @@ const FOOTER = [
 
 function Logo({ className = "" }: { className?: string }) {
   return (
-    <span
-      className={`display inline-block bg-primary px-3 py-1 text-xl italic tracking-tight text-primary-foreground ${className}`}
-    >
-      Dressy
-    </span>
+    <img
+      src={mainLogo.url}
+      alt="Dressy"
+      className={`h-8 w-auto object-contain ${className}`}
+    />
   );
 }
 
