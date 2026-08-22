@@ -45,12 +45,13 @@ export function SiteHeader() {
     >
       <div
         className={`mx-auto max-w-[1400px] px-6 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-10 ${
-          scrolled ? "py-2.5" : "py-6"
+          scrolled ? "py-2" : "py-6"
         }`}
       >
         <div className="flex items-center gap-6">
-          <Logo className={scrolled ? "h-6" : "h-8"} />
-          <nav className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-8">
+          <Logo className={scrolled ? "h-5" : "h-8"} />
+          <nav className={`hidden flex-1 items-center justify-center gap-6 transition-all duration-500 lg:flex xl:gap-8 ${scrolled ? "lg:gap-5 xl:gap-6" : ""}`}>
+
             {NAV.map((item, i) => (
               <Link
                 key={item.to}
