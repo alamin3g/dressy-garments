@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { SiteHeader } from "@/components/site-header";
+import { AutoReveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 
 import heroImg from "@/assets/hero-sewing.jpg";
@@ -110,38 +111,39 @@ function Index() {
     <div className="min-h-screen bg-background font-sans text-foreground">
       <SiteHeader />
 
+      <AutoReveal>
       {/* Hero */}
       <section className="mx-auto max-w-[1400px] px-6 md:px-10">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <p className="label-xs text-primary">Dressy / Bangladesh</p>
-            <h1 className="display mt-6 text-6xl sm:text-7xl lg:text-8xl">
+            <p className="label-xs animate-fade-up text-primary">Dressy / Bangladesh</p>
+            <h1 className="display mt-6 animate-fade-up text-6xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
               Garments
               <br />
               Made to
               <br />
               <span className="text-primary">Move Brands.</span>
             </h1>
-            <p className="mt-8 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-8 max-w-sm animate-fade-up text-sm leading-relaxed text-muted-foreground" style={{ animationDelay: "200ms" }}>
               Design development, sourcing and garment manufacturing from Bangladesh to global
               fashion markets.
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-8">
+            <div className="mt-10 flex animate-fade-up flex-wrap items-center gap-8" style={{ animationDelay: "300ms" }}>
               <Link
                 to="/factory"
-                className="label-xs flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                className="label-xs btn-sheen group flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground"
               >
-                Explore Our Factory <ArrowRight className="size-4" />
+                Explore Our Factory <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/contact"
-                className="label-xs flex items-center gap-10 border-b border-foreground/60 pb-3"
+                className="label-xs group flex items-center gap-10 border-b border-foreground/60 pb-3 transition-colors hover:text-primary hover:border-primary"
               >
-                Start Production <ArrowRight className="size-4" />
+                Start Production <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden">
+          <div className="media-zoom relative aspect-[4/3] w-full animate-scale-in overflow-hidden" style={{ animationDelay: "150ms" }}>
             <img
               src={heroImg}
               alt="Industrial sewing machine stitching fabric"
@@ -210,9 +212,9 @@ function Index() {
               </p>
               <Link
                 to="/capabilities"
-                className="label-xs mt-8 flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary"
+                className="label-xs mt-8 flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
               >
-                View All Capabilities <ArrowRight className="size-4" />
+                View All Capabilities <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
@@ -242,7 +244,7 @@ function Index() {
               <Link
                 key={p.name}
                 to="/products"
-                className="group relative aspect-[3/4] overflow-hidden bg-card"
+                className="group media-zoom relative aspect-[3/4] overflow-hidden bg-card"
               >
                 <img
                   src={p.img}
@@ -263,9 +265,9 @@ function Index() {
           <div className="mt-10 flex justify-end">
             <Link
               to="/products"
-              className="label-xs flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary"
+              className="label-xs flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
             >
-              View All Products <ArrowRight className="size-4" />
+              View All Products <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
@@ -288,9 +290,9 @@ function Index() {
               </p>
               <Link
                 to="/factory"
-                className="label-xs mt-8 flex w-40 items-center justify-between border-b border-foreground/60 pb-3"
+                className="label-xs mt-8 flex w-40 items-center justify-between border-b border-foreground/60 pb-3 group transition-colors hover:opacity-80"
               >
-                Take a Tour <ArrowRight className="size-4" />
+                Take a Tour <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
             <img
@@ -299,7 +301,7 @@ function Index() {
               loading="lazy"
               width={1000}
               height={700}
-              className="h-full w-full object-cover grayscale"
+              className="h-full w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
             />
             <ul className="divide-y divide-border">
               {CAPABILITIES.map(({ icon: Icon, label }) => (
@@ -335,15 +337,15 @@ function Index() {
               <div className="mt-6 h-px w-14 bg-primary" />
               <Link
                 to="/compliance"
-                className="label-xs mt-8 flex w-56 items-center justify-between border-b border-primary pb-3 text-primary"
+                className="label-xs mt-8 flex w-56 items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
               >
-                Compliance & Ethics <ArrowRight className="size-4" />
+                Compliance & Ethics <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
             <div>
               <div className="grid grid-cols-2 divide-border border-border md:grid-cols-4 md:divide-x">
                 {CERTS.map((c) => (
-                  <div key={c} className="flex items-center justify-center px-4 py-8 text-center">
+                  <div key={c} className="flex items-center justify-center px-4 py-8 text-center transition-colors duration-300 hover:bg-card">
                     <span className="display text-lg text-foreground/90">{c}</span>
                   </div>
                 ))}
@@ -380,7 +382,7 @@ function Index() {
             />
             {MARKETS.map((m) => (
               <div key={m.label} className="absolute" style={{ top: m.top, left: m.left }}>
-                <span className="block size-2 rounded-full bg-primary" />
+                <span className="block size-2 animate-pulse rounded-full bg-primary" />
                 <span className="label-xs mt-2 block whitespace-nowrap text-muted-foreground">
                   {m.label}
                 </span>
@@ -390,9 +392,9 @@ function Index() {
 
           <Link
             to="/about"
-            className="label-xs flex items-center justify-between border-b border-primary pb-3 text-primary"
+            className="label-xs flex items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
           >
-            Our Global Presence <ArrowRight className="size-4" />
+            Our Global Presence <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
@@ -415,15 +417,15 @@ function Index() {
             <div className="mt-8 flex flex-wrap items-center gap-8">
               <Link
                 to="/contact"
-                className="label-xs flex items-center gap-6 bg-background px-6 py-4 text-foreground"
+                className="label-xs btn-sheen group flex items-center gap-6 bg-background px-6 py-4 text-foreground"
               >
-                Start a Project <ArrowRight className="size-4" />
+                Start a Project <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/contact"
-                className="label-xs flex items-center gap-6 border-b border-primary-foreground/70 pb-3"
+                className="label-xs group flex items-center gap-6 border-b border-primary-foreground/70 pb-3 transition-opacity hover:opacity-80"
               >
-                Send Tech Pack <ArrowRight className="size-4" />
+                Send Tech Pack <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
@@ -437,6 +439,8 @@ function Index() {
           />
         </div>
       </section>
+
+      </AutoReveal>
 
       <SiteFooter />
     </div>
