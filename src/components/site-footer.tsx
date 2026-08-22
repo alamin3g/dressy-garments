@@ -60,7 +60,7 @@ export function SiteFooter() {
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-primary">
               <Instagram className="size-4" />
             </a>
-            <a href="mailto:hello@dressybd.com" aria-label="Email" className="hover:text-primary">
+            <a href="mailto:info@dressyclothing.com" aria-label="Email" className="hover:text-primary">
               <Mail className="size-4" />
             </a>
           </div>
@@ -82,12 +82,23 @@ export function SiteFooter() {
         <div>
           <p className="label-xs text-primary">Contact</p>
           <ul className="mt-5 space-y-2 text-xs text-muted-foreground">
-            <li>Dhaka, Bangladesh</li>
             <li>
-              <a href="tel:+8801234567890" className="hover:text-foreground">+880 1234 567890</a>
+              <a
+                href="https://maps.app.goo.gl/6FepzNpWRSVHpofe8"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-foreground transition-colors inline-block"
+              >
+                House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dhaka 1206
+              </a>
             </li>
             <li>
-              <a href="mailto:hello@dressybd.com" className="hover:text-foreground">hello@dressybd.com</a>
+              <a href="tel:+8801754104307" className="hover:text-foreground">+88 01754104307</a>
+              {" & "}
+              <a href="tel:+8801751244211" className="hover:text-foreground">+88 01751244211</a>
+            </li>
+            <li>
+              <a href="mailto:info@dressyclothing.com" className="hover:text-foreground">info@dressyclothing.com</a>
             </li>
           </ul>
         </div>

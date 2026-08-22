@@ -28,7 +28,7 @@ import { SiteFooter } from "@/components/site-footer";
 import heroImg from "@/assets/hero-sewing.jpg";
 import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
-import ctaImg from "@/assets/cta-tags.jpg";
+import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/p-woven.jpg";
 import pOuterwear from "@/assets/p-outerwear.jpg";
@@ -113,45 +113,54 @@ function Index() {
       <SiteHeader />
 
       <AutoReveal>
-      {/* Hero */}
-      <section className="mx-auto flex min-h-screen max-w-[1400px] flex-col justify-center px-6 md:px-10">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div>
-            <p className="label-xs animate-fade-up text-primary">Dressy / Bangladesh</p>
-            <h1 className="display mt-6 animate-fade-up text-6xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
-              Garments
-              <br />
-              Made to
-              <br />
-              <span className="text-primary">Move Brands.</span>
-            </h1>
-            <p className="mt-8 max-w-sm animate-fade-up text-sm leading-relaxed text-muted-foreground" style={{ animationDelay: "200ms" }}>
-              Design development, sourcing and garment manufacturing from Bangladesh to global
-              fashion markets.
-            </p>
-            <div className="mt-10 flex animate-fade-up flex-wrap items-center gap-8" style={{ animationDelay: "300ms" }}>
-              <Link
-                to="/factory"
-                className="label-xs btn-sheen group flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground"
-              >
-                Explore Our Factory <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/contact"
-                className="label-xs group flex items-center gap-10 border-b border-foreground/60 pb-3 transition-colors hover:text-primary hover:border-primary"
-              >
-                Start Production <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+      {/* Hero with Streamable Video Background */}
+      <section className="relative min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pt-20 pb-12">
+        {/* Background Video Layer */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
+          <iframe
+            src="https://streamable.com/e/1solet?autoplay=1&muted=1&nocontrols=1&loop=1"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            title="Dressy Hero Background Video"
+            className="absolute top-1/2 left-1/2 w-full h-full min-w-[100vw] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
+            style={{ border: "none" }}
+          />
+        </div>
+
+        {/* Hero Content Container */}
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase">Dressy / Bangladesh</p>
+              <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
+                Garments
+                <br />
+                Made to
+                <br />
+                <span className="text-primary">Move Brands.</span>
+              </h1>
+              <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-muted-foreground" style={{ animationDelay: "200ms" }}>
+                Design development, sourcing and garment manufacturing from Bangladesh to global
+                fashion markets.
+              </p>
+              <div className="mt-8 flex animate-fade-up flex-wrap items-center gap-6" style={{ animationDelay: "300ms" }}>
+                <Link
+                  to="/factory"
+                  className="label-xs btn-sheen group flex items-center gap-3 bg-primary px-6 py-3.5 font-semibold text-primary-foreground shadow-lg shadow-primary/20"
+                >
+                  Explore Our Factory <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="label-xs group flex items-center gap-6 border-b border-foreground/60 pb-2.5 transition-colors hover:text-primary hover:border-primary"
+                >
+                  Start Production <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="media-zoom relative aspect-[4/3] w-full animate-scale-in overflow-hidden" style={{ animationDelay: "150ms" }}>
-            <img
-              src={heroImg}
-              alt="Industrial sewing machine stitching fabric"
-              width={1200}
-              height={900}
-              className="size-full object-cover grayscale"
-            />
+            {/* Right Column Spacer - preserves layout while giving full focus to video background */}
+            <div className="hidden lg:block" />
           </div>
         </div>
       </section>
@@ -160,8 +169,8 @@ function Index() {
       <section className="border-y border-border">
         <div className="mx-auto grid max-w-[1400px] divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
           {[
-            { icon: Users, value: 1000, suffix: "+", label: "People" },
-            { icon: Shirt, value: 5, suffix: "M+", label: "Pcs / Year" },
+            { icon: Users, value: 500, suffix: "+", label: "People" },
+            { icon: Shirt, value: 6, suffix: "M+", label: "PCS / Year" },
             { icon: Factory, value: 7, suffix: "", label: "Production Lines" },
           ].map(({ icon: Icon, value, suffix, label }) => (
             <div key={label} className="flex items-center justify-center gap-6 px-6 py-12">
@@ -237,7 +246,7 @@ function Index() {
                   loading="lazy"
                   width={600}
                   height={800}
-                  className="size-full object-cover grayscale transition-transform duration-500 group-hover:scale-105"
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/40" />
                 <div className="absolute left-4 top-4">
@@ -286,7 +295,7 @@ function Index() {
               loading="lazy"
               width={1000}
               height={700}
-              className="h-full w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
+              className="h-full w-full object-cover"
             />
             <ul className="divide-y divide-border">
               {CAPABILITIES.map(({ icon: Icon, label }) => (
@@ -363,7 +372,7 @@ function Index() {
               loading="lazy"
               width={1400}
               height={700}
-              className="absolute inset-0 size-full object-contain opacity-90 brightness-200 mix-blend-screen"
+              className="absolute inset-0 size-full object-contain opacity-90"
             />
             {MARKETS.map((m) => (
               <div key={m.label} className="absolute" style={{ top: m.top, left: m.left }}>
@@ -390,9 +399,7 @@ function Index() {
           <div>
             <p className="label-xs">05 / Let's Make Something Great</p>
             <h2 className="display mt-8 text-4xl md:text-5xl">
-              Have a Product
-              <br />
-              In Mind?
+              Connect With Us
             </h2>
           </div>
           <div className="self-center">
@@ -414,14 +421,16 @@ function Index() {
               </Link>
             </div>
           </div>
-          <img
-            src={ctaImg}
-            alt="Dressy branded hang tags and paper bag"
-            loading="lazy"
-            width={900}
-            height={700}
-            className="h-full max-h-64 w-full object-cover grayscale"
-          />
+          <div className="flex items-center justify-center">
+            <img
+              src={ctaImg}
+              alt="Dressy branded hang tags and paper bag"
+              loading="lazy"
+              width={900}
+              height={700}
+              className="max-h-64 w-auto object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-105"
+            />
+          </div>
         </div>
       </section>
 
