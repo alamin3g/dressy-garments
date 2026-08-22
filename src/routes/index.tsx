@@ -1,12 +1,7 @@
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
-import mainLogo from "@/assets/dressy-logo.png.asset.json";
 
 import {
-  Menu,
-  X,
-
   ArrowRight,
   Users,
   Shirt,
@@ -23,15 +18,13 @@ import {
   Flame,
   HeartPulse,
   HandHeart,
-  Linkedin,
-  Instagram,
-  Mail,
-  ArrowUp,
 } from "lucide-react";
+
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 import heroImg from "@/assets/hero-sewing.jpg";
 import worldMap from "@/assets/world-map.jpg";
-
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.jpg";
 import pKnit from "@/assets/p-knit.jpg";
@@ -74,16 +67,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const NAV = ["Capabilities", "Products", "Factory", "Compliance", "About", "Contact"];
-
-const STEPS = [
-  "Research",
-  "Development",
-  "Sourcing",
-  "Production",
-  "Quality",
-  "Delivery",
-];
+const STEPS = ["Research", "Development", "Sourcing", "Production", "Quality", "Delivery"];
 
 const PRODUCTS = [
   { n: "01", name: "Knit", img: pKnit },
@@ -121,68 +105,10 @@ const MARKETS = [
   { label: "Australia", top: "66%", left: "76%" },
 ];
 
-const FOOTER = [
-  { title: "Company", links: ["About Dressy", "Our Factory", "Leadership", "Global Presence"] },
-  { title: "Capabilities", links: ["Development", "Sourcing", "Manufacturing", "Quality", "Delivery"] },
-  { title: "Products", links: ["Knit", "Woven", "Outerwear", "Fleece", "Workwear"] },
-  { title: "Compliance", links: ["Compliance", "Sustainability", "Worker Welfare"] },
-];
-
-function Logo({ className = "" }: { className?: string }) {
-  return (
-    <img
-      src={mainLogo.url}
-      alt="Dressy"
-      className={`h-8 w-auto object-contain ${className}`}
-    />
-  );
-}
-
 function Index() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
-      {/* Nav */}
-      <header className="mx-auto max-w-[1400px] px-6 py-6 md:px-10">
-        <div className="flex items-center gap-6">
-          <Logo />
-          <nav className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-8">
-            {NAV.map((item) => (
-              <a key={item} href="#" className="label-xs text-foreground/80 transition-colors hover:text-primary">
-                {item}
-              </a>
-            ))}
-          </nav>
-          <a
-            href="#contact"
-            className="label-xs ml-auto hidden items-center gap-3 border-b border-primary pb-1 text-primary sm:flex lg:ml-0"
-          >
-            Start a Project <ArrowRight className="size-4" />
-          </a>
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            onClick={() => setMenuOpen((o: boolean) => !o)}
-            className="ml-auto text-primary lg:hidden"
-          >
-            {menuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
-          </button>
-        </div>
-        {menuOpen && (
-          <nav className="mt-6 flex flex-col gap-4 border-t border-border pt-6 lg:hidden">
-            {NAV.map((item) => (
-              <a key={item} href="#" className="label-xs text-foreground/80">
-                {item}
-              </a>
-            ))}
-            <a href="#contact" className="label-xs text-primary">
-              Start a Project
-            </a>
-          </nav>
-        )}
-      </header>
-
+      <SiteHeader />
 
       {/* Hero */}
       <section className="mx-auto max-w-[1400px] px-6 md:px-10">
@@ -201,18 +127,18 @@ function Index() {
               fashion markets.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-8">
-              <a
-                href="#factory"
+              <Link
+                to="/factory"
                 className="label-xs flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
               >
                 Explore Our Factory <ArrowRight className="size-4" />
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                to="/contact"
                 className="label-xs flex items-center gap-10 border-b border-foreground/60 pb-3"
               >
                 Start Production <ArrowRight className="size-4" />
-              </a>
+              </Link>
             </div>
           </div>
           <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -239,7 +165,9 @@ function Index() {
               </span>
             ))}
           </div>
-          <p className="label-xs text-muted-foreground">Dhaka, Bangladesh &nbsp;/&nbsp; Global Production</p>
+          <p className="label-xs text-muted-foreground">
+            Dhaka, Bangladesh &nbsp;/&nbsp; Global Production
+          </p>
         </div>
       </section>
 
@@ -280,12 +208,12 @@ function Index() {
                 From concept to container, we handle every step with precision, transparency and a
                 relentless focus on quality.
               </p>
-              <a
-                href="#"
+              <Link
+                to="/capabilities"
                 className="label-xs mt-8 flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary"
               >
                 View All Capabilities <ArrowRight className="size-4" />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -311,7 +239,11 @@ function Index() {
           <p className="label-xs text-primary">02 / Our Products</p>
           <div className="mt-8 grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-6">
             {PRODUCTS.map((p) => (
-              <a key={p.name} href="#" className="group relative aspect-[3/4] overflow-hidden bg-card">
+              <Link
+                key={p.name}
+                to="/products"
+                className="group relative aspect-[3/4] overflow-hidden bg-card"
+              >
                 <img
                   src={p.img}
                   alt={`${p.name} garment detail`}
@@ -325,22 +257,22 @@ function Index() {
                   <p className="display text-2xl">{p.n}</p>
                   <p className="label-xs mt-1">{p.name}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
           <div className="mt-10 flex justify-end">
-            <a
-              href="#"
+            <Link
+              to="/products"
               className="label-xs flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary"
             >
               View All Products <ArrowRight className="size-4" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Factory */}
-      <section id="factory" className="border-b border-border">
+      <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">03 / Our Factory</p>
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_1.2fr_1fr]">
@@ -354,12 +286,12 @@ function Index() {
               <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
                 State-of-the-art facility in Dhaka, Bangladesh. Built to handle quality at scale.
               </p>
-              <a
-                href="#"
+              <Link
+                to="/factory"
                 className="label-xs mt-8 flex w-40 items-center justify-between border-b border-foreground/60 pb-3"
               >
                 Take a Tour <ArrowRight className="size-4" />
-              </a>
+              </Link>
             </div>
             <img
               src={factoryImg}
@@ -372,11 +304,14 @@ function Index() {
             <ul className="divide-y divide-border">
               {CAPABILITIES.map(({ icon: Icon, label }) => (
                 <li key={label}>
-                  <a href="#" className="flex items-center gap-4 py-4 transition-colors hover:text-primary">
+                  <Link
+                    to="/capabilities"
+                    className="flex items-center gap-4 py-4 transition-colors hover:text-primary"
+                  >
                     <Icon className="size-4 text-primary" strokeWidth={1.4} />
                     <span className="label-xs flex-1">{label}</span>
                     <ArrowRight className="size-4 text-primary" />
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -398,6 +333,12 @@ function Index() {
                 Production.
               </h2>
               <div className="mt-6 h-px w-14 bg-primary" />
+              <Link
+                to="/compliance"
+                className="label-xs mt-8 flex w-56 items-center justify-between border-b border-primary pb-3 text-primary"
+              >
+                Compliance & Ethics <ArrowRight className="size-4" />
+              </Link>
             </div>
             <div>
               <div className="grid grid-cols-2 divide-border border-border md:grid-cols-4 md:divide-x">
@@ -447,17 +388,17 @@ function Index() {
             ))}
           </div>
 
-          <a
-            href="#"
+          <Link
+            to="/about"
             className="label-xs flex items-center justify-between border-b border-primary pb-3 text-primary"
           >
             Our Global Presence <ArrowRight className="size-4" />
-          </a>
+          </Link>
         </div>
       </section>
 
       {/* CTA */}
-      <section id="contact" className="bg-primary text-primary-foreground">
+      <section className="bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-14 md:px-10 lg:grid-cols-[1.1fr_1fr_0.8fr]">
           <div>
             <p className="label-xs">05 / Let's Make Something Great</p>
@@ -472,18 +413,18 @@ function Index() {
               Send us your tech pack, reference piece or concept. Our team will take it from there.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-8">
-              <a
-                href="#"
+              <Link
+                to="/contact"
                 className="label-xs flex items-center gap-6 bg-background px-6 py-4 text-foreground"
               >
                 Start a Project <ArrowRight className="size-4" />
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/contact"
                 className="label-xs flex items-center gap-6 border-b border-primary-foreground/70 pb-3"
               >
                 Send Tech Pack <ArrowRight className="size-4" />
-              </a>
+              </Link>
             </div>
           </div>
           <img
@@ -497,64 +438,7 @@ function Index() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="mx-auto max-w-[1400px] px-6 py-14 md:px-10">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,1fr)]">
-          <div>
-            <Logo />
-            <p className="mt-4 text-xs text-muted-foreground">
-              Garments made to
-              <br />
-              move brands.
-            </p>
-            <div className="mt-10 flex items-center gap-5 text-muted-foreground">
-              <a href="#" aria-label="LinkedIn"><Linkedin className="size-4" /></a>
-              <a href="#" aria-label="Instagram"><Instagram className="size-4" /></a>
-              <a href="#" aria-label="Email"><Mail className="size-4" /></a>
-            </div>
-          </div>
-          {FOOTER.map((col) => (
-            <div key={col.title}>
-              <p className="label-xs text-primary">{col.title}</p>
-              <ul className="mt-5 space-y-2">
-                {col.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-xs text-muted-foreground hover:text-foreground">
-                      {l}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-          <div>
-            <p className="label-xs text-primary">Contact</p>
-            <ul className="mt-5 space-y-2 text-xs text-muted-foreground">
-              <li>Dhaka, Bangladesh</li>
-              <li>+880 1234 567890</li>
-              <li>hello@dressybd.com</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
-          <p className="text-[11px] text-muted-foreground">
-            © 2026 Dressy Clothing Ltd. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6">
-            <a href="#" className="text-[11px] text-muted-foreground">Privacy Policy</a>
-            <span className="text-[11px] text-muted-foreground">/</span>
-            <a href="#" className="text-[11px] text-muted-foreground">Terms &amp; Conditions</a>
-            <a
-              href="#top"
-              aria-label="Back to top"
-              className="flex size-9 items-center justify-center rounded-full border border-primary text-primary"
-            >
-              <ArrowUp className="size-4" />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

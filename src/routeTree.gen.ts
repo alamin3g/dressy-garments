@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CapabilitiesRouteImport } from './routes/capabilities'
 import { Route as ComplianceRouteImport } from './routes/compliance'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FactoryRouteImport } from './routes/factory'
 import { Route as ProductsRouteImport } from './routes/products'
 
@@ -36,6 +37,11 @@ const ComplianceRoute = ComplianceRouteImport.update({
   path: '/compliance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FactoryRoute = FactoryRouteImport.update({
   id: '/factory',
   path: '/factory',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/capabilities': typeof CapabilitiesRoute
   '/compliance': typeof ComplianceRoute
+  '/contact': typeof ContactRoute
   '/factory': typeof FactoryRoute
   '/products': typeof ProductsRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/capabilities': typeof CapabilitiesRoute
   '/compliance': typeof ComplianceRoute
+  '/contact': typeof ContactRoute
   '/factory': typeof FactoryRoute
   '/products': typeof ProductsRoute
 }
@@ -69,22 +77,36 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/capabilities': typeof CapabilitiesRoute
   '/compliance': typeof ComplianceRoute
+  '/contact': typeof ContactRoute
   '/factory': typeof FactoryRoute
   '/products': typeof ProductsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/capabilities' | '/compliance' | '/factory' | '/products'
+    | '/'
+    | '/about'
+    | '/capabilities'
+    | '/compliance'
+    | '/contact'
+    | '/factory'
+    | '/products'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/about' | '/capabilities' | '/compliance' | '/factory' | '/products'
+    | '/'
+    | '/about'
+    | '/capabilities'
+    | '/compliance'
+    | '/contact'
+    | '/factory'
+    | '/products'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/capabilities'
     | '/compliance'
+    | '/contact'
     | '/factory'
     | '/products'
   fileRoutesById: FileRoutesById
@@ -94,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CapabilitiesRoute: typeof CapabilitiesRoute
   ComplianceRoute: typeof ComplianceRoute
+  ContactRoute: typeof ContactRoute
   FactoryRoute: typeof FactoryRoute
   ProductsRoute: typeof ProductsRoute
 }
@@ -128,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/factory': {
       id: '/factory'
       path: '/factory'
@@ -150,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CapabilitiesRoute: CapabilitiesRoute,
   ComplianceRoute: ComplianceRoute,
+  ContactRoute: ContactRoute,
   FactoryRoute: FactoryRoute,
   ProductsRoute: ProductsRoute,
 }
