@@ -114,7 +114,7 @@ function Index() {
 
       <AutoReveal>
       {/* Hero with Streamable Video Background */}
-      <section className="relative min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pt-20 pb-12">
+      <section className="relative min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pb-12">
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
