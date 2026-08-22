@@ -213,7 +213,7 @@ export function Globe({
       init()
     } else {
       const ro = new ResizeObserver((entries) => {
-        if (entries[0]?.contentRect.width > 0) {
+        if ((entries[0]?.contentRect.width ?? 0) > 0) {
           ro.disconnect()
           init()
         }
