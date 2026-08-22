@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
-import { Reveal } from "./reveal";
+import { AutoReveal, Reveal } from "./reveal";
 
 export function PageShell({
   eyebrow,
@@ -40,7 +40,7 @@ export function PageShell({
         </div>
       </section>
 
-      {children}
+      <AutoReveal skipFirst={false}>{children}</AutoReveal>
 
       <Reveal as="section" variant="fade" className="bg-primary text-primary-foreground">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-8 px-6 py-14 md:px-10">

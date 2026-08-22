@@ -63,14 +63,20 @@ export function Reveal({
  * Applies a scroll-reveal transition to every top-level <section> inside,
  * skipping the first one (above-the-fold content animates immediately).
  */
-export function AutoReveal({ children }: { children: ReactNode }) {
+export function AutoReveal({
+  children,
+  skipFirst = true,
+}: {
+  children: ReactNode;
+  skipFirst?: boolean;
+}) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const root = ref.current;
     if (!root || typeof IntersectionObserver === "undefined") return;
 
-    const sections = Array.from(root.querySelectorAll<HTMLElement>(":scope > section")).slice(1);
+    const sections = Array.from(root.querySelectorAll<HTMLElement>(":scope > section")).slice(skipFirst ? 1 : 0);
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -91,7 +97,7 @@ export function AutoReveal({ children }: { children: ReactNode }) {
     });
 
     return () => obs.disconnect();
-  }, []);
+  }, [skipFirst]);
 
   return <div ref={ref}>{children}</div>;
 }
