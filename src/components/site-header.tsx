@@ -37,26 +37,26 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-xl"
+          ? "mx-3 mt-3 rounded-b-2xl border border-border/60 bg-background/60 shadow-[0_12px_40px_-16px_rgba(0,0,0,0.45)] backdrop-blur-2xl saturate-[140%] md:mx-5"
           : "border-b border-transparent bg-background/0"
       }`}
     >
       <div
-        className={`mx-auto max-w-[1400px] px-6 transition-all duration-500 md:px-10 ${
-          scrolled ? "py-3" : "py-6"
+        className={`mx-auto max-w-[1400px] px-6 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-10 ${
+          scrolled ? "py-2.5" : "py-6"
         }`}
       >
         <div className="flex items-center gap-6">
-          <Logo />
+          <Logo className={scrolled ? "h-6" : "h-8"} />
           <nav className="hidden flex-1 items-center justify-center gap-6 lg:flex xl:gap-8">
             {NAV.map((item, i) => (
               <Link
                 key={item.to}
                 to={item.to}
                 style={{ animationDelay: `${80 + i * 45}ms` }}
-                className="label-xs link-underline animate-soft-fade text-foreground/80 transition-colors duration-300 hover:text-primary"
+                className="label-xs link-underline text-foreground/80 transition-colors duration-300 hover:text-primary"
                 activeProps={{ className: "label-xs link-underline text-primary" }}
               >
                 {item.label}
@@ -65,7 +65,7 @@ export function SiteHeader() {
           </nav>
           <Link
             to="/contact"
-            className="label-xs group ml-auto hidden items-center gap-3 border-b border-primary pb-1 text-primary transition-colors duration-300 hover:text-foreground hover:border-foreground sm:flex lg:ml-0"
+            className="label-xs group ml-auto hidden items-center gap-3 border-b border-foreground/60 pb-1 text-foreground transition-colors duration-300 hover:text-primary hover:border-primary sm:flex lg:ml-0"
           >
             Start a Project
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -75,7 +75,7 @@ export function SiteHeader() {
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((o: boolean) => !o)}
-            className="ml-auto text-primary transition-transform duration-300 active:scale-90 lg:hidden"
+            className="ml-auto text-foreground transition-transform duration-300 active:scale-90 lg:hidden"
           >
             {menuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
           </button>
@@ -87,7 +87,7 @@ export function SiteHeader() {
           }`}
         >
           <nav className="min-h-0">
-            <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6">
+            <div className="mt-6 flex flex-col gap-4 border-t border-border/60 pt-6">
               {NAV.map((item, i) => (
                 <Link
                   key={item.to}
@@ -104,7 +104,7 @@ export function SiteHeader() {
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="label-xs text-primary"
+                className="label-xs text-foreground"
               >
                 Start a Project
               </Link>
@@ -114,4 +114,5 @@ export function SiteHeader() {
       </div>
     </header>
   );
+
 }

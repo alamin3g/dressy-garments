@@ -125,31 +125,9 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(h > 0 ? (window.scrollY / h) * 100 : 0);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent">
-      <div
-        className="h-full origin-left bg-primary transition-[width] duration-150 ease-out"
-        style={{ width: `${progress}%` }}
-      />
-    </div>
-  );
+  return null;
 }
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -163,10 +141,11 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ScrollProgress />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <div key={pathname} className="animate-soft-fade">
+      <div key={pathname} className="animate-soft-fade pt-20 md:pt-24">
         <Outlet />
       </div>
     </QueryClientProvider>
   );
+
 }
 
