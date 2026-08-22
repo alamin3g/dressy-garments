@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 
-export function useInView<T extends HTMLElement>(threshold = 0.15) {
+export function useInView<T extends HTMLElement>(threshold = 0.05) {
   const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
@@ -20,7 +20,7 @@ export function useInView<T extends HTMLElement>(threshold = 0.15) {
           }
         });
       },
-      { threshold, rootMargin: "0px 0px -8% 0px" },
+      { threshold, rootMargin: "120px 0px 120px 0px" },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -60,8 +60,8 @@ export function Reveal({
 }
 
 /**
- * Applies a scroll-reveal transition to every top-level <section> inside,
- * skipping the first one (above-the-fold content animates immediately).
+ * Applies a smooth scroll-reveal transition to sections while ensuring
+ * content is immediately visible on initial page load and route transitions.
  */
 export function AutoReveal({
   children,
@@ -74,9 +74,18 @@ export function AutoReveal({
 
   useEffect(() => {
     const root = ref.current;
-    if (!root || typeof IntersectionObserver === "undefined") return;
+    if (!root) return;
 
-    const sections = Array.from(root.querySelectorAll<HTMLElement>(":scope > section")).slice(skipFirst ? 1 : 0);
+    const sections = Array.from(root.querySelectorAll<HTMLElement>(":scope > section"));
+    
+    // Ensure all sections are visible immediately
+    sections.forEach((s) => {
+      s.dataset["visible"] = "true";
+    });
+
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const obsSections = sections.slice(skipFirst ? 1 : 0);
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -86,14 +95,19 @@ export function AutoReveal({
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px -6% 0px" },
+      { threshold: 0.05, rootMargin: "100px 0px 100px 0px" },
     );
 
-    sections.forEach((s) => {
-      if (s.dataset["reveal"]) return;
-      s.dataset["reveal"] = "up";
-      s.dataset["visible"] = "false";
-      obs.observe(s);
+    obsSections.forEach((s) => {
+      const rect = s.getBoundingClientRect();
+      const inViewport = rect.top < window.innerHeight + 100 && rect.bottom > -100;
+      if (inViewport) {
+        s.dataset["visible"] = "true";
+      } else {
+        s.dataset["reveal"] = "up";
+        s.dataset["visible"] = "false";
+        obs.observe(s);
+      }
     });
 
     return () => obs.disconnect();

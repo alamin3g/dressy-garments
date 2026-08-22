@@ -11,7 +11,7 @@ export const Route = createFileRoute("/factory")({
       {
         name: "description",
         content:
-          "Inside Dressy's Dhaka facility: 7 production lines, 1000+ people, 5M+ pieces a year, in-house sampling, printing, finishing and QA.",
+          "Inside Dressy's Dhaka facility: 7 production lines, 500+ people, 6M+ pieces a year, in-house sampling, printing, finishing and QA.",
       },
       { property: "og:title", content: "Our Factory in Dhaka — Dressy Clothing Ltd" },
       {
@@ -26,8 +26,8 @@ export const Route = createFileRoute("/factory")({
 });
 
 const STATS = [
-  { icon: Users, value: "1000+", label: "People" },
-  { icon: Shirt, value: "5M+", label: "Pcs / Year" },
+  { icon: Users, value: "500+", label: "People" },
+  { icon: Shirt, value: "6M+", label: "PCS / Year" },
   { icon: FactoryIcon, value: "7", label: "Production Lines" },
   { icon: Ruler, value: "120k", label: "Sq. Ft. Floor" },
 ];
@@ -76,7 +76,7 @@ function FactoryPage() {
             loading="lazy"
             width={1000}
             height={700}
-            className="h-full max-h-[520px] w-full object-cover grayscale"
+            className="h-full max-h-[520px] w-full object-cover"
           />
           <img
             src={heroImg}
@@ -84,7 +84,7 @@ function FactoryPage() {
             loading="lazy"
             width={1000}
             height={700}
-            className="h-full max-h-[520px] w-full object-cover grayscale"
+            className="h-full max-h-[520px] w-full object-cover"
           />
         </div>
       </section>

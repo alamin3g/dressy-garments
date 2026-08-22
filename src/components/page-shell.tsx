@@ -44,7 +44,7 @@ export function PageShell({
 
       <Reveal as="section" variant="fade" className="bg-primary text-primary-foreground">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-8 px-6 py-14 md:px-10">
-          <h2 className="display text-4xl md:text-5xl">Have a Product In Mind?</h2>
+          <h2 className="display text-4xl md:text-5xl">Connect With Us</h2>
           <Link
             to="/contact"
             className="label-xs btn-sheen group flex items-center gap-6 bg-background px-6 py-4 text-foreground"

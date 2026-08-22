@@ -141,7 +141,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ScrollProgress />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <div key={pathname} className="animate-soft-fade pt-20 md:pt-24">
+      <div className="pt-20 md:pt-24">
         <Outlet />
       </div>
     </QueryClientProvider>

@@ -136,7 +136,7 @@ function ProductsPage() {
                     loading="lazy"
                     width={800}
                     height={600}
-                    className="size-full object-cover grayscale transition-transform duration-500 group-hover:scale-105"
+                    className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute left-4 top-4">
                     <p className="display text-2xl">{p.n}</p>

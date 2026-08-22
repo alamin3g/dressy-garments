@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, Phone, MapPin, Check, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Check, ArrowRight, ExternalLink } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import ctaImg from "@/assets/cta-tags.jpg";
@@ -67,9 +67,7 @@ function ContactPage() {
           <p className="label-xs text-primary">06 / Let's Make Something Great</p>
           <div className="mt-8 grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <h1 className="display text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">
-              Have a Product
-              <br />
-              In Mind?
+              Connect With Us
             </h1>
             <p className="max-w-md self-end text-sm leading-relaxed text-muted-foreground">
               Send us your tech pack, reference piece or concept. Our merchandising team replies
@@ -202,32 +200,67 @@ function ContactPage() {
             )}
           </div>
 
-          <aside>
+          <aside className="space-y-6">
             <ul className="divide-y divide-border border-y border-border">
-              <li className="flex items-center gap-4 py-5">
-                <MapPin className="size-4 text-primary" />
-                <span className="text-sm text-muted-foreground">Dhaka, Bangladesh</span>
-              </li>
-              <li className="flex items-center gap-4 py-5">
-                <Phone className="size-4 text-primary" />
-                <a href="tel:+8801234567890" className="text-sm text-muted-foreground hover:text-foreground">
-                  +880 1234 567890
+              <li className="flex items-start gap-4 py-5">
+                <MapPin className="size-4 shrink-0 text-primary mt-0.5" />
+                <a
+                  href="https://maps.app.goo.gl/6FepzNpWRSVHpofe8"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-start gap-1.5 text-sm text-muted-foreground hover:text-foreground leading-snug transition-colors"
+                >
+                  <span>House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dhaka 1206</span>
+                  <ExternalLink className="size-3.5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 mt-0.5" />
                 </a>
               </li>
+              <li className="flex items-start gap-4 py-5">
+                <Phone className="size-4 shrink-0 text-primary mt-0.5" />
+                <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+                  <a href="tel:+8801754104307" className="hover:text-foreground">
+                    +88 01754104307
+                  </a>
+                  <a href="tel:+8801751244211" className="hover:text-foreground">
+                    +88 01751244211
+                  </a>
+                </div>
+              </li>
               <li className="flex items-center gap-4 py-5">
-                <Mail className="size-4 text-primary" />
-                <a href="mailto:hello@dressybd.com" className="text-sm text-muted-foreground hover:text-foreground">
-                  hello@dressybd.com
+                <Mail className="size-4 shrink-0 text-primary" />
+                <a href="mailto:info@dressyclothing.com" className="text-sm text-muted-foreground hover:text-foreground">
+                  info@dressyclothing.com
                 </a>
               </li>
             </ul>
+
+            {/* Google Maps Location Button Card */}
+            <a
+              href="https://maps.app.goo.gl/6FepzNpWRSVHpofe8"
+              target="_blank"
+              rel="noreferrer"
+              className="group flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-all duration-300 hover:border-primary hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <MapPin className="size-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-foreground">Google Maps Location</p>
+                  <p className="text-[11px] text-muted-foreground">Baridhara DOHS, Dhaka</p>
+                </div>
+              </div>
+              <span className="label-xs flex items-center gap-1 text-primary group-hover:underline">
+                Open Maps <ExternalLink className="size-3.5" />
+              </span>
+            </a>
+
             <img
               src={ctaImg}
               alt="Dressy branded hang tags and paper bag"
               loading="lazy"
               width={900}
               height={700}
-              className="mt-8 max-h-72 w-full object-cover grayscale"
+              className="max-h-64 w-full object-cover rounded-lg"
             />
           </aside>
         </div>

@@ -93,7 +93,7 @@ function CapabilitiesPage() {
             loading="lazy"
             width={1000}
             height={700}
-            className="h-full w-full object-cover grayscale"
+            className="h-full w-full object-cover"
           />
           <div>
             <p className="label-xs text-primary">In-House Services</p>
