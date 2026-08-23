@@ -6,8 +6,8 @@ import { getSEOMetadata } from "@/lib/seo";
 
 export const Route = createFileRoute("/compliance")({
   head: () => getSEOMetadata({
-    title: "Compliance & Sustainability — Certified Manufacturing",
-    description: "BSCI, OEKO-TEX STANDARD 100, Sedex and GRS certified. Worker safety, fire safety and sustainable production in Bangladesh.",
+    title: "Compliance — Building Safety & Ethics",
+    description: "Building Safety > Fire Drill & Assembly Area. BSCI, OEKO-TEX, Sedex and GRS certified manufacturing facility.",
     url: "/compliance",
   }),
 

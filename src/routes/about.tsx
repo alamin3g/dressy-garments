@@ -10,7 +10,7 @@ import { getSEOMetadata } from "@/lib/seo";
 export const Route = createFileRoute("/about")({
   head: () => getSEOMetadata({
     title: "About Us — Garment Manufacturer in Bangladesh",
-    description: "Dressy Clothing Ltd is a Dhaka-based garment manufacturer supplying knit, woven and outerwear programmes to global brands.",
+    description: "Dressy Clothing is a 100% export-oriented readymade Garments Industry. Leading manufacturer for men's, women's, boys, girls and kids apparel.",
     url: "/about",
     image: "/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg",
   }),

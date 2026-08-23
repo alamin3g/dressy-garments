@@ -18,8 +18,8 @@ import { getSEOMetadata } from "@/lib/seo";
 
 export const Route = createFileRoute("/capabilities")({
   head: () => getSEOMetadata({
-    title: "Capabilities — Design, Sourcing & Production",
-    description: "Design development, sourcing, cutting, sewing, printing, quality control and delivery — every step of garment production under one roof.",
+    title: "Services — Garment Production Services",
+    description: "We usually do Enzyme wash, Stone wash, Bleach wash. Professional cutting, sewing, finishing, and quality control services.",
     url: "/capabilities",
   }),
 

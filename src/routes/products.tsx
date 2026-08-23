@@ -15,8 +15,8 @@ import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/products")({
   head: () => getSEOMetadata({
-    title: "Products — Knit, Woven & Outerwear Range",
-    description: "Explore Dressy's product range: knit, woven, outerwear, fleece and workwear produced for global fashion brands.",
+    title: "Products — Garment Range & Styles",
+    description: "Dressy Clothing is one of the leading Garments Manufacture. Explore our Knit, Woven, Outerwear, Fleece and Workwear collections.",
     url: "/products",
     image: "/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg",
   }),
