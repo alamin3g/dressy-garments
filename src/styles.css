@@ -262,6 +262,16 @@ a, button, [role="button"], input, select, label, textarea, .cursor-pointer {
   animation: dressy-marquee 28s linear infinite;
 }
 
+@keyframes dressy-ken-burns {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(-1%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+@utility animate-ken-burns {
+  animation: dressy-ken-burns 20s ease-in-out infinite;
+}
+
 /* Scroll reveal */
 [data-reveal] {
   opacity: 1;
