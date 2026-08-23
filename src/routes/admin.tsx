@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -11,12 +11,10 @@ import {
   ExternalLink,
   Plus,
   Trash2,
-  LogOut,
   RefreshCw,
   Loader2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { bootstrapAdmin } from "@/lib/analytics.functions";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -123,164 +121,14 @@ function Pill({ value }: { value: string }) {
   return <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${tone}`}>{value}</span>;
 }
 
-/* ---------------------------------------------------------------- auth gate */
-
-function AdminPage() {
-  const [ready, setReady] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  async function refreshSession() {
-    const { data } = await supabase.auth.getSession();
-    const user = data.session?.user ?? null;
-    setUserId(user?.id ?? null);
-    setEmail(user?.email ?? null);
-
-    if (user) {
-      await bootstrapAdmin({ data: { userId: user.id } }).catch(() => null);
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin");
-      setIsAdmin((roles?.length ?? 0) > 0);
-    } else {
-      setIsAdmin(false);
-    }
-    setReady(true);
-  }
-
-  useEffect(() => {
-    void refreshSession();
-    const { data: sub } = supabase.auth.onAuthStateChange(() => {
-      void refreshSession();
-    });
-    return () => sub.subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!ready) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="size-6 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!userId) return <AdminLogin />;
-
-  if (!isAdmin) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-6">
-        <div className="max-w-sm text-center">
-          <h1 className="display text-3xl">No admin access</h1>
-          <p className="mt-3 text-sm text-muted-foreground">
-            {email} is signed in but has no admin role for this console.
-          </p>
-          <button
-            type="button"
-            onClick={() => supabase.auth.signOut()}
-            className="label-xs mt-6 bg-primary px-5 py-3 text-primary-foreground"
-          >
-            Sign out
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return <AdminConsole email={email ?? ""} />;
-}
-
-function AdminLogin() {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-
-  async function submit(e: FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    setError("");
-    setNotice("");
-    if (mode === "signin") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) setError(error.message);
-    } else {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { emailRedirectTo: `${window.location.origin}/admin` },
-      });
-      if (error) setError(error.message);
-      else if (!data.session) setNotice("Check your inbox to confirm the address, then sign in.");
-    }
-    setBusy(false);
-  }
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-6">
-      <div className="w-full max-w-sm">
-        <img src="/favicon.png" alt="Dressy" className="mx-auto size-12 rounded-xl object-contain" />
-        <h1 className="display mt-6 text-center text-3xl">Dressy Admin</h1>
-        <p className="mt-2 text-center text-sm text-muted-foreground">
-          {mode === "signin" ? "Sign in to manage the site." : "Create the admin account."}
-        </p>
-
-        <form onSubmit={submit} className="mt-8 space-y-4">
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@dressy.com"
-            className={inputClass}
-          />
-          <input
-            type="password"
-            required
-            minLength={6}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            className={inputClass}
-          />
-          {error && <p className="text-xs text-destructive">{error}</p>}
-          {notice && <p className="text-xs text-primary">{notice}</p>}
-          <button
-            type="submit"
-            disabled={busy}
-            className="label-xs w-full bg-primary py-3 text-primary-foreground disabled:opacity-60"
-          >
-            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
-          </button>
-        </form>
-
-        <button
-          type="button"
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-5 w-full text-center text-xs text-muted-foreground underline-offset-4 hover:underline"
-        >
-          {mode === "signin" ? "First time? Create the admin account" : "Already have an account? Sign in"}
-        </button>
-
-        <Link
-          to="/"
-          className="mt-6 block text-center text-xs text-muted-foreground hover:text-foreground"
-        >
-          Back to website
-        </Link>
-      </div>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ console */
 
-function AdminConsole({ email }: { email: string }) {
+function AdminPage() {
+  return <AdminConsole />;
+}
+
+function AdminConsole() {
+
   const [active, setActive] = useState<SectionId>("dashboard");
   const qc = useQueryClient();
   const current = MENU.find((m) => m.id === active)!;
@@ -408,7 +256,7 @@ function AdminConsole({ email }: { email: string }) {
               <img src="/favicon.png" alt="Dressy" className="size-8 rounded-md object-contain" />
               <div className="min-w-0">
                 <p className="text-sm font-semibold leading-tight">Dressy Admin</p>
-                <p className="truncate text-[11px] text-muted-foreground">{email}</p>
+                <p className="truncate text-[11px] text-muted-foreground">Site management</p>
               </div>
             </div>
 
@@ -444,16 +292,15 @@ function AdminConsole({ email }: { email: string }) {
               </Link>
               <button
                 type="button"
-                onClick={async () => {
-                  await qc.cancelQueries();
-                  qc.clear();
-                  await supabase.auth.signOut();
+                onClick={() => {
+                  void qc.invalidateQueries();
                 }}
                 className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                Sign out
-                <LogOut className="size-3.5" />
+                Refresh data
+                <RefreshCw className="size-3.5" />
               </button>
+
             </div>
           </div>
         </aside>
