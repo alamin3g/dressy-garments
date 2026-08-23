@@ -709,13 +709,65 @@ function AdminConsole() {
                 subtitle="Make the admin page fully functional, with each and every features and admin page shoe real time data"
               >
                 <div className="space-y-8 max-w-2xl">
-                  <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                    <div className="flex items-center gap-3 text-emerald-500">
-                      <CheckCircle2 className="size-5" />
-                      <p className="font-semibold text-sm">No security issues found</p>
+                  <div className="space-y-6">
+                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
+                      <div className="flex items-center gap-3 text-destructive">
+                        <ShieldAlert className="size-5" />
+                        <p className="font-semibold text-sm">Customer contact submissions exposed to anonymous users</p>
+                      </div>
+                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
+                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
+                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                        The 'inquiries' table has an 'Allow all to inquiries' policy granting anon role full SELECT/UPDATE/DELETE access, and a separate policy allowing anon/authenticated to SELECT and DELETE all rows. This exposes customer names, emails, and messages to unauthenticated users. Remove the 'Allow all to inquiries', 'Allow authenticated users to see inquiries', and 'Allow authenticated users to delete inquiries' policies so only the insert and admin-only policies remain.
+                      </p>
                     </div>
-                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                      All system-level security scans have passed. The database RLS policies and user role checks are fully operational and verified.
+
+                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
+                      <div className="flex items-center gap-3 text-destructive">
+                        <ShieldAlert className="size-5" />
+                        <p className="font-semibold text-sm">Visitor IP and analytics data exposed to anonymous users</p>
+                      </div>
+                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
+                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
+                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                        The 'visitors' table has an 'Allow all to visitors' policy granting the anon role full read/write/delete access, exposing IP addresses and browsing data to any unauthenticated client and allowing tampering/deletion. Remove this policy so writes only occur via the server/service role and reads remain admin-only.
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
+                      <div className="flex items-center gap-3 text-destructive">
+                        <ShieldAlert className="size-5" />
+                        <p className="font-semibold text-sm">Product catalog can be modified by anonymous users</p>
+                      </div>
+                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
+                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
+                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                        The 'products' table has an 'Allow all to products' policy granting anon full ALL (SELECT/INSERT/UPDATE/DELETE) access, allowing any unauthenticated user to modify or delete product data, not just view live products. Remove this policy and rely on 'Live products are public' and 'Admins manage products' instead.
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
+                      <div className="flex items-center gap-3 text-destructive">
+                        <ShieldAlert className="size-5" />
+                        <p className="font-semibold text-sm">Site settings can be modified by anonymous users</p>
+                      </div>
+                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
+                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
+                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                        The 'site_settings' table has an 'Allow all to site_settings' policy granting anon full ALL access, allowing anyone to modify or delete site configuration data such as contact email/phone. Remove this policy and rely on 'Settings are public' (SELECT) and 'Admins manage settings' instead.
+                      </p>
+                    </div>
+
+                    <p className="mt-6 text-sm text-muted-foreground italic">
+                      Modify this error but not change any single function
                     </p>
                   </div>
 
