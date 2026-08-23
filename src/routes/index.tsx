@@ -128,7 +128,7 @@ function Index() {
             disableRemotePlayback
             webkit-playsinline="true"
             poster={heroImg}
-            className="absolute top-1/2 left-1/2 block md:hidden h-full w-auto min-w-[177.78vh] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
+            className="absolute top-1/2 left-1/2 block md:hidden h-full w-auto min-w-[200vh] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
             style={{ border: "none" }}
           >
             <source src="/hero-video.mp4" type="video/mp4" />
@@ -140,7 +140,7 @@ function Index() {
             allowFullScreen
             loading="eager"
             title="Dressy Hero Background Video"
-            className="absolute top-1/2 left-1/2 hidden h-full w-full md:block min-w-[100vw] md:min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
+            className="absolute top-1/2 left-1/2 hidden h-full w-full md:block min-w-[110vw] md:min-h-[61.875vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
             style={{ border: "none" }}
           />
         </div>
