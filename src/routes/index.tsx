@@ -30,7 +30,7 @@ import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/p-knit.jpg";
-import pWoven from "@/assets/p-woven.jpg";
+import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/p-outerwear.jpg";
 import pFleece from "@/assets/p-fleece.jpg";
 import pWorkwear from "@/assets/p-workwear.jpg";
@@ -73,7 +73,7 @@ const STEPS = ["Research", "Development", "Sourcing", "Production", "Quality", "
 
 const PRODUCTS = [
   { n: "01", name: "Knit", img: pKnit },
-  { n: "02", name: "Woven", img: pWoven },
+  { n: "02", name: "Woven", img: pWoven.url },
   { n: "03", name: "Outerwear", img: pOuterwear },
   { n: "04", name: "Fleece", img: pFleece },
   { n: "05", name: "Workwear", img: pWorkwear },
