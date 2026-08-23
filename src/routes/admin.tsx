@@ -65,6 +65,16 @@ const PAGES = [
 const STATUSES = ["Live", "Draft", "Review"];
 const INQUIRY_STATUSES = ["New", "In progress", "Won", "Closed"];
 
+type ProductPatch = {
+  name?: string;
+  category?: string;
+  moq?: string;
+  status?: string;
+  description?: string;
+  sort_order?: number;
+};
+type ProductInsert = ProductPatch & { name: string };
+
 const inputClass =
   "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary";
 
@@ -324,13 +334,13 @@ function AdminConsole({ email }: { email: string }) {
   const invalidate = (key: string) => qc.invalidateQueries({ queryKey: ["admin", key] });
 
   const saveProduct = useMutation({
-    mutationFn: async (row: Record<string, unknown> & { id?: string }) => {
-      if (row.id) {
-        const { id, ...rest } = row;
+    mutationFn: async (row: ProductPatch & { id?: string }) => {
+      const { id, ...rest } = row;
+      if (id) {
         const { error } = await supabase.from("products").update(rest).eq("id", id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("products").insert(row as never);
+        const { error } = await supabase.from("products").insert(rest as ProductInsert);
         if (error) throw error;
       }
     },
@@ -662,7 +672,7 @@ function AdminConsole({ email }: { email: string }) {
             {active === "visitors" && (
               <Panel
                 title="Visitors"
-                subtitle="每 visit is geo-located from its IP address."
+                subtitle="Every visit is geo-located from its IP address."
               >
                 <div className="grid gap-4 lg:grid-cols-[1fr_1.4fr]">
                   <div className="rounded-xl border border-border p-4">
