@@ -724,7 +724,7 @@ function AdminConsole() {
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>and admin page all refresh button must be work</span>
+                        <span>still not working the refresh button from admin page and also i fill up the contact from and still not showing the leads "Inquiries" admin page, modify this</span>
                       </li>
                     </ul>
                   </div>
