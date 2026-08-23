@@ -21,8 +21,10 @@ export const Route = createFileRoute("/contact")({
         content: "Talk to our merchandising team about your next garment programme.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressyltd.com/contact" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/contact" }],
   }),
   component: ContactPage,
 });

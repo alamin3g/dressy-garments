@@ -26,8 +26,10 @@ export const Route = createFileRoute("/products")({
         content: "Knit, woven, outerwear, fleece and workwear programmes made in Dhaka, Bangladesh.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressyltd.com/products" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/products" }],
   }),
   component: ProductsPage,
 });

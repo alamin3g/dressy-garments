@@ -52,18 +52,18 @@ export const Route = createFileRoute("/")({
           "Design development, sourcing and garment manufacturing from Bangladesh to global fashion markets.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressy-garments.lovable.app/" },
+      { property: "og:url", content: "https://dressyltd.com/" },
       {
         property: "og:image",
-        content: "https://dressy-garments.lovable.app" + ogImage.url,
+        content: "https://dressyltd.com" + ogImage.url,
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:image",
-        content: "https://dressy-garments.lovable.app" + ogImage.url,
+        content: "https://dressyltd.com" + ogImage.url,
       },
     ],
-    links: [{ rel: "canonical", href: "https://dressy-garments.lovable.app/" }],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/" }],
   }),
 
   component: Index,

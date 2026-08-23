@@ -19,8 +19,10 @@ export const Route = createFileRoute("/factory")({
         content: "A state-of-the-art garment facility built to handle quality at scale.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressyltd.com/factory" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/factory" }],
   }),
   component: FactoryPage,
 });

@@ -29,8 +29,10 @@ export const Route = createFileRoute("/capabilities")({
         content: "Every step of garment production under one roof: development, sourcing, production, quality, delivery.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressyltd.com/capabilities" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/capabilities" }],
   }),
   component: CapabilitiesPage,
 });

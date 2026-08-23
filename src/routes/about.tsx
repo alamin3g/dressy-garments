@@ -20,8 +20,10 @@ export const Route = createFileRoute("/about")({
         content: "Who we are, how we work and where our garments travel.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressyltd.com/about" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/about" }],
   }),
   component: AboutPage,
 });
