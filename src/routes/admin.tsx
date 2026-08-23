@@ -738,6 +738,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>Make sure the website's main logo is visible online, and verify this working</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>add so many functions on admin page settings</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
