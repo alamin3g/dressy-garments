@@ -76,7 +76,7 @@ const PRODUCTS = [
   { n: "02", name: "Woven", img: pWoven.url },
   { n: "03", name: "Outerwear", img: pOuterwear.url },
   { n: "04", name: "Fleece", img: pFleece.url },
-  { n: "05", name: "Workwear", img: pWorkwear },
+  { n: "05", name: "Workwear", img: pWorkwear.url },
   { n: "06", name: "Development", img: pDevelopment },
 ];
 
