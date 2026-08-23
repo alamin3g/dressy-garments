@@ -810,6 +810,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>add email and whatsapp</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Add this password to admin page- 1234, only password not email</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
