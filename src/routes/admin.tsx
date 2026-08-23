@@ -634,10 +634,6 @@ function AdminConsole() {
                     <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Adjust typography, spacing, and contrast around the security issues text to improve readability and accessibility.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>Connect my site to Google Search Console and complete the authorization so SEO data starts flowing.</span>
                       </li>
                       <li className="flex gap-3">
@@ -646,19 +642,7 @@ function AdminConsole() {
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Implement SEO title/description templates for all future routes so I don’t reintroduce duplicates.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Ensure every route includes complete Open Graph tags (og:title, og:description, og:url, og:image where applicable) for consistent link previews.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Review and update my robots.txt directives to confirm crawling behavior matches what I want for SEO.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Implement a clear empty-state message when there are no security issues returned from the scan results.</span>
+                        <span>Run a fresh SEO audit and show me any remaining issues with titles, descriptions, canonicals, or robots.txt.</span>
                       </li>
                     </ul>
                   </div>
