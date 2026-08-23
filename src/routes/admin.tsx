@@ -313,7 +313,7 @@ function AdminConsole() {
 
         {/* Right preview */}
         <main className="min-w-0 flex-1">
-          <div className="rounded-2xl border border-border bg-card/20 p-5 md:p-8">
+          <div className="rounded-2xl border border-border bg-card/60 p-5 md:p-8 backdrop-blur-sm shadow-sm">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <p className="label-xs text-primary">{current.hint}</p>
               <button
