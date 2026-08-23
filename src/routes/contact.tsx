@@ -255,12 +255,12 @@ function ContactPage() {
             </a>
 
             <img
-              src={ctaImg}
-              alt="Dressy branded hang tags and paper bag"
+              src={dressyLogo.url}
+              alt="Dressy main logo"
               loading="lazy"
               width={900}
               height={700}
-              className="max-h-64 w-full object-cover rounded-lg"
+              className="max-h-64 w-full rounded-lg object-contain bg-primary/5"
             />
           </aside>
         </div>
