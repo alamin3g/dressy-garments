@@ -139,6 +139,8 @@ function Index() {
                 Made to
                 <br />
                 <span className="text-primary">Move Brands.</span>
+                <br />
+                Stitching With Care & Love
               </h1>
               <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-muted-foreground" style={{ animationDelay: "200ms" }}>
                 Design development, sourcing and garment manufacturing from Bangladesh to global
