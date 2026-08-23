@@ -15,7 +15,6 @@ import {
   PromptInputSubmit,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
-import logo from "@/assets/dressy-logo.png";
 
 const SUGGESTIONS = [
   "What do you manufacture?",
@@ -54,7 +53,7 @@ export function ChatWidget() {
       {open && (
         <div className="fixed bottom-24 right-5 z-[60] flex h-[min(70vh,520px)] w-[min(92vw,380px)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
           <div className="flex items-center gap-3 border-b border-border px-4 py-3">
-            <img src={logo} alt="Dressy" className="h-6 w-auto" />
+            <img src="/dressy-logo.png" alt="Dressy" className="h-6 w-auto" />
             <div className="leading-tight">
               <p className="text-sm font-semibold">Dressy Assistant</p>
               <p className="text-[11px] text-muted-foreground">Quick answers about our factory</p>
