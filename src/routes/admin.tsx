@@ -616,7 +616,7 @@ function AdminConsole() {
             {active === "security" && (
               <Panel 
                 title="Security Issues" 
-                subtitle="Load the security issues from the scan results and fix the selected issues."
+                subtitle="Make the admin page fully functional, with each and every features and admin page shoe real time data"
               >
                 <div className="space-y-8 max-w-2xl">
                   <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
