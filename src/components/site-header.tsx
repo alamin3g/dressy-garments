@@ -91,7 +91,7 @@ export function SiteHeader() {
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((o) => !o)}
-          className="rounded-lg border border-border/50 bg-card/60 p-2 text-foreground transition-transform duration-200 hover:bg-muted active:scale-95 lg:hidden"
+          className="rounded-lg border border-primary bg-primary p-2 text-primary-foreground transition-transform duration-200 hover:bg-primary/90 active:scale-95 lg:hidden"
         >
           {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
