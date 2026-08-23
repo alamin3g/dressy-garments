@@ -18,7 +18,7 @@ export function Logo({ className = "", scrolled = false }: { className?: string;
         src="/dressy-logo.png"
         alt="Dressy Logo"
         className={`w-auto object-contain transition-transform duration-300 group-hover:scale-105 ${
-          scrolled ? "h-8 sm:h-9" : "h-9 sm:h-10"
+          scrolled ? "h-10 sm:h-11" : "h-11 sm:h-12"
         } ${className}`}
       />
     </Link>
