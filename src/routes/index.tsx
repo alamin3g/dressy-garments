@@ -140,7 +140,7 @@ function Index() {
             allowFullScreen
             loading="eager"
             title="Dressy Hero Background Video"
-            className="absolute top-1/2 left-1/2 hidden h-full w-full md:block min-w-[100vw] md:min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
+            className="absolute top-1/2 left-1/2 hidden h-full w-full md:block min-w-[100vw] md:min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
             style={{ border: "none" }}
           />
         </div>
