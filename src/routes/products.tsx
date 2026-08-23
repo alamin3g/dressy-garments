@@ -27,6 +27,8 @@ export const Route = createFileRoute("/products")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://dressyltd.com/products" },
+      { property: "og:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
+      { name: "twitter:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://dressyltd.com/products" }],
