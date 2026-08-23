@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
+
 import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/p-woven.jpg";
 import pOuterwear from "@/assets/p-outerwear.jpg";
@@ -159,6 +162,46 @@ function ProductsPage() {
           </div>
         </div>
       </section>
+
+      <LiveStyles />
     </PageShell>
   );
 }
+
+function LiveStyles() {
+  const { data } = useQuery({
+    queryKey: ["public", "products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("id,name,category,moq,description")
+        .eq("status", "Live")
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  if (!data || data.length === 0) return null;
+
+  return (
+    <section className="border-b border-border">
+      <div className="mx-auto max-w-[1400px] px-6 py-12 md:px-10">
+        <h2 className="display text-4xl">Current Styles</h2>
+        <div className="mt-8 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {data.map((p) => (
+            <article key={p.id} className="bg-background p-6">
+              <p className="label-xs text-primary">{p.category}</p>
+              <h3 className="display mt-3 text-2xl">{p.name}</h3>
+              {p.description && (
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
+              )}
+              <p className="label-xs mt-5 text-muted-foreground">MOQ / {p.moq}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+

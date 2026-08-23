@@ -13,6 +13,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChatWidget } from "@/components/chat-widget";
+import { trackVisit } from "@/lib/analytics.functions";
+
 
 function NotFoundComponent() {
   return (
@@ -137,6 +139,12 @@ function RootComponent() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [pathname]);
+
+  useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
+    void trackVisit({ data: { path: pathname, referrer: document.referrer || "" } }).catch(() => {});
+  }, [pathname]);
+
 
   return (
     <QueryClientProvider client={queryClient}>

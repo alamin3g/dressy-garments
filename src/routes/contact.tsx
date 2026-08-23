@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Check, ArrowRight, ExternalLink } from "lucide-rea
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import dressyLogo from "@/assets/dressy-logo.png.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -41,10 +42,12 @@ function ContactPage() {
   });
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState("");
 
   const set = (k: keyof typeof form) => (v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
     const next: Errors = {};
     if (!form.name.trim()) next.name = "Please enter your name.";
@@ -52,8 +55,25 @@ function ContactPage() {
     if (form.message.trim().length < 10) next.message = "Tell us a little more (10+ characters).";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
+
+    setSending(true);
+    setFailed("");
+    const { error } = await supabase.from("inquiries").insert({
+      name: form.name.trim(),
+      company: form.company.trim(),
+      email: form.email.trim(),
+      product: form.product,
+      quantity: form.quantity.trim(),
+      message: form.message.trim(),
+    });
+    setSending(false);
+    if (error) {
+      setFailed("Something went wrong sending your enquiry. Please try again.");
+      return;
+    }
     setSent(true);
   }
+
 
   const field =
     "mt-2 w-full border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
@@ -191,11 +211,14 @@ function ContactPage() {
                 <div className="sm:col-span-2">
                   <button
                     type="submit"
-                    className="label-xs flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                    disabled={sending}
+                    className="label-xs flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
-                    Send Enquiry <ArrowRight className="size-4" />
+                    {sending ? "Sending…" : "Send Enquiry"} <ArrowRight className="size-4" />
                   </button>
+                  {failed && <p className="mt-3 text-xs text-destructive">{failed}</p>}
                 </div>
+
               </form>
             )}
           </div>
