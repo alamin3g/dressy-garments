@@ -276,8 +276,8 @@ function AdminConsole() {
             <div className="flex items-center gap-3 px-1 pb-4">
               <img src="/favicon.png" alt="Dressy" className="size-8 rounded-md object-contain" />
               <div className="min-w-0">
-                <p className="text-sm font-semibold leading-tight">Dressy Admin</p>
-                <p className="truncate text-[11px] text-muted-foreground">Site management</p>
+                <p className="text-sm font-semibold leading-tight">Dressy Clothing LTD</p>
+                <p className="truncate text-[11px] text-muted-foreground">dressyltd.com</p>
               </div>
             </div>
 
