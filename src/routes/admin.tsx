@@ -734,6 +734,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>Add canonical URL tags on every page to prevent duplicate content issues and ensure search engines index the correct URLs.</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Make sure the website's main logo is visible online, and verify this working</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
