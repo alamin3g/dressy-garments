@@ -104,17 +104,18 @@ function Panel({
 }) {
   return (
     <div className="animate-fade-up">
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-6">
         <div>
-          <h2 className="display text-3xl md:text-4xl">{title}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          <h1 className="display text-3xl text-foreground">{title}</h1>
+          <p className="mt-2 text-sm text-muted-foreground/90">{subtitle}</p>
         </div>
-        {right}
+        {right && <div>{right}</div>}
       </div>
-      <div className="mt-6">{children}</div>
+      <div className="text-foreground/95">{children}</div>
     </div>
   );
 }
+
 
 function Pill({ value }: { value: string }) {
   const tone =
