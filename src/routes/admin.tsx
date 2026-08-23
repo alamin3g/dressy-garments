@@ -313,13 +313,17 @@ function AdminConsole() {
               </Link>
               <button
                 type="button"
+                disabled={products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching}
                 onClick={() => {
                   void qc.invalidateQueries();
                 }}
-                className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
               >
-                Refresh data
-                <RefreshCw className="size-3.5" />
+                {products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching ? (
+                  <>Refreshing... <Loader2 className="size-3.5 animate-spin" /></>
+                ) : (
+                  <>Refresh data <RefreshCw className="size-3.5" /></>
+                )}
               </button>
 
             </div>
@@ -333,10 +337,12 @@ function AdminConsole() {
               <p className="label-xs text-primary">{current.hint}</p>
               <button
                 type="button"
+                disabled={products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching}
                 onClick={() => qc.invalidateQueries({ queryKey: ["admin"] })}
-                className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground disabled:opacity-50"
               >
-                <RefreshCw className="size-3.5" /> Refresh
+                <RefreshCw className={`size-3.5 ${products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching ? 'animate-spin' : ''}`} /> 
+                {products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching ? 'Refreshing...' : 'Refresh'}
               </button>
             </div>
 
@@ -546,10 +552,12 @@ function AdminConsole() {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
+                      disabled={visitors.isFetching}
                       onClick={() => invalidate("visitors")}
-                      className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                      className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
                     >
-                      <RefreshCw className="size-4" /> Refresh
+                      <RefreshCw className={`size-4 ${visitors.isFetching ? 'animate-spin' : ''}`} />
+                      {visitors.isFetching ? 'Refreshing...' : 'Refresh'}
                     </button>
                     <button
                       type="button"
@@ -716,15 +724,15 @@ function AdminConsole() {
                     <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add real-time updates to the Visitors panel so the admin sees new visitor sessions instantly.</span>
+                        <span>Add visible loading indicators on admin refresh buttons so I know when data is updating.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Implement the Visitors panel to track users by browser IP address and display Device, Country, Time, Location, and Total duration.</span>
+                        <span>Verify that every refresh button in the admin pages reloads the correct data without errors.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>still not working the refresh button from admin page and also i fill up the contact from and still not showing the leads "Inquiries" admin page, modify this</span>
+                        <span>Verify the contact sction form data are stored on admin page Inquiries section</span>
                       </li>
                     </ul>
                   </div>
