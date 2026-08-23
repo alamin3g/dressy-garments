@@ -72,7 +72,7 @@ export const Route = createFileRoute("/")({
 const STEPS = ["Research", "Development", "Sourcing", "Production", "Quality", "Delivery"];
 
 const PRODUCTS = [
-  { n: "01", name: "Knit", img: pKnit },
+  { n: "01", name: "Knit", img: pKnit.url },
   { n: "02", name: "Woven", img: pWoven.url },
   { n: "03", name: "Outerwear", img: pOuterwear.url },
   { n: "04", name: "Fleece", img: pFleece.url },
