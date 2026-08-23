@@ -33,7 +33,7 @@ import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/w-3.jpg.asset.json";
 import pFleece from "@/assets/w-2.jpg.asset.json";
-import pWorkwear from "@/assets/p-workwear.jpg";
+import pWorkwear from "@/assets/w-4.jpg.asset.json";
 import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/")({
@@ -76,7 +76,7 @@ const PRODUCTS = [
   { n: "02", name: "Woven", img: pWoven.url },
   { n: "03", name: "Outerwear", img: pOuterwear.url },
   { n: "04", name: "Fleece", img: pFleece.url },
-  { n: "05", name: "Workwear", img: pWorkwear },
+  { n: "05", name: "Workwear", img: pWorkwear.url },
   { n: "06", name: "Development", img: pDevelopment },
 ];
 
