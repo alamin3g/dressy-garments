@@ -132,7 +132,7 @@ function Index() {
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
-              <p className="label-xs animate-fade-up text-white font-medium tracking-widest uppercase">DRESSY CLOTHING LTD.</p>
+              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase">DRESSY CLOTHING LTD.</p>
               <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
                 <span className="text-primary">Stitching With Care & Love</span>
               </h1>
