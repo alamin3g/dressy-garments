@@ -103,7 +103,7 @@ export function SiteHeader() {
           menuOpen ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0"
         }`}
       >
-        <div className="min-h-0 rounded-2xl border border-border/40 bg-background/95 px-6 py-6 backdrop-blur-2xl shadow-2xl">
+        <div className="min-h-0 max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-2xl border border-border/40 bg-background/95 px-4 py-4 backdrop-blur-2xl shadow-2xl sm:px-6 sm:py-6">
           <nav className="flex flex-col gap-2">
             {NAV.map((item) => {
               const isActive = location.pathname === item.to;
@@ -112,18 +112,19 @@ export function SiteHeader() {
                   key={item.to}
                   to={item.to}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all ${
+                  className={`flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all sm:py-3 ${
                     isActive
                       ? "bg-primary text-primary-foreground font-semibold"
                       : "bg-card/40 text-foreground/90 hover:bg-muted"
                   }`}
                 >
-                  <span>{item.label}</span>
-                  <ArrowRight className="size-4 opacity-60" />
+                  <span className="truncate">{item.label}</span>
+                  <ArrowRight className="size-4 shrink-0 opacity-60" />
+
                 </Link>
               );
             })}
-            <div className="mt-4 pt-4 border-t border-border/40 flex flex-col gap-3">
+            <div className="mt-3 pt-3 border-t border-border/40 flex flex-col gap-3 sm:mt-4 sm:pt-4">
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
