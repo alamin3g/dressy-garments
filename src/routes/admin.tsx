@@ -23,13 +23,13 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Admin Console — Dressy Clothing Ltd." },
+      { title: "Admin Console — Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh" },
       {
         name: "description",
         content:
           "Internal Dressy admin console for products, inquiries, visitor analytics and site settings.",
       },
-      { property: "og:title", content: "Admin Console — Dressy Clothing Ltd." },
+      { property: "og:title", content: "Admin Console — Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh" },
       {
         property: "og:description",
         content: "Manage products, inquiries, visitors and settings for Dressy Clothing Ltd.",
@@ -276,8 +276,8 @@ function AdminConsole() {
             <div className="flex items-center gap-3 px-1 pb-4">
               <img src="/favicon.png" alt="Dressy" className="size-8 rounded-md object-contain" />
               <div className="min-w-0">
-                <p className="text-sm font-semibold leading-tight">Dressy Admin</p>
-                <p className="truncate text-[11px] text-muted-foreground">Site management</p>
+                <p className="text-sm font-semibold leading-tight">Dressy Clothing LTD</p>
+                <p className="truncate text-[11px] text-muted-foreground">dressyltd.com</p>
               </div>
             </div>
 
@@ -347,7 +347,7 @@ function AdminConsole() {
             </div>
 
             {active === "dashboard" && (
-              <Panel title="Dashboard" subtitle="Live snapshot of the site and its traffic.">
+              <Panel title="Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh" subtitle="Live snapshot of the site and its traffic.">
                 <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                   {[
                     { label: "Visits (24h)", value: last24h },

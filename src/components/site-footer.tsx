@@ -89,7 +89,7 @@ export function SiteFooter() {
                 rel="noreferrer"
                 className="hover:text-foreground transition-colors inline-block"
               >
-                House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dhaka 1206
+                House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206
               </a>
             </li>
             <li>
