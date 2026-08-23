@@ -45,10 +45,10 @@ export function SiteHeader() {
       <div
         className={`relative mx-auto flex items-center justify-between transition-all duration-500 ease-out ${
           scrolled
-            ? "max-w-[1050px] mt-3 sm:mt-2 h-12 rounded-full border border-white/15 bg-background/90 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)] backdrop-blur-2xl px-6"
+            ? "max-w-[1050px] mt-3 sm:mt-2 h-14 sm:h-16 rounded-full border border-white/15 bg-background/90 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)] backdrop-blur-2xl px-6"
             : isHome
-            ? "max-w-[1400px] mt-2 sm:mt-0 h-14 sm:h-[72px] border-b border-transparent bg-transparent backdrop-blur-none px-4 md:px-8"
-            : "max-w-[1400px] mt-2 sm:mt-0 h-14 sm:h-[72px] border-b border-border/40 bg-background/80 backdrop-blur-md px-4 md:px-8"
+            ? "max-w-[1400px] mt-2 sm:mt-0 h-16 sm:h-[84px] border-b border-transparent bg-transparent backdrop-blur-none px-4 md:px-8"
+            : "max-w-[1400px] mt-2 sm:mt-0 h-16 sm:h-[84px] border-b border-border/40 bg-background/80 backdrop-blur-md px-4 md:px-8"
         }`}
       >
         {/* Logo on Top-Left */}
