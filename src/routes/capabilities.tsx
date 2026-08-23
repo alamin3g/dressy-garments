@@ -13,27 +13,16 @@ import {
 } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 export const Route = createFileRoute("/capabilities")({
-  head: () => ({
-    meta: [
-      { title: "Capabilities — Dressy Garment Manufacturing" },
-      {
-        name: "description",
-        content:
-          "Design development, sourcing, cutting, sewing, printing, quality control and delivery — Dressy handles every step of garment production in Dhaka.",
-      },
-      { property: "og:title", content: "Capabilities — Dressy Garment Manufacturing" },
-      {
-        property: "og:description",
-        content: "Every step of garment production under one roof: development, sourcing, production, quality, delivery.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/capabilities" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/capabilities" }],
+  head: () => getSEOMetadata({
+    title: "Capabilities — Design, Sourcing & Production",
+    description: "Design development, sourcing, cutting, sewing, printing, quality control and delivery — every step of garment production under one roof.",
+    url: "/capabilities",
   }),
+
   component: CapabilitiesPage,
 });
 

@@ -4,29 +4,17 @@ import { PageShell } from "@/components/page-shell";
 import { Globe } from "@/components/ui/cobe-globe";
 import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About Dressy — Garment Manufacturer in Bangladesh" },
-      {
-        name: "description",
-        content:
-          "Dressy Clothing Ltd is a Dhaka-based garment manufacturer supplying knit, woven and outerwear programmes to brands across Europe, North America, Africa and Australia.",
-      },
-      { property: "og:title", content: "About Dressy — Garment Manufacturer in Bangladesh" },
-      {
-        property: "og:description",
-        content: "Who we are, how we work and where our garments travel.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/about" },
-      { property: "og:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
-      { name: "twitter:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/about" }],
+  head: () => getSEOMetadata({
+    title: "About Us — Garment Manufacturer in Bangladesh",
+    description: "Dressy Clothing Ltd is a Dhaka-based garment manufacturer supplying knit, woven and outerwear programmes to global brands.",
+    url: "/about",
+    image: "/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg",
   }),
+
   component: AboutPage,
 });
 

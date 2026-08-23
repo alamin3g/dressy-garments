@@ -3,6 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/p-woven.jpg";
@@ -12,27 +14,13 @@ import pWorkwear from "@/assets/p-workwear.jpg";
 import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/products")({
-  head: () => ({
-    meta: [
-      { title: "Products — Knit, Woven, Outerwear & Workwear | Dressy" },
-      {
-        name: "description",
-        content:
-          "Explore Dressy's product range: knit, woven, outerwear, fleece, workwear and development styles produced for global fashion brands.",
-      },
-      { property: "og:title", content: "Products — Knit, Woven, Outerwear & Workwear | Dressy" },
-      {
-        property: "og:description",
-        content: "Knit, woven, outerwear, fleece and workwear programmes made in Dhaka, Bangladesh.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/products" },
-      { property: "og:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
-      { name: "twitter:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/products" }],
+  head: () => getSEOMetadata({
+    title: "Products — Knit, Woven & Outerwear Range",
+    description: "Explore Dressy's product range: knit, woven, outerwear, fleece and workwear produced for global fashion brands.",
+    url: "/products",
+    image: "/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg",
   }),
+
   component: ProductsPage,
 });
 

@@ -5,27 +5,16 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import dressyLogo from "@/assets/dressy-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact Dressy — Start a Garment Project" },
-      {
-        name: "description",
-        content:
-          "Send Dressy your tech pack, reference piece or concept. Our Dhaka team replies to production enquiries within one business day.",
-      },
-      { property: "og:title", content: "Contact Dressy — Start a Garment Project" },
-      {
-        property: "og:description",
-        content: "Talk to our merchandising team about your next garment programme.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/contact" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/contact" }],
+  head: () => getSEOMetadata({
+    title: "Contact Us — Start your Production Journey",
+    description: "Send Dressy your tech pack, reference piece or concept. Our Dhaka team replies within one business day.",
+    url: "/contact",
   }),
+
   component: ContactPage,
 });
 

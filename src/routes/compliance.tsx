@@ -1,27 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ShieldCheck, Baby, Flame, HeartPulse, HandHeart, Recycle, Droplets, Leaf } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 export const Route = createFileRoute("/compliance")({
-  head: () => ({
-    meta: [
-      { title: "Compliance & Sustainability — Dressy" },
-      {
-        name: "description",
-        content:
-          "BSCI, OEKO-TEX STANDARD 100, Sedex and GRS certified. Worker safety, fire safety, no child labour and sustainable production at Dressy.",
-      },
-      { property: "og:title", content: "Compliance & Sustainability — Dressy" },
-      {
-        property: "og:description",
-        content: "Certified, audited and accountable garment manufacturing in Bangladesh.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/compliance" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/compliance" }],
+  head: () => getSEOMetadata({
+    title: "Compliance & Sustainability — Certified Manufacturing",
+    description: "BSCI, OEKO-TEX STANDARD 100, Sedex and GRS certified. Worker safety, fire safety and sustainable production in Bangladesh.",
+    url: "/compliance",
   }),
+
   component: CompliancePage,
 });
 
