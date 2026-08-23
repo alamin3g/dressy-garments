@@ -337,10 +337,12 @@ function AdminConsole() {
               <p className="label-xs text-primary">{current.hint}</p>
               <button
                 type="button"
+                disabled={products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching}
                 onClick={() => qc.invalidateQueries({ queryKey: ["admin"] })}
-                className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground disabled:opacity-50"
               >
-                <RefreshCw className="size-3.5" /> Refresh
+                <RefreshCw className={`size-3.5 ${products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching ? 'animate-spin' : ''}`} /> 
+                {products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching ? 'Refreshing...' : 'Refresh'}
               </button>
             </div>
 
