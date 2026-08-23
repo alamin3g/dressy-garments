@@ -30,7 +30,7 @@ import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/p-knit.jpg";
-import pWoven from "@/assets/p-woven.jpg";
+import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/p-outerwear.jpg";
 import pFleece from "@/assets/p-fleece.jpg";
 import pWorkwear from "@/assets/p-workwear.jpg";
