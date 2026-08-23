@@ -469,7 +469,7 @@ function AdminConsole() {
             )}
 
             {active === "inquiries" && (
-              <Panel title="Inquiries" subtitle="Messages submitted through the contact form.">
+              <Panel title="Inquiries" subtitle="On the admin page, show real-time &quot;Inquiries&quot; data from the website's contact section. This allows the admin to see up-to-date information and also to delete entries.">
                 {(inquiries.data ?? []).length === 0 ? (
                   <p className="text-sm text-muted-foreground/80 italic">No inquiries yet.</p>
 
