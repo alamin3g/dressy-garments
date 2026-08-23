@@ -211,11 +211,14 @@ function ContactPage() {
                 <div className="sm:col-span-2">
                   <button
                     type="submit"
-                    className="label-xs flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                    disabled={sending}
+                    className="label-xs flex items-center gap-4 bg-primary px-6 py-4 font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
-                    Send Enquiry <ArrowRight className="size-4" />
+                    {sending ? "Sending…" : "Send Enquiry"} <ArrowRight className="size-4" />
                   </button>
+                  {failed && <p className="mt-3 text-xs text-destructive">{failed}</p>}
                 </div>
+
               </form>
             )}
           </div>
