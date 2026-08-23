@@ -124,7 +124,7 @@ export function SiteHeader() {
                 </Link>
               );
             })}
-            <div className="mt-4 pt-4 border-t border-border/40 flex flex-col gap-3">
+            <div className="mt-3 pt-3 border-t border-border/40 flex flex-col gap-3 sm:mt-4 sm:pt-4">
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
