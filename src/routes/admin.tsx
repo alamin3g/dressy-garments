@@ -258,7 +258,7 @@ function AdminConsole() {
               <img src="/favicon.png" alt="Dressy" className="size-8 rounded-md object-contain" />
               <div className="min-w-0">
                 <p className="text-sm font-semibold leading-tight">Dressy Admin</p>
-                <p className="truncate text-[11px] text-muted-foreground">{email}</p>
+                <p className="truncate text-[11px] text-muted-foreground">Site management</p>
               </div>
             </div>
 
