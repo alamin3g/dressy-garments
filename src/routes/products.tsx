@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
+
 import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/p-woven.jpg";
 import pOuterwear from "@/assets/p-outerwear.jpg";
