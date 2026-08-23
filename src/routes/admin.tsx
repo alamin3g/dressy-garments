@@ -724,15 +724,15 @@ function AdminConsole() {
                     <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add visible loading indicators on admin refresh buttons so I know when data is updating.</span>
+                        <span>Verify that each page renders the correct title, meta description, and Open Graph tags in the browser and when shared on social media.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Verify that every refresh button in the admin pages reloads the correct data without errors.</span>
+                        <span>Add a sitemap.xml and robots.txt so search engines can discover and crawl all site pages.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Verify the contact sction form data are stored on admin page Inquiries section</span>
+                        <span>Add canonical URL tags on every page to prevent duplicate content issues and ensure search engines index the correct URLs.</span>
                       </li>
                     </ul>
                   </div>
