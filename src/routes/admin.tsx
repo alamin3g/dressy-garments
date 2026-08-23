@@ -742,6 +742,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>add so many functions on admin page settings</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Load the security issues from the scan results and fix the selected issues.</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
