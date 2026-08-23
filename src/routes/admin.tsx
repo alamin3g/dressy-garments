@@ -253,7 +253,7 @@ function AdminConsole() {
   const openInquiries = (inquiries.data ?? []).filter((i) => i.status !== "Closed").length;
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground">
+    <div className="min-h-screen bg-[#FDFDFD] font-sans text-foreground">
       <div className="mx-auto flex max-w-[1400px] flex-col gap-6 px-4 py-6 md:flex-row md:px-8">
         {/* Left menu */}
         <aside className="md:sticky md:top-24 md:h-[calc(100vh-8rem)] md:w-64 md:shrink-0">
