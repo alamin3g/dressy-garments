@@ -23,13 +23,13 @@ export const Route = createFileRoute("/admin")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Admin Console — Dressy Clothing Ltd." },
+      { title: "Admin Console — Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh" },
       {
         name: "description",
         content:
           "Internal Dressy admin console for products, inquiries, visitor analytics and site settings.",
       },
-      { property: "og:title", content: "Admin Console — Dressy Clothing Ltd." },
+      { property: "og:title", content: "Admin Console — Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh" },
       {
         property: "og:description",
         content: "Manage products, inquiries, visitors and settings for Dressy Clothing Ltd.",
