@@ -253,11 +253,11 @@ function AdminConsole() {
   const openInquiries = (inquiries.data ?? []).filter((i) => i.status !== "Closed").length;
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground">
+    <div className="min-h-screen bg-[#FDFDFD] font-sans text-foreground">
       <div className="mx-auto flex max-w-[1400px] flex-col gap-6 px-4 py-6 md:flex-row md:px-8">
         {/* Left menu */}
         <aside className="md:sticky md:top-24 md:h-[calc(100vh-8rem)] md:w-64 md:shrink-0">
-          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-4">
+          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/70 p-4 shadow-sm">
             <div className="flex items-center gap-3 px-1 pb-4">
               <img src="/favicon.png" alt="Dressy" className="size-8 rounded-md object-contain" />
               <div className="min-w-0">
@@ -313,7 +313,7 @@ function AdminConsole() {
 
         {/* Right preview */}
         <main className="min-w-0 flex-1">
-          <div className="rounded-2xl border border-border bg-card/20 p-5 md:p-8">
+          <div className="rounded-2xl border border-border bg-card/60 p-5 md:p-8 backdrop-blur-sm shadow-sm">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <p className="label-xs text-primary">{current.hint}</p>
               <button
