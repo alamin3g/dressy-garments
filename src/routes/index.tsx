@@ -118,12 +118,19 @@ function Index() {
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
+          {/* Mobile: animated background image (video autoplay is blocked on most mobile browsers) */}
+          <div
+            className="absolute inset-0 block md:hidden animate-ken-burns bg-cover bg-center opacity-75"
+            style={{ backgroundImage: `url(${heroImg})` }}
+          />
+          {/* Desktop: Streamable video iframe */}
           <iframe
-            src="https://streamable.com/e/1solet?autoplay=1&muted=1&nocontrols=1&loop=1"
-            allow="autoplay; fullscreen"
+            src="https://streamable.com/e/1solet?autoplay=1&muted=1&nocontrols=1&loop=1&preload=1&playsinline=1"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
             allowFullScreen
+            loading="eager"
             title="Dressy Hero Background Video"
-            className="absolute top-1/2 left-1/2 h-full w-full min-w-[320vw] min-h-[100dvh] md:min-w-[100vw] md:min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
+            className="absolute top-1/2 left-1/2 hidden h-full w-full md:block min-w-[100vw] md:min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
             style={{ border: "none" }}
           />
         </div>
