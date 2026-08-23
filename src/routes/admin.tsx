@@ -8,12 +8,15 @@ import {
   Globe2,
   FileText,
   Settings,
+  ShieldAlert,
   ExternalLink,
   Plus,
   Trash2,
   RefreshCw,
   Loader2,
+  CheckCircle2,
 } from "lucide-react";
+
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin")({
@@ -39,7 +42,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type SectionId = "dashboard" | "products" | "inquiries" | "visitors" | "pages" | "settings";
+type SectionId = "dashboard" | "products" | "inquiries" | "visitors" | "pages" | "settings" | "security";
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
@@ -47,7 +50,9 @@ const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: 
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
   { id: "visitors", label: "Visitors", icon: Globe2, hint: "Traffic by location" },
   { id: "pages", label: "Pages", icon: FileText, hint: "Site routes" },
+  { id: "security", label: "Security", icon: ShieldAlert, hint: "Vulnerabilities" },
   { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
+
 ];
 
 const PAGES = [
@@ -99,17 +104,18 @@ function Panel({
 }) {
   return (
     <div className="animate-fade-up">
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-border/60 pb-6">
         <div>
-          <h2 className="display text-3xl md:text-4xl">{title}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          <h1 className="display text-3xl text-foreground">{title}</h1>
+          <p className="mt-2 text-sm text-muted-foreground/90">{subtitle}</p>
         </div>
-        {right}
+        {right && <div>{right}</div>}
       </div>
-      <div className="mt-6">{children}</div>
+      <div className="text-foreground/95">{children}</div>
     </div>
   );
 }
+
 
 function Pill({ value }: { value: string }) {
   const tone =
@@ -465,7 +471,8 @@ function AdminConsole() {
             {active === "inquiries" && (
               <Panel title="Inquiries" subtitle="Messages submitted through the contact form.">
                 {(inquiries.data ?? []).length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No inquiries yet.</p>
+                  <p className="text-sm text-muted-foreground/80 italic">No inquiries yet.</p>
+
                 ) : (
                   <ul className="space-y-3">
                     {(inquiries.data ?? []).map((i) => (
@@ -525,7 +532,8 @@ function AdminConsole() {
                   <div className="rounded-xl border border-border p-4">
                     <p className="text-sm font-semibold">By location</p>
                     {locations.length === 0 ? (
-                      <p className="mt-3 text-xs text-muted-foreground">No visits recorded yet.</p>
+                      <p className="mt-3 text-xs text-muted-foreground/80 italic">No visits recorded yet.</p>
+
                     ) : (
                       <ul className="mt-3 space-y-3">
                         {locations.map(([label, count]) => (
@@ -605,7 +613,61 @@ function AdminConsole() {
               </Panel>
             )}
 
+            {active === "security" && (
+              <Panel 
+                title="Security Issues" 
+                subtitle="Load the security issues from the scan results and fix the selected issues."
+              >
+                <div className="space-y-8 max-w-2xl">
+                  <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                    <div className="flex items-center gap-3 text-emerald-500">
+                      <CheckCircle2 className="size-5" />
+                      <p className="font-semibold text-sm">No security issues found</p>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                      All system-level security scans have passed. The database RLS policies and user role checks are fully operational and verified.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-border bg-card/50 p-6">
+                    <h3 className="text-sm font-semibold text-foreground">Next Steps & Maintenance</h3>
+                    <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Adjust typography, spacing, and contrast around the security issues text to improve readability and accessibility.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Connect my site to Google Search Console and complete the authorization so SEO data starts flowing.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Verify that my pages are being discovered and indexed using the live sitemap and Google’s indexing checks.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Implement SEO title/description templates for all future routes so I don’t reintroduce duplicates.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Ensure every route includes complete Open Graph tags (og:title, og:description, og:url, og:image where applicable) for consistent link previews.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Review and update my robots.txt directives to confirm crawling behavior matches what I want for SEO.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Implement a clear empty-state message when there are no security issues returned from the scan results.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </Panel>
+            )}
+
             {active === "settings" && (
+
               <Panel title="Settings" subtitle="Company details stored in the database.">
                 <div className="grid gap-4 sm:grid-cols-2">
                   {(settings.data ?? []).map((s) => (

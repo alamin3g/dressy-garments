@@ -3,29 +3,17 @@ import { Users, Shirt, Factory as FactoryIcon, Ruler } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 export const Route = createFileRoute("/factory")({
-  head: () => ({
-    meta: [
-      { title: "Our Factory in Dhaka — Dressy Clothing Ltd" },
-      {
-        name: "description",
-        content:
-          "Inside Dressy's Dhaka facility: 7 production lines, 500+ people, 6M+ pieces a year, in-house sampling, printing, finishing and QA.",
-      },
-      { property: "og:title", content: "Our Factory in Dhaka — Dressy Clothing Ltd" },
-      {
-        property: "og:description",
-        content: "A state-of-the-art garment facility built to handle quality at scale.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/factory" },
-      { property: "og:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
-      { name: "twitter:image", content: "https://dressyltd.com/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/factory" }],
+  head: () => getSEOMetadata({
+    title: "Our Factory — Manufacturing Excellence in Dhaka",
+    description: "Inside Dressy's Dhaka facility: 7 production lines, 500+ people and 6M+ pieces a year capacity.",
+    url: "/factory",
+    image: "/__l5e/assets-v1/cbc3c3bb-0e8d-4ce5-9eb4-55ec1a2fac97/dressy-og.jpg",
   }),
+
   component: FactoryPage,
 });
 

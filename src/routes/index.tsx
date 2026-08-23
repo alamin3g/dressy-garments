@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
+import { getSEOMetadata } from "@/lib/seo";
+
 
 import {
   ArrowRight,
@@ -37,34 +39,13 @@ import pWorkwear from "@/assets/w-4.jpg.asset.json";
 import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Dressy — Garments Made to Move Brands" },
-      {
-        name: "description",
-        content:
-          "Dressy is a Dhaka-based garment manufacturer: design development, sourcing, production, quality and delivery for global fashion brands.",
-      },
-      { property: "og:title", content: "Dressy — Garments Made to Move Brands" },
-      {
-        property: "og:description",
-        content:
-          "Design development, sourcing and garment manufacturing from Bangladesh to global fashion markets.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://dressyltd.com/" },
-      {
-        property: "og:image",
-        content: "https://dressyltd.com" + ogImage.url,
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:image",
-        content: "https://dressyltd.com" + ogImage.url,
-      },
-    ],
-    links: [{ rel: "canonical", href: "https://dressyltd.com/" }],
+  head: () => getSEOMetadata({
+    title: "Garments Made to Move Brands",
+    description: "Dressy is a Dhaka-based garment manufacturer: design development, sourcing, production, quality and delivery for global fashion brands.",
+    url: "/",
+    image: ogImage.url,
   }),
+
 
   component: Index,
 });
