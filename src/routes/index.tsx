@@ -117,7 +117,7 @@ function Index() {
       <section className="relative min-h-screen md:min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pb-12">
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
+          <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] z-10" />
           {/* Mobile: native video for reliable autoplay */}
           <video
             autoPlay
