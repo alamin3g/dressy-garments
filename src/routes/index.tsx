@@ -134,7 +134,8 @@ function Index() {
             <div>
               <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase">DRESSY CLOTHING LTD.</p>
               <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
-                <span className="text-primary">Stitching With Care & Love</span>
+                <span className="text-white">Stitching With</span>{" "}
+                <span className="text-primary">Care & Love</span>
               </h1>
               <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-muted-foreground" style={{ animationDelay: "200ms" }}>
                 Design development, sourcing and garment manufacturing from Bangladesh to global
