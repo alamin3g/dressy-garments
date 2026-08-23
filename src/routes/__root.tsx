@@ -13,6 +13,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChatWidget } from "@/components/chat-widget";
+import { trackVisit } from "@/lib/analytics.functions";
+
 
 function NotFoundComponent() {
   return (
