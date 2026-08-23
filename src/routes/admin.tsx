@@ -307,7 +307,7 @@ function AdminPage() {
             {active === "media" && (
               <Panel title="Media" subtitle="Imagery used across the site." action="Upload">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {["/hero-poster.jpg", "/dressy-logo.png", "/favicon.png"].map((src) => (
+                  {["/dressy-logo.png", "/favicon.png"].map((src) => (
                     <div key={src} className="overflow-hidden rounded-xl border border-border">
                       <div className="flex h-28 items-center justify-center bg-muted/40">
                         <img src={src} alt={src} className="max-h-full max-w-full object-contain" />
