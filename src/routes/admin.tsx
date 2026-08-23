@@ -313,13 +313,17 @@ function AdminConsole() {
               </Link>
               <button
                 type="button"
+                disabled={products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching}
                 onClick={() => {
                   void qc.invalidateQueries();
                 }}
-                className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
               >
-                Refresh data
-                <RefreshCw className="size-3.5" />
+                {products.isFetching || inquiries.isFetching || visitors.isFetching || settings.isFetching ? (
+                  <>Refreshing... <Loader2 className="size-3.5 animate-spin" /></>
+                ) : (
+                  <>Refresh data <RefreshCw className="size-3.5" /></>
+                )}
               </button>
 
             </div>
