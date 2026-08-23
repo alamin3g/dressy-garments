@@ -74,7 +74,7 @@ const STEPS = ["Research", "Development", "Sourcing", "Production", "Quality", "
 const PRODUCTS = [
   { n: "01", name: "Knit", img: pKnit },
   { n: "02", name: "Woven", img: pWoven.url },
-  { n: "03", name: "Outerwear", img: pOuterwear },
+  { n: "03", name: "Outerwear", img: pOuterwear.url },
   { n: "04", name: "Fleece", img: pFleece.url },
   { n: "05", name: "Workwear", img: pWorkwear },
   { n: "06", name: "Development", img: pDevelopment },
