@@ -724,7 +724,7 @@ function AdminConsole() {
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add a visitor detail view that shows the full session data for a selected Visitors row.</span>
+                        <span>and admin page all refresh button must be work</span>
                       </li>
                     </ul>
                   </div>
