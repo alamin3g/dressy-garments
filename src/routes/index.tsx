@@ -114,7 +114,7 @@ function Index() {
 
       <AutoReveal>
       {/* Hero with Streamable Video Background */}
-      <section className="relative min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pb-12">
+      <section className="relative min-h-screen md:min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pb-12">
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
@@ -123,7 +123,7 @@ function Index() {
             allow="autoplay; fullscreen"
             allowFullScreen
             title="Dressy Hero Background Video"
-            className="absolute top-1/2 left-1/2 w-full h-full min-w-[100vw] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
+            className="absolute top-1/2 left-1/2 h-full w-full min-w-[100vw] min-h-[100dvh] md:min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
             style={{ border: "none" }}
           />
         </div>
