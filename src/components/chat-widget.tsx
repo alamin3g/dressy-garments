@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
@@ -16,6 +16,7 @@ import {
   PromptInputSubmit,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
+import { playReplySound } from "@/lib/chat-sound";
 
 const SUGGESTIONS = [
   "What do you manufacture?",
@@ -34,6 +35,17 @@ export function ChatWidget() {
   });
 
   const busy = status === "submitted" || status === "streaming";
+
+  // Play a short chime whenever a new assistant reply arrives.
+  const lastAssistantId = useRef<string | null>(null);
+  useEffect(() => {
+    if (busy) return;
+    const last = [...messages].reverse().find((m) => m.role === "assistant");
+    if (!last || last.id === lastAssistantId.current) return;
+    if (lastAssistantId.current === null && messages.length === 0) return;
+    lastAssistantId.current = last.id;
+    playReplySound();
+  }, [messages, busy]);
 
   const send = (text: string) => {
     const value = text.trim();
