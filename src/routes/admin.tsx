@@ -552,10 +552,12 @@ function AdminConsole() {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
+                      disabled={visitors.isFetching}
                       onClick={() => invalidate("visitors")}
-                      className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                      className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-50"
                     >
-                      <RefreshCw className="size-4" /> Refresh
+                      <RefreshCw className={`size-4 ${visitors.isFetching ? 'animate-spin' : ''}`} />
+                      {visitors.isFetching ? 'Refreshing...' : 'Refresh'}
                     </button>
                     <button
                       type="button"
