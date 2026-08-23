@@ -32,7 +32,7 @@ import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/p-outerwear.jpg";
-import pFleece from "@/assets/p-fleece.jpg";
+import pFleece from "@/assets/w-2.jpg.asset.json";
 import pWorkwear from "@/assets/p-workwear.jpg";
 import pDevelopment from "@/assets/p-development.jpg";
 
@@ -75,7 +75,7 @@ const PRODUCTS = [
   { n: "01", name: "Knit", img: pKnit },
   { n: "02", name: "Woven", img: pWoven.url },
   { n: "03", name: "Outerwear", img: pOuterwear },
-  { n: "04", name: "Fleece", img: pFleece },
+  { n: "04", name: "Fleece", img: pFleece.url },
   { n: "05", name: "Workwear", img: pWorkwear },
   { n: "06", name: "Development", img: pDevelopment },
 ];
