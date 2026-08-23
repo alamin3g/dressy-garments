@@ -48,11 +48,10 @@ const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: 
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
-  { id: "visitors", label: "Visitors", icon: Globe2, hint: "Traffic by location" },
+  { id: "visitors", label: "Visitors", icon: Globe2, hint: "Visitor Tracking" },
   { id: "pages", label: "Pages", icon: FileText, hint: "Site routes" },
   { id: "security", label: "Security", icon: ShieldAlert, hint: "Vulnerabilities" },
   { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
-
 ];
 
 const PAGES = [
@@ -234,6 +233,22 @@ function AdminConsole() {
       if (error) throw error;
     },
     onSuccess: () => invalidate("settings"),
+  });
+
+  const deleteVisitor = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("visitors").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("visitors"),
+  });
+
+  const clearAllVisitors = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("visitors").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("visitors"),
   });
 
   const visitorRows = visitors.data ?? [];
