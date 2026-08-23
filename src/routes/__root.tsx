@@ -138,6 +138,12 @@ function RootComponent() {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [pathname]);
 
+  useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
+    void trackVisit({ data: { path: pathname, referrer: document.referrer || "" } }).catch(() => {});
+  }, [pathname]);
+
+
   return (
     <QueryClientProvider client={queryClient}>
       <ScrollProgress />
