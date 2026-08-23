@@ -40,7 +40,7 @@ import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => getSEOMetadata({
-    title: "Dressy Clothing LTD",
+    title: "Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh — Welcome",
     description: "Stitching with care & love. Dress Clothing LTD delivers design, sourcing, and garment manufacturing from Bangladesh to global fashion markets.",
     url: "/",
     image: ogImage.url,
