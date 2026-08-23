@@ -347,7 +347,7 @@ function AdminConsole() {
             </div>
 
             {active === "dashboard" && (
-              <Panel title="Dashboard" subtitle="Live snapshot of the site and its traffic.">
+              <Panel title="Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh" subtitle="Live snapshot of the site and its traffic.">
                 <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                   {[
                     { label: "Visits (24h)", value: last24h },
