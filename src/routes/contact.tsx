@@ -224,7 +224,7 @@ function ContactPage() {
                   rel="noreferrer"
                   className="group flex items-start gap-1.5 text-sm text-muted-foreground hover:text-foreground leading-snug transition-colors"
                 >
-                  <span>House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dhaka 1206</span>
+                  <span>House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206</span>
                   <ExternalLink className="size-3.5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 mt-0.5" />
                 </a>
               </li>
