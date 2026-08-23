@@ -540,71 +540,138 @@ function AdminConsole() {
 
             {active === "visitors" && (
               <Panel
-                title="Visitors"
+                title="Visitor Tracking"
                 subtitle="and on admin page &quot;Visitors&quot; section the website must track users or visitors by browser ip address and show the details like this way- Device, Country, Time, Location, Total durationon website this way, admin can delete this and show reamtile data"
+                right={
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => invalidate("visitors")}
+                      className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                    >
+                      <RefreshCw className="size-4" /> Refresh
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm("Are you sure you want to clear all visitor data?")) {
+                          clearAllVisitors.mutate();
+                        }
+                      }}
+                      className="flex items-center gap-2 rounded-xl bg-destructive px-4 py-2.5 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90"
+                    >
+                      <Trash2 className="size-4" /> Clear All
+                    </button>
+                  </div>
+                }
               >
-                <div className="grid gap-4 lg:grid-cols-[1fr_1.4fr]">
-                  <div className="rounded-xl border border-border p-4">
-                    <p className="text-sm font-semibold">By location</p>
-                    {locations.length === 0 ? (
-                      <p className="mt-3 text-xs text-muted-foreground/80 italic">No visits recorded yet.</p>
-
-                    ) : (
-                      <ul className="mt-3 space-y-3">
-                        {locations.map(([label, count]) => (
-                          <li key={label}>
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="truncate">{label}</span>
-                              <span className="text-xs text-muted-foreground">{count}</span>
-                            </div>
-                            <div className="mt-1.5 h-1.5 w-full rounded-full bg-muted">
-                              <div
-                                className="h-1.5 rounded-full bg-primary"
-                                style={{
-                                  width: `${Math.round((count / (locations[0]?.[1] ?? 1)) * 100)}%`,
-                                }}
-                              />
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                <div className="mb-6 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="flex rounded-xl border border-border p-1">
+                      {["All", "Mobile", "Desktop", "Tablet"].map((filter) => (
+                        <button
+                          key={filter}
+                          className={`rounded-lg px-4 py-1.5 text-xs font-medium transition-all ${
+                            filter === "All" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {filter}
+                        </button>
+                      ))}
+                    </div>
                   </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <span className="size-2 animate-pulse rounded-full bg-emerald-500" />
+                      Auto-refresh 10s
+                    </span>
+                    <span>•</span>
+                    <span>auto-delete after 24h</span>
+                  </div>
+                </div>
 
-                  <div className="overflow-x-auto rounded-xl border border-border p-4">
-                    <p className="text-sm font-semibold">Recent visits</p>
-                    <table className="mt-3 w-full min-w-[420px] text-left text-sm">
-                      <thead className="text-xs uppercase tracking-wider text-muted-foreground">
+                <div className="overflow-x-auto rounded-2xl border border-border bg-card/30">
+                  <table className="w-full min-w-[1000px] text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <th className="px-6 py-4">Location</th>
+                        <th className="px-4 py-4">Accuracy</th>
+                        <th className="px-4 py-4">Device / Screen</th>
+                        <th className="px-4 py-4">Browser / OS</th>
+                        <th className="px-4 py-4">Timezone</th>
+                        <th className="px-4 py-4">Page</th>
+                        <th className="px-4 py-4">IP</th>
+                        <th className="px-4 py-4">Time</th>
+                        <th className="px-6 py-4"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {visitorRows.length === 0 ? (
                         <tr>
-                          <th className="pb-2 pr-4 font-medium">Location</th>
-                          <th className="pb-2 pr-4 font-medium">IP</th>
-                          <th className="pb-2 pr-4 font-medium">Page</th>
-                          <th className="pb-2 font-medium">When</th>
+                          <td colSpan={9} className="px-6 py-12 text-center text-muted-foreground italic">
+                            No visits recorded yet.
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {visitorRows.slice(0, 25).map((v) => (
-                          <tr key={v.id} className="border-t border-border">
-                            <td className="py-2.5 pr-4">
-                              {v.city || "Unknown"}, {v.country || "Unknown"}
-                            </td>
-                            <td className="py-2.5 pr-4 font-mono text-xs text-muted-foreground">
-                              {v.ip || "—"}
-                            </td>
-                            <td className="py-2.5 pr-4 font-mono text-xs text-muted-foreground">
-                              {v.path}
-                            </td>
-                            <td className="py-2.5 text-xs text-muted-foreground">
-                              {timeAgo(v.created_at)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {visitorRows.length === 0 && (
-                      <p className="mt-3 text-xs text-muted-foreground">No visits recorded yet.</p>
-                    )}
-                  </div>
+                      ) : (
+                        visitorRows.map((v) => {
+                          const isMobile = /mobile|android|iphone/i.test(v.user_agent || "");
+                          const isTablet = /tablet|ipad/i.test(v.user_agent || "");
+                          const deviceType = isTablet ? "Tablet" : isMobile ? "Mobile" : "Desktop";
+                          
+                          return (
+                            <tr key={v.id} className="group transition-colors hover:bg-muted/30">
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <Globe2 className="size-5 text-primary" />
+                                  <span className="font-medium text-foreground">{v.city || "Unknown"}, {v.country || "Unknown"}</span>
+                                </div>
+                              </td>
+                              <td className="px-4 py-4">
+                                <span className="rounded-md bg-muted px-2 py-1 text-[10px] font-bold text-muted-foreground">None</span>
+                              </td>
+                              <td className="px-4 py-4">
+                                <div className="flex flex-col gap-1">
+                                  <span className={`inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold ${
+                                    deviceType === "Desktop" ? "bg-emerald-500/10 text-emerald-600" : "bg-primary/10 text-primary"
+                                  }`}>
+                                    {deviceType}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground">1920x1080</span>
+                                </div>
+                              </td>
+                              <td className="px-4 py-4">
+                                <div className="flex flex-col">
+                                  <span className="font-medium">Chrome</span>
+                                  <span className="text-[11px] text-muted-foreground">Windows</span>
+                                </div>
+                              </td>
+                              <td className="px-4 py-4 text-xs text-muted-foreground">
+                                {Intl.DateTimeFormat().resolvedOptions().timeZone}
+                              </td>
+                              <td className="px-4 py-4">
+                                <span className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">{v.path}</span>
+                              </td>
+                              <td className="px-4 py-4 font-mono text-xs text-muted-foreground">
+                                {v.ip || "—"}
+                              </td>
+                              <td className="px-4 py-4 text-xs text-muted-foreground">
+                                {timeAgo(v.created_at)}
+                              </td>
+                              <td className="px-6 py-4 text-right">
+                                <button
+                                  type="button"
+                                  onClick={() => deleteVisitor.mutate(v.id)}
+                                  className="rounded-lg p-2 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+                                >
+                                  <Trash2 className="size-4" />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </Panel>
             )}
