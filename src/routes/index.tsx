@@ -29,7 +29,7 @@ import heroImg from "@/assets/hero-sewing.jpg";
 import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
-import pKnit from "@/assets/p-knit.jpg";
+import pKnit from "@/assets/w-5.jpg.asset.json";
 import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/w-3.jpg.asset.json";
 import pFleece from "@/assets/w-2.jpg.asset.json";
