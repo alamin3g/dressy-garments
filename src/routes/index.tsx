@@ -173,15 +173,16 @@ function Index() {
             { icon: Shirt, value: 6, suffix: "M+", label: "PCS / Year" },
             { icon: Factory, value: 7, suffix: "", label: "Production Lines" },
           ].map(({ icon: Icon, value, suffix, label }) => (
-            <div key={label} className="flex items-center justify-center gap-6 px-6 py-12">
-              <Icon className="size-10 text-primary" strokeWidth={1.2} />
-              <div>
-                <p className="display text-5xl">
+            <div key={label} className="flex items-center justify-center gap-4 px-4 py-8 sm:gap-6 sm:px-6 md:py-12">
+              <Icon className="size-7 shrink-0 text-primary sm:size-10" strokeWidth={1.2} />
+              <div className="min-w-0">
+                <p className="display text-3xl sm:text-4xl md:text-5xl">
                   <AnimatedCounter value={value} suffix={suffix} />
                 </p>
-                <p className="label-xs mt-2 text-muted-foreground">{label}</p>
+                <p className="label-xs mt-1 truncate text-muted-foreground sm:mt-2">{label}</p>
               </div>
             </div>
+
           ))}
         </div>
       </section>
