@@ -6,9 +6,9 @@ export interface SEOProps {
   type?: "website" | "article";
 }
 
-const DEFAULT_TITLE = "Dressy Clothing Ltd. — Premium Garment Manufacturer";
+const DEFAULT_TITLE = "Dressy Clothing LTD";
 const DEFAULT_DESCRIPTION =
-  "Dressy is a leading garment manufacturer based in Dhaka, Bangladesh, providing full-package production and sourcing for global fashion brands.";
+  "Stitching with care & love. Dress Clothing LTD delivers design, sourcing, and garment manufacturing from Bangladesh to global fashion markets.";
 const SITE_URL = "https://dressyltd.com";
 
 export function getSEOMetadata({ title, description, image, url, type = "website" }: SEOProps) {
