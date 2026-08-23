@@ -634,15 +634,15 @@ function AdminConsole() {
                     <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Implement the Google Search Console authorization flow and connect my site so SEO indexing data starts flowing.</span>
+                        <span>Add real-time updates to the Visitors panel so the admin sees new visitor sessions instantly.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Verify that my pages are being discovered and indexed using the live sitemap and Google’s indexing checks.</span>
+                        <span>Implement the Visitors panel to track users by browser IP address and display Device, Country, Time, Location, and Total duration.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Run a fresh SEO audit and show me any remaining issues with titles, descriptions, canonicals, or robots.txt.</span>
+                        <span>Add a visitor detail view that shows the full session data for a selected Visitors row.</span>
                       </li>
                     </ul>
                   </div>
