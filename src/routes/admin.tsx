@@ -716,15 +716,15 @@ function AdminConsole() {
                     <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add real-time updates to the Visitors panel so the admin sees new visitor sessions instantly.</span>
+                        <span>Add visible loading indicators on admin refresh buttons so I know when data is updating.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Implement the Visitors panel to track users by browser IP address and display Device, Country, Time, Location, and Total duration.</span>
+                        <span>Verify that every refresh button in the admin pages reloads the correct data without errors.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>still not working the refresh button from admin page and also i fill up the contact from and still not showing the leads "Inquiries" admin page, modify this</span>
+                        <span>Verify the contact sction form data are stored on admin page Inquiries section</span>
                       </li>
                     </ul>
                   </div>
