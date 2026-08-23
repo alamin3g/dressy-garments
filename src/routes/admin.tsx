@@ -294,16 +294,15 @@ function AdminConsole() {
               </Link>
               <button
                 type="button"
-                onClick={async () => {
-                  await qc.cancelQueries();
-                  qc.clear();
-                  await supabase.auth.signOut();
+                onClick={() => {
+                  void qc.invalidateQueries();
                 }}
                 className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                Sign out
-                <LogOut className="size-3.5" />
+                Refresh data
+                <RefreshCw className="size-3.5" />
               </button>
+
             </div>
           </div>
         </aside>
