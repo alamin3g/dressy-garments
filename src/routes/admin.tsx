@@ -1,31 +1,37 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   LayoutDashboard,
   Shirt,
   Inbox,
+  Globe2,
   FileText,
-  Images,
-  Users,
   Settings,
   ExternalLink,
-  Search,
   Plus,
+  Trash2,
+  LogOut,
+  RefreshCw,
+  Loader2,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { bootstrapAdmin } from "@/lib/analytics.functions";
 
 export const Route = createFileRoute("/admin")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Admin Console — Dressy Clothing Ltd." },
       {
         name: "description",
         content:
-          "Internal Dressy admin console to preview products, inquiries, content and media in one place.",
+          "Internal Dressy admin console for products, inquiries, visitor analytics and site settings.",
       },
       { property: "og:title", content: "Admin Console — Dressy Clothing Ltd." },
       {
         property: "og:description",
-        content: "Preview products, inquiries, content and media for Dressy Clothing Ltd.",
+        content: "Manage products, inquiries, visitors and settings for Dressy Clothing Ltd.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -35,73 +41,53 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type SectionId =
-  | "dashboard"
-  | "products"
-  | "inquiries"
-  | "pages"
-  | "media"
-  | "team"
-  | "settings";
+type SectionId = "dashboard" | "products" | "inquiries" | "visitors" | "pages" | "settings";
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
-  { id: "pages", label: "Pages", icon: FileText, hint: "Site copy" },
-  { id: "media", label: "Media", icon: Images, hint: "Assets" },
-  { id: "team", label: "Team", icon: Users, hint: "Access" },
-  { id: "settings", label: "Settings", icon: Settings, hint: "Config" },
-];
-
-const STATS = [
-  { label: "Open Inquiries", value: "12" },
-  { label: "Active Styles", value: "148" },
-  { label: "Monthly Capacity", value: "5M pcs" },
-  { label: "On-Time Delivery", value: "98%" },
-];
-
-const PRODUCTS = [
-  { name: "Heavyweight Hoodie", cat: "Knitwear", moq: "500 pcs", status: "Live" },
-  { name: "Oxford Shirt", cat: "Woven", moq: "800 pcs", status: "Live" },
-  { name: "Cargo Workwear Pant", cat: "Workwear", moq: "1,000 pcs", status: "Draft" },
-  { name: "Organic Cotton Tee", cat: "Knitwear", moq: "300 pcs", status: "Live" },
-  { name: "Performance Jacket", cat: "Outerwear", moq: "600 pcs", status: "Review" },
-];
-
-const INQUIRIES = [
-  { name: "Nordic Basics", email: "sourcing@nordicbasics.se", topic: "Knitwear program", when: "2h ago" },
-  { name: "Halden Apparel", email: "buy@halden.co.uk", topic: "Sampling request", when: "Yesterday" },
-  { name: "Maison Ora", email: "ops@maisonora.fr", topic: "Compliance docs", when: "2 days ago" },
-  { name: "Volt Workwear", email: "hello@voltwork.de", topic: "Bulk quote", when: "4 days ago" },
+  { id: "visitors", label: "Visitors", icon: Globe2, hint: "Traffic by location" },
+  { id: "pages", label: "Pages", icon: FileText, hint: "Site routes" },
+  { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
 ];
 
 const PAGES = [
-  { path: "/", title: "Home", updated: "Aug 21, 2026" },
-  { path: "/capabilities", title: "Capabilities", updated: "Aug 18, 2026" },
-  { path: "/products", title: "Products", updated: "Aug 16, 2026" },
-  { path: "/factory", title: "Factory", updated: "Aug 12, 2026" },
-  { path: "/compliance", title: "Compliance", updated: "Aug 09, 2026" },
-  { path: "/about", title: "About", updated: "Aug 02, 2026" },
-  { path: "/contact", title: "Contact", updated: "Jul 30, 2026" },
+  { path: "/", title: "Home" },
+  { path: "/capabilities", title: "Capabilities" },
+  { path: "/products", title: "Products" },
+  { path: "/factory", title: "Factory" },
+  { path: "/compliance", title: "Compliance" },
+  { path: "/about", title: "About" },
+  { path: "/contact", title: "Contact" },
 ];
 
-const TEAM = [
-  { name: "Rafiq Hasan", role: "Owner", email: "rafiq@dressy.com" },
-  { name: "Nusrat Jahan", role: "Merchandiser", email: "nusrat@dressy.com" },
-  { name: "Tanvir Ahmed", role: "Compliance", email: "tanvir@dressy.com" },
-];
+const STATUSES = ["Live", "Draft", "Review"];
+const INQUIRY_STATUSES = ["New", "In progress", "Won", "Closed"];
+
+const inputClass =
+  "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary";
+
+function timeAgo(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.round(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.round(hrs / 24)}d ago`;
+}
 
 function Panel({
   title,
   subtitle,
-  action,
   children,
+  right,
 }: {
   title: string;
   subtitle: string;
-  action?: string;
   children: React.ReactNode;
+  right?: React.ReactNode;
 }) {
   return (
     <div className="animate-fade-up">
@@ -110,34 +96,297 @@ function Panel({
           <h2 className="display text-3xl md:text-4xl">{title}</h2>
           <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
         </div>
-        {action ? (
-          <button
-            type="button"
-            className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95"
-          >
-            <Plus className="size-3.5" />
-            {action}
-          </button>
-        ) : null}
+        {right}
       </div>
       <div className="mt-6">{children}</div>
     </div>
   );
 }
 
-function StatusPill({ status }: { status: string }) {
+function Pill({ value }: { value: string }) {
   const tone =
-    status === "Live"
+    value === "Live" || value === "Won"
       ? "bg-primary/15 text-primary"
-      : status === "Draft"
-        ? "bg-muted text-muted-foreground"
-        : "bg-foreground/10 text-foreground";
-  return <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${tone}`}>{status}</span>;
+      : value === "New"
+        ? "bg-primary/25 text-primary"
+        : "bg-muted text-muted-foreground";
+  return <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${tone}`}>{value}</span>;
 }
 
+/* ---------------------------------------------------------------- auth gate */
+
 function AdminPage() {
+  const [ready, setReady] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  async function refreshSession() {
+    const { data } = await supabase.auth.getSession();
+    const user = data.session?.user ?? null;
+    setUserId(user?.id ?? null);
+    setEmail(user?.email ?? null);
+
+    if (user) {
+      await bootstrapAdmin({ data: { userId: user.id } }).catch(() => null);
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin");
+      setIsAdmin((roles?.length ?? 0) > 0);
+    } else {
+      setIsAdmin(false);
+    }
+    setReady(true);
+  }
+
+  useEffect(() => {
+    void refreshSession();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => {
+      void refreshSession();
+    });
+    return () => sub.subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="size-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!userId) return <AdminLogin />;
+
+  if (!isAdmin) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-6">
+        <div className="max-w-sm text-center">
+          <h1 className="display text-3xl">No admin access</h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {email} is signed in but has no admin role for this console.
+          </p>
+          <button
+            type="button"
+            onClick={() => supabase.auth.signOut()}
+            className="label-xs mt-6 bg-primary px-5 py-3 text-primary-foreground"
+          >
+            Sign out
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return <AdminConsole email={email ?? ""} />;
+}
+
+function AdminLogin() {
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError("");
+    setNotice("");
+    if (mode === "signin") {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) setError(error.message);
+    } else {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/admin` },
+      });
+      if (error) setError(error.message);
+      else if (!data.session) setNotice("Check your inbox to confirm the address, then sign in.");
+    }
+    setBusy(false);
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-6">
+      <div className="w-full max-w-sm">
+        <img src="/favicon.png" alt="Dressy" className="mx-auto size-12 rounded-xl object-contain" />
+        <h1 className="display mt-6 text-center text-3xl">Dressy Admin</h1>
+        <p className="mt-2 text-center text-sm text-muted-foreground">
+          {mode === "signin" ? "Sign in to manage the site." : "Create the admin account."}
+        </p>
+
+        <form onSubmit={submit} className="mt-8 space-y-4">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@dressy.com"
+            className={inputClass}
+          />
+          <input
+            type="password"
+            required
+            minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className={inputClass}
+          />
+          {error && <p className="text-xs text-destructive">{error}</p>}
+          {notice && <p className="text-xs text-primary">{notice}</p>}
+          <button
+            type="submit"
+            disabled={busy}
+            className="label-xs w-full bg-primary py-3 text-primary-foreground disabled:opacity-60"
+          >
+            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+          </button>
+        </form>
+
+        <button
+          type="button"
+          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+          className="mt-5 w-full text-center text-xs text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {mode === "signin" ? "First time? Create the admin account" : "Already have an account? Sign in"}
+        </button>
+
+        <Link
+          to="/"
+          className="mt-6 block text-center text-xs text-muted-foreground hover:text-foreground"
+        >
+          Back to website
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ console */
+
+function AdminConsole({ email }: { email: string }) {
   const [active, setActive] = useState<SectionId>("dashboard");
+  const qc = useQueryClient();
   const current = MENU.find((m) => m.id === active)!;
+
+  const products = useQuery({
+    queryKey: ["admin", "products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const inquiries = useQuery({
+    queryKey: ["admin", "inquiries"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("inquiries")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const visitors = useQuery({
+    queryKey: ["admin", "visitors"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("visitors")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(300);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const settings = useQuery({
+    queryKey: ["admin", "settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("site_settings").select("*").order("key");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const invalidate = (key: string) => qc.invalidateQueries({ queryKey: ["admin", key] });
+
+  const saveProduct = useMutation({
+    mutationFn: async (row: Record<string, unknown> & { id?: string }) => {
+      if (row.id) {
+        const { id, ...rest } = row;
+        const { error } = await supabase.from("products").update(rest).eq("id", id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("products").insert(row as never);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => invalidate("products"),
+  });
+
+  const deleteProduct = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("products").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("products"),
+  });
+
+  const updateInquiry = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      const { error } = await supabase.from("inquiries").update({ status }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("inquiries"),
+  });
+
+  const deleteInquiry = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("inquiries").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("inquiries"),
+  });
+
+  const saveSetting = useMutation({
+    mutationFn: async ({ key, value }: { key: string; value: string }) => {
+      const { error } = await supabase
+        .from("site_settings")
+        .update({ value, updated_at: new Date().toISOString() })
+        .eq("key", key);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("settings"),
+  });
+
+  const visitorRows = visitors.data ?? [];
+  const locations = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const v of visitorRows) {
+      const label = `${v.city || "Unknown"}, ${v.country || "Unknown"}`;
+      map.set(label, (map.get(label) ?? 0) + 1);
+    }
+    return [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
+  }, [visitorRows]);
+
+  const last24h = visitorRows.filter(
+    (v) => Date.now() - new Date(v.created_at).getTime() < 86_400_000,
+  ).length;
+  const uniqueIps = new Set(visitorRows.map((v) => v.ip)).size;
+  const openInquiries = (inquiries.data ?? []).filter((i) => i.status !== "Closed").length;
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
@@ -147,9 +396,9 @@ function AdminPage() {
           <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-4">
             <div className="flex items-center gap-3 px-1 pb-4">
               <img src="/favicon.png" alt="Dressy" className="size-8 rounded-md object-contain" />
-              <div>
+              <div className="min-w-0">
                 <p className="text-sm font-semibold leading-tight">Dressy Admin</p>
-                <p className="text-[11px] text-muted-foreground">Frontend preview</p>
+                <p className="truncate text-[11px] text-muted-foreground">{email}</p>
               </div>
             </div>
 
@@ -175,7 +424,7 @@ function AdminPage() {
               })}
             </nav>
 
-            <div className="mt-auto hidden pt-4 md:block">
+            <div className="mt-auto hidden space-y-2 pt-4 md:block">
               <Link
                 to="/"
                 className="flex items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -183,6 +432,18 @@ function AdminPage() {
                 View live site
                 <ExternalLink className="size-3.5" />
               </Link>
+              <button
+                type="button"
+                onClick={async () => {
+                  await qc.cancelQueries();
+                  qc.clear();
+                  await supabase.auth.signOut();
+                }}
+                className="flex w-full items-center justify-between rounded-xl border border-border px-3 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                Sign out
+                <LogOut className="size-3.5" />
+              </button>
             </div>
           </div>
         </aside>
@@ -192,173 +453,321 @@ function AdminPage() {
           <div className="rounded-2xl border border-border bg-card/20 p-5 md:p-8">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <p className="label-xs text-primary">{current.hint}</p>
-              <div className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5">
-                <Search className="size-3.5 text-muted-foreground" />
-                <input
-                  placeholder="Search…"
-                  className="w-32 bg-transparent text-xs outline-none placeholder:text-muted-foreground sm:w-48"
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => qc.invalidateQueries({ queryKey: ["admin"] })}
+                className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <RefreshCw className="size-3.5" /> Refresh
+              </button>
             </div>
 
             {active === "dashboard" && (
-              <Panel title="Dashboard" subtitle="Snapshot of the factory and the website.">
+              <Panel title="Dashboard" subtitle="Live snapshot of the site and its traffic.">
                 <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                  {STATS.map((s) => (
+                  {[
+                    { label: "Visits (24h)", value: last24h },
+                    { label: "Unique IPs", value: uniqueIps },
+                    { label: "Open inquiries", value: openInquiries },
+                    { label: "Products", value: products.data?.length ?? 0 },
+                  ].map((s) => (
                     <div key={s.label} className="rounded-xl border border-border p-4">
                       <p className="display text-3xl">{s.value}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
                     </div>
                   ))}
                 </div>
+
                 <div className="mt-6 grid gap-4 lg:grid-cols-2">
                   <div className="rounded-xl border border-border p-4">
-                    <p className="text-sm font-semibold">Latest inquiries</p>
-                    <ul className="mt-3 space-y-3">
-                      {INQUIRIES.slice(0, 3).map((i) => (
-                        <li key={i.email} className="flex items-center justify-between gap-3 text-sm">
-                          <span className="truncate">{i.name}</span>
-                          <span className="shrink-0 text-xs text-muted-foreground">{i.when}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-sm font-semibold">Top visitor locations</p>
+                    {locations.length === 0 ? (
+                      <p className="mt-3 text-xs text-muted-foreground">No visits recorded yet.</p>
+                    ) : (
+                      <ul className="mt-3 space-y-3">
+                        {locations.map(([label, count]) => (
+                          <li key={label} className="flex items-center justify-between gap-3 text-sm">
+                            <span className="truncate">{label}</span>
+                            <span className="shrink-0 text-xs text-muted-foreground">{count}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                   <div className="rounded-xl border border-border p-4">
-                    <p className="text-sm font-semibold">Recently updated pages</p>
-                    <ul className="mt-3 space-y-3">
-                      {PAGES.slice(0, 3).map((p) => (
-                        <li key={p.path} className="flex items-center justify-between gap-3 text-sm">
-                          <span className="truncate">{p.title}</span>
-                          <span className="shrink-0 text-xs text-muted-foreground">{p.updated}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-sm font-semibold">Latest inquiries</p>
+                    {(inquiries.data ?? []).length === 0 ? (
+                      <p className="mt-3 text-xs text-muted-foreground">No inquiries yet.</p>
+                    ) : (
+                      <ul className="mt-3 space-y-3">
+                        {(inquiries.data ?? []).slice(0, 4).map((i) => (
+                          <li key={i.id} className="flex items-center justify-between gap-3 text-sm">
+                            <span className="truncate">{i.name}</span>
+                            <span className="shrink-0 text-xs text-muted-foreground">
+                              {timeAgo(i.created_at)}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
               </Panel>
             )}
 
             {active === "products" && (
-              <Panel title="Products" subtitle="Catalogue styles shown on the products page." action="New style">
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[520px] text-left text-sm">
-                    <thead className="text-xs uppercase tracking-wider text-muted-foreground">
-                      <tr>
-                        <th className="pb-3 pr-4 font-medium">Style</th>
-                        <th className="pb-3 pr-4 font-medium">Category</th>
-                        <th className="pb-3 pr-4 font-medium">MOQ</th>
-                        <th className="pb-3 font-medium">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {PRODUCTS.map((p) => (
-                        <tr key={p.name} className="border-t border-border transition-colors hover:bg-muted/40">
-                          <td className="py-3 pr-4 font-medium">{p.name}</td>
-                          <td className="py-3 pr-4 text-muted-foreground">{p.cat}</td>
-                          <td className="py-3 pr-4 text-muted-foreground">{p.moq}</td>
-                          <td className="py-3">
-                            <StatusPill status={p.status} />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+              <Panel
+                title="Products"
+                subtitle="Styles shown on the public products page."
+                right={
+                  <button
+                    type="button"
+                    onClick={() =>
+                      saveProduct.mutate({
+                        name: "New style",
+                        category: "Knitwear",
+                        moq: "500 pcs",
+                        status: "Draft",
+                        description: "",
+                        sort_order: (products.data?.length ?? 0) + 1,
+                      })
+                    }
+                    className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
+                  >
+                    <Plus className="size-3.5" /> New style
+                  </button>
+                }
+              >
+                {products.isLoading ? (
+                  <Loader2 className="size-5 animate-spin text-primary" />
+                ) : (
+                  <div className="space-y-3">
+                    {(products.data ?? []).map((p) => (
+                      <div key={p.id} className="rounded-xl border border-border p-4">
+                        <div className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-center">
+                          <input
+                            defaultValue={p.name}
+                            onBlur={(e) =>
+                              e.target.value !== p.name &&
+                              saveProduct.mutate({ id: p.id, name: e.target.value })
+                            }
+                            className={inputClass}
+                          />
+                          <input
+                            defaultValue={p.category}
+                            onBlur={(e) =>
+                              e.target.value !== p.category &&
+                              saveProduct.mutate({ id: p.id, category: e.target.value })
+                            }
+                            className={inputClass}
+                          />
+                          <select
+                            defaultValue={p.status}
+                            onChange={(e) => saveProduct.mutate({ id: p.id, status: e.target.value })}
+                            className={inputClass}
+                          >
+                            {STATUSES.map((s) => (
+                              <option key={s}>{s}</option>
+                            ))}
+                          </select>
+                          <button
+                            type="button"
+                            onClick={() => deleteProduct.mutate(p.id)}
+                            aria-label={`Delete ${p.name}`}
+                            className="justify-self-start rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="size-4" />
+                          </button>
+                        </div>
+                        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_2fr]">
+                          <input
+                            defaultValue={p.moq}
+                            onBlur={(e) =>
+                              e.target.value !== p.moq &&
+                              saveProduct.mutate({ id: p.id, moq: e.target.value })
+                            }
+                            className={inputClass}
+                          />
+                          <input
+                            defaultValue={p.description}
+                            placeholder="Short description"
+                            onBlur={(e) =>
+                              e.target.value !== p.description &&
+                              saveProduct.mutate({ id: p.id, description: e.target.value })
+                            }
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </Panel>
             )}
 
             {active === "inquiries" && (
               <Panel title="Inquiries" subtitle="Messages submitted through the contact form.">
-                <ul className="space-y-3">
-                  {INQUIRIES.map((i) => (
-                    <li
-                      key={i.email}
-                      className="rounded-xl border border-border p-4 transition-colors hover:bg-muted/40"
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="text-sm font-semibold">{i.name}</p>
-                        <span className="text-xs text-muted-foreground">{i.when}</span>
-                      </div>
-                      <p className="mt-1 text-xs text-muted-foreground">{i.email}</p>
-                      <p className="mt-2 text-sm">{i.topic}</p>
-                    </li>
-                  ))}
-                </ul>
+                {(inquiries.data ?? []).length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No inquiries yet.</p>
+                ) : (
+                  <ul className="space-y-3">
+                    {(inquiries.data ?? []).map((i) => (
+                      <li key={i.id} className="rounded-xl border border-border p-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div>
+                            <p className="text-sm font-semibold">
+                              {i.name}
+                              {i.company ? ` · ${i.company}` : ""}
+                            </p>
+                            <p className="text-xs text-muted-foreground">{i.email}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">
+                              {timeAgo(i.created_at)}
+                            </span>
+                            <select
+                              value={i.status}
+                              onChange={(e) =>
+                                updateInquiry.mutate({ id: i.id, status: e.target.value })
+                              }
+                              className="rounded-full border border-border bg-background px-3 py-1.5 text-xs outline-none"
+                            >
+                              {INQUIRY_STATUSES.map((s) => (
+                                <option key={s}>{s}</option>
+                              ))}
+                            </select>
+                            <button
+                              type="button"
+                              onClick={() => deleteInquiry.mutate(i.id)}
+                              aria-label="Delete inquiry"
+                              className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="mt-3 text-sm">{i.message}</p>
+                        {(i.product || i.quantity) && (
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            {i.product} {i.quantity ? `· ${i.quantity}` : ""}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Panel>
+            )}
+
+            {active === "visitors" && (
+              <Panel
+                title="Visitors"
+                subtitle="每 visit is geo-located from its IP address."
+              >
+                <div className="grid gap-4 lg:grid-cols-[1fr_1.4fr]">
+                  <div className="rounded-xl border border-border p-4">
+                    <p className="text-sm font-semibold">By location</p>
+                    {locations.length === 0 ? (
+                      <p className="mt-3 text-xs text-muted-foreground">No visits recorded yet.</p>
+                    ) : (
+                      <ul className="mt-3 space-y-3">
+                        {locations.map(([label, count]) => (
+                          <li key={label}>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="truncate">{label}</span>
+                              <span className="text-xs text-muted-foreground">{count}</span>
+                            </div>
+                            <div className="mt-1.5 h-1.5 w-full rounded-full bg-muted">
+                              <div
+                                className="h-1.5 rounded-full bg-primary"
+                                style={{
+                                  width: `${Math.round((count / (locations[0]?.[1] ?? 1)) * 100)}%`,
+                                }}
+                              />
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  <div className="overflow-x-auto rounded-xl border border-border p-4">
+                    <p className="text-sm font-semibold">Recent visits</p>
+                    <table className="mt-3 w-full min-w-[420px] text-left text-sm">
+                      <thead className="text-xs uppercase tracking-wider text-muted-foreground">
+                        <tr>
+                          <th className="pb-2 pr-4 font-medium">Location</th>
+                          <th className="pb-2 pr-4 font-medium">IP</th>
+                          <th className="pb-2 pr-4 font-medium">Page</th>
+                          <th className="pb-2 font-medium">When</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {visitorRows.slice(0, 25).map((v) => (
+                          <tr key={v.id} className="border-t border-border">
+                            <td className="py-2.5 pr-4">
+                              {v.city || "Unknown"}, {v.country || "Unknown"}
+                            </td>
+                            <td className="py-2.5 pr-4 font-mono text-xs text-muted-foreground">
+                              {v.ip || "—"}
+                            </td>
+                            <td className="py-2.5 pr-4 font-mono text-xs text-muted-foreground">
+                              {v.path}
+                            </td>
+                            <td className="py-2.5 text-xs text-muted-foreground">
+                              {timeAgo(v.created_at)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {visitorRows.length === 0 && (
+                      <p className="mt-3 text-xs text-muted-foreground">No visits recorded yet.</p>
+                    )}
+                  </div>
+                </div>
               </Panel>
             )}
 
             {active === "pages" && (
-              <Panel title="Pages" subtitle="Every public route with its last content update.">
+              <Panel title="Pages" subtitle="Public routes on the website.">
                 <div className="grid gap-3 sm:grid-cols-2">
                   {PAGES.map((p) => (
                     <div key={p.path} className="rounded-xl border border-border p-4">
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-semibold">{p.title}</p>
-                        <StatusPill status="Live" />
+                        <Pill value="Live" />
                       </div>
                       <p className="mt-1 font-mono text-xs text-muted-foreground">{p.path}</p>
-                      <p className="mt-2 text-xs text-muted-foreground">Updated {p.updated}</p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {visitorRows.filter((v) => v.path === p.path).length} recent visits
+                      </p>
                     </div>
                   ))}
                 </div>
-              </Panel>
-            )}
-
-            {active === "media" && (
-              <Panel title="Media" subtitle="Imagery used across the site." action="Upload">
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {["/dressy-logo.png", "/favicon.png"].map((src) => (
-                    <div key={src} className="overflow-hidden rounded-xl border border-border">
-                      <div className="flex h-28 items-center justify-center bg-muted/40">
-                        <img src={src} alt={src} className="max-h-full max-w-full object-contain" />
-                      </div>
-                      <p className="truncate px-3 py-2 font-mono text-[11px] text-muted-foreground">{src}</p>
-                    </div>
-                  ))}
-                </div>
-              </Panel>
-            )}
-
-            {active === "team" && (
-              <Panel title="Team" subtitle="People with access to this console." action="Invite">
-                <ul className="divide-y divide-border">
-                  {TEAM.map((t) => (
-                    <li key={t.email} className="flex flex-wrap items-center justify-between gap-3 py-4">
-                      <div>
-                        <p className="text-sm font-semibold">{t.name}</p>
-                        <p className="text-xs text-muted-foreground">{t.email}</p>
-                      </div>
-                      <StatusPill status={t.role} />
-                    </li>
-                  ))}
-                </ul>
               </Panel>
             )}
 
             {active === "settings" && (
-              <Panel title="Settings" subtitle="Company details shown across the website.">
+              <Panel title="Settings" subtitle="Company details stored in the database.">
                 <div className="grid gap-4 sm:grid-cols-2">
-                  {[
-                    { label: "Company name", value: "Dressy Clothing Ltd." },
-                    { label: "Contact email", value: "hello@dressy.com" },
-                    { label: "Head office", value: "Dhaka, Bangladesh" },
-                    { label: "Monthly capacity", value: "5,000,000 pcs" },
-                  ].map((f) => (
-                    <label key={f.label} className="block">
-                      <span className="label-xs text-muted-foreground">{f.label}</span>
+                  {(settings.data ?? []).map((s) => (
+                    <label key={s.key} className="block">
+                      <span className="label-xs text-muted-foreground">{s.label || s.key}</span>
                       <input
-                        defaultValue={f.value}
-                        className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+                        defaultValue={s.value}
+                        onBlur={(e) =>
+                          e.target.value !== s.value &&
+                          saveSetting.mutate({ key: s.key, value: e.target.value })
+                        }
+                        className={`mt-2 ${inputClass}`}
                       />
                     </label>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  className="label-xs mt-6 bg-primary px-5 py-3 text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95"
-                >
-                  Save changes
-                </button>
+                <p className="mt-4 text-xs text-muted-foreground">
+                  Changes save automatically when you leave a field.
+                </p>
               </Panel>
             )}
           </div>
