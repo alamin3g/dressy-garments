@@ -526,7 +526,7 @@ function AdminConsole() {
             {active === "visitors" && (
               <Panel
                 title="Visitors"
-                subtitle="Every visit is geo-located from its IP address."
+                subtitle="and on admin page \"Visitors\" section the website must track users or visitors by browser ip address and show the details like this way- Device, Country, Time, Location, Total durationon website this way, admin can delete this and show reamtile data"
               >
                 <div className="grid gap-4 lg:grid-cols-[1fr_1.4fr]">
                   <div className="rounded-xl border border-border p-4">
