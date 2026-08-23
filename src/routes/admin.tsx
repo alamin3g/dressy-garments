@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -11,12 +11,10 @@ import {
   ExternalLink,
   Plus,
   Trash2,
-  LogOut,
   RefreshCw,
   Loader2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { bootstrapAdmin } from "@/lib/analytics.functions";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
