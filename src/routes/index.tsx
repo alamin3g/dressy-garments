@@ -118,11 +118,21 @@ function Index() {
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] z-10" />
-          {/* Mobile: animated background image (video autoplay is blocked on most mobile browsers) */}
-          <div
-            className="absolute inset-0 block md:hidden animate-ken-burns bg-cover bg-center opacity-75"
-            style={{ backgroundImage: `url(${heroImg})` }}
-          />
+          {/* Mobile: native video for reliable autoplay */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            disableRemotePlayback
+            webkit-playsinline="true"
+            poster={heroImg}
+            className="absolute top-1/2 left-1/2 block md:hidden h-full w-auto min-w-[177.78vh] -translate-x-1/2 -translate-y-1/2 object-cover opacity-75 pointer-events-none"
+            style={{ border: "none" }}
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
           {/* Desktop: Streamable video iframe */}
           <iframe
             src="https://streamable.com/e/1solet?autoplay=1&muted=1&nocontrols=1&loop=1&preload=1&playsinline=1"
