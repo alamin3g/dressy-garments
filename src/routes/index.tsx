@@ -40,8 +40,8 @@ import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => getSEOMetadata({
-    title: "Garments Made to Move Brands",
-    description: "Dressy is a Dhaka-based garment manufacturer: design development, sourcing, production, quality and delivery for global fashion brands.",
+    title: "Dressy Clothing LTD",
+    description: "Stitching with care & love. Dress Clothing LTD delivers design, sourcing, and garment manufacturing from Bangladesh to global fashion markets.",
     url: "/",
     image: ogImage.url,
   }),
