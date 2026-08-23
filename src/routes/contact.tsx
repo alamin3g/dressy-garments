@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Check, ArrowRight, ExternalLink } from "lucide-rea
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import dressyLogo from "@/assets/dressy-logo.png.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
