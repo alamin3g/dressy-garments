@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, Check, ArrowRight, ExternalLink } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import ctaImg from "@/assets/cta-tags.jpg";
+import dressyLogo from "@/assets/dressy-logo.png.asset.json";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -255,12 +255,12 @@ function ContactPage() {
             </a>
 
             <img
-              src={ctaImg}
-              alt="Dressy branded hang tags and paper bag"
+              src={dressyLogo.url}
+              alt="Dressy main logo"
               loading="lazy"
               width={900}
               height={700}
-              className="max-h-64 w-full object-cover rounded-lg"
+              className="max-h-64 w-full rounded-lg object-contain bg-primary/5"
             />
           </aside>
         </div>
