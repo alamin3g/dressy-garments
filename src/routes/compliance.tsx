@@ -17,8 +17,10 @@ export const Route = createFileRoute("/compliance")({
         content: "Certified, audited and accountable garment manufacturing in Bangladesh.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://dressyltd.com/compliance" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://dressyltd.com/compliance" }],
   }),
   component: CompliancePage,
 });

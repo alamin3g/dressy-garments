@@ -81,18 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Dressy — Garments Made to Move Brands" },
-      {
-        name: "description",
-        content:
-          "Design development, sourcing and garment manufacturing from Bangladesh to global fashion markets.",
-      },
-      { property: "og:title", content: "Dressy — Garments Made to Move Brands" },
-      {
-        property: "og:description",
-        content: "Garment manufacturing from Dhaka, Bangladesh to global fashion markets.",
-      },
-      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Dressy Clothing Ltd." },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
