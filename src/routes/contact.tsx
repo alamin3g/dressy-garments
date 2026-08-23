@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, Check, ArrowRight, ExternalLink } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import ctaImg from "@/assets/cta-tags.jpg";
+import dressyLogo from "@/assets/dressy-logo.png.asset.json";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
