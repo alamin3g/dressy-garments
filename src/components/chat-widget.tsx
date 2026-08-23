@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { MessageCircle, X } from "lucide-react";
@@ -24,6 +25,8 @@ const SUGGESTIONS = [
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const [input, setInput] = useState("");
 
   const { messages, sendMessage, status, error } = useChat({
@@ -39,19 +42,21 @@ export function ChatWidget() {
     void sendMessage({ text: value });
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Chat with Dressy"}
-        className="fixed bottom-5 right-5 z-[60] flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-5 right-5 z-[2147483000] flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
       >
         {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-5 z-[60] flex h-[min(70vh,520px)] w-[min(92vw,380px)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
+        <div className="fixed bottom-24 right-5 z-[2147483000] flex h-[min(70vh,520px)] w-[min(92vw,380px)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl">
           <div className="flex items-center gap-3 border-b border-border px-4 py-3">
             <img src="/dressy-logo.png" alt="Dressy" className="h-6 w-auto" />
             <div className="leading-tight">
@@ -131,6 +136,7 @@ export function ChatWidget() {
           </div>
         </div>
       )}
-    </>
+    </>,
+    document.body,
   );
 }
