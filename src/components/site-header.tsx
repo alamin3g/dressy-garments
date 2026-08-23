@@ -43,7 +43,7 @@ export function SiteHeader() {
     <header className="fixed inset-x-0 top-0 z-50 px-4 transition-all duration-500 md:px-8">
       {/* Main Sticky Liquid Glass Navbar */}
       <div
-        className={`mx-auto flex items-center justify-between transition-all duration-500 ease-out ${
+        className={`relative mx-auto flex items-center justify-between transition-all duration-500 ease-out ${
           scrolled
             ? "max-w-[1050px] mt-2 h-12 rounded-full border border-white/15 bg-background/90 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.9)] backdrop-blur-2xl px-6"
             : isHome
@@ -54,8 +54,8 @@ export function SiteHeader() {
         {/* Logo on Top-Left */}
         <Logo scrolled={scrolled} />
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        {/* Desktop Navigation Links - Centered */}
+        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-1 lg:flex">
           {NAV.map((item) => {
             const isActive = location.pathname === item.to;
             return (
