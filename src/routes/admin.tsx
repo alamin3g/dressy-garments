@@ -634,7 +634,7 @@ function AdminConsole() {
                     <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Connect my site to Google Search Console and complete the authorization so SEO data starts flowing.</span>
+                        <span>Implement the Google Search Console authorization flow and connect my site so SEO indexing data starts flowing.</span>
                       </li>
                       <li className="flex gap-3">
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
