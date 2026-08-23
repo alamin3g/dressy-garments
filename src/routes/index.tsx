@@ -31,7 +31,7 @@ import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/p-knit.jpg";
 import pWoven from "@/assets/w-1.jpg.asset.json";
-import pOuterwear from "@/assets/p-outerwear.jpg";
+import pOuterwear from "@/assets/w-3.jpg.asset.json";
 import pFleece from "@/assets/w-2.jpg.asset.json";
 import pWorkwear from "@/assets/p-workwear.jpg";
 import pDevelopment from "@/assets/p-development.jpg";
