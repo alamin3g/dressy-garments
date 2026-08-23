@@ -167,22 +167,21 @@ function Index() {
 
       {/* Stats */}
       <section className="border-y border-border">
-        <div className="mx-auto grid max-w-[1400px] divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-3 divide-x divide-y-0 divide-border">
           {[
             { icon: Users, value: 500, suffix: "+", label: "People" },
             { icon: Shirt, value: 6, suffix: "M+", label: "PCS / Year" },
             { icon: Factory, value: 7, suffix: "", label: "Production Lines" },
           ].map(({ icon: Icon, value, suffix, label }) => (
-            <div key={label} className="flex items-center justify-center gap-4 px-4 py-8 sm:gap-6 sm:px-6 md:py-12">
-              <Icon className="size-7 shrink-0 text-primary sm:size-10" strokeWidth={1.2} />
-              <div className="min-w-0">
-                <p className="display text-3xl sm:text-4xl md:text-5xl">
+            <div key={label} className="flex flex-col items-center justify-center gap-2 px-2 py-6 sm:flex-row sm:gap-4 sm:px-4 sm:py-8 md:px-6 md:py-12">
+              <Icon className="size-6 shrink-0 text-primary sm:size-10" strokeWidth={1.2} />
+              <div className="min-w-0 text-center sm:text-left">
+                <p className="display text-2xl sm:text-4xl md:text-5xl">
                   <AnimatedCounter value={value} suffix={suffix} />
                 </p>
                 <p className="label-xs mt-1 truncate text-muted-foreground sm:mt-2">{label}</p>
               </div>
             </div>
-
           ))}
         </div>
       </section>
