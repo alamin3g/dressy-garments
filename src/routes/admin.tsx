@@ -830,6 +830,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>the Product Category admin page so only admins can create, edit, or delete categories.</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>When a user searches online or in a browser for "Dressy Clothing Ltd", this website must be on top, make sure</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
