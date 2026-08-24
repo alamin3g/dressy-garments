@@ -818,6 +818,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>Add Google-style sitelinks/navigation links to the website and make them visible and fully responsive across all devices. Use these links: Contact, Product, Capabilities, and About. Each link should point to its corresponding page or section, work correctly on desktop, tablet, and mobile, and maintain the existing website’s design, typography, spacing, and visual style.</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>Make sure that the website logo shows online and also shows the verified batch</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
