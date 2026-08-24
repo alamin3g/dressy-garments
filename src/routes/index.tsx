@@ -39,13 +39,37 @@ import pWorkwear from "@/assets/w-4.jpg.asset.json";
 import pDevelopment from "@/assets/p-development.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => getSEOMetadata({
-    title: "Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh — Welcome",
-    description: "Stitching with care & love. Dress Clothing LTD delivers design, sourcing, and garment manufacturing from Bangladesh to global fashion markets.",
-    url: "/",
-    image: ogImage.url,
-  }),
-
+  head: () => {
+    const base = getSEOMetadata({
+      title: "Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh — Welcome",
+      description: "Stitching with care & love. Dress Clothing LTD delivers design, sourcing, and garment manufacturing from Bangladesh to global fashion markets.",
+      url: "/",
+      image: ogImage.url,
+    });
+    return {
+      ...base,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            [
+              { name: "Contact", url: "https://dressyltd.com/contact" },
+              { name: "Products", url: "https://dressyltd.com/products" },
+              { name: "Capabilities", url: "https://dressyltd.com/capabilities" },
+              { name: "About", url: "https://dressyltd.com/about" },
+              { name: "Factory", url: "https://dressyltd.com/factory" },
+              { name: "Compliance", url: "https://dressyltd.com/compliance" },
+            ].map((item) => ({
+              "@context": "https://schema.org",
+              "@type": "SiteNavigationElement",
+              name: item.name,
+              url: item.url,
+            })),
+          ),
+        },
+      ],
+    };
+  },
 
   component: Index,
 });
