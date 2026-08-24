@@ -149,7 +149,7 @@ function Index() {
                 <span className="text-white">Stitching With</span>{" "}
                 <span className="text-primary">Care & Love</span>
               </h1>
-              <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-muted-foreground" style={{ animationDelay: "200ms" }}>
+              <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-white" style={{ animationDelay: "200ms" }}>
                 Design development, sourcing and garment manufacturing from Bangladesh to global
                 fashion markets.
               </p>
