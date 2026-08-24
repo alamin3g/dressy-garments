@@ -826,6 +826,10 @@ function AdminConsole() {
                         <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
                         <span>Oh, hero section "02 / Our Products," this is all a product category section where so only product category section and also make a admin page name "Product Category" where admin create and edit and delete category by naming and category image by url and uplaod.</span>
                       </li>
+                      <li className="flex gap-3">
+                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
+                        <span>the Product Category admin page so only admins can create, edit, or delete categories.</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
