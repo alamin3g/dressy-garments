@@ -767,7 +767,7 @@ function AdminConsole() {
                     </div>
 
                     <p className="mt-6 text-sm text-muted-foreground italic">
-                      Modify this error but not change any single function
+                      Fixed this problem but do not change any function of website
                     </p>
                   </div>
 
