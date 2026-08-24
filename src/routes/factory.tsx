@@ -47,12 +47,12 @@ function FactoryPage() {
       intro="A state-of-the-art facility in Dhaka, Bangladesh, built to handle quality at scale — from fabric in to carton out."
     >
       <section className="border-b border-border">
-        <div className="mx-auto grid max-w-[1400px] divide-y divide-border md:grid-cols-4 md:divide-x md:divide-y-0">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 divide-y divide-border sm:grid-cols-2 md:grid-cols-4 md:divide-x md:divide-y-0">
           {STATS.map(({ icon: Icon, value, label }) => (
-            <div key={label} className="flex items-center justify-center gap-5 px-6 py-12">
-              <Icon className="size-9 text-primary" strokeWidth={1.2} />
+            <div key={label} className="flex items-center justify-center gap-4 px-4 py-8 sm:gap-5 sm:px-6 sm:py-12">
+              <Icon className="size-8 text-primary sm:size-9" strokeWidth={1.2} />
               <div>
-                <p className="display text-4xl">{value}</p>
+                <p className="display text-3xl sm:text-4xl">{value}</p>
                 <p className="label-xs mt-2 text-muted-foreground">{label}</p>
               </div>
             </div>
