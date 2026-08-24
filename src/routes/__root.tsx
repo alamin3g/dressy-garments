@@ -94,6 +94,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://dressyltd.com/#organization",
+              name: "Dressy Clothing LTD",
+              alternateName: ["Dressy Clothing Ltd", "Dressy Clothing", "Dressy"],
+              legalName: "Dressy Clothing LTD",
+              url: "https://dressyltd.com/",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://dressyltd.com/dressy-logo.png",
+              },
+              image: "https://dressyltd.com/dressy-logo.png",
+              description:
+                "Stitching with care & love. Dressy Clothing LTD delivers design, sourcing, and garment manufacturing from Bangladesh to global fashion markets.",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Kathgara, Ashulia",
+                addressLocality: "Dhaka",
+                addressCountry: "BD",
+              },
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://dressyltd.com/#website",
+              url: "https://dressyltd.com/",
+              name: "Dressy Clothing LTD",
+              alternateName: "Dressy Clothing Ltd",
+              publisher: { "@id": "https://dressyltd.com/#organization" },
+              inLanguage: "en",
+            },
+          ],
+        }),
+      },
+    ],
   }),
 
   shellComponent: RootShell,
