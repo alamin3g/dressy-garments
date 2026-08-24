@@ -28,6 +28,7 @@ import { AutoReveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 
 import heroImg from "@/assets/hero-sewing.jpg";
+import heroVideo from "@/assets/dressy-hero-video.mp4.asset.json";
 import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
@@ -123,7 +124,6 @@ function Index() {
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] z-10" />
-          {/* Mobile: native video for reliable autoplay */}
           <video
             autoPlay
             muted
@@ -133,21 +133,11 @@ function Index() {
             disableRemotePlayback
             webkit-playsinline="true"
             poster={heroImg}
-            className="absolute top-1/2 left-1/2 block md:hidden h-full w-auto min-w-[200vh] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
+            className="absolute top-1/2 left-1/2 h-full w-auto min-w-[200vh] md:min-w-[110vw] md:min-h-[61.875vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
             style={{ border: "none" }}
           >
-            <source src="/hero-video.mp4" type="video/mp4" />
+            <source src={heroVideo.url} type="video/mp4" />
           </video>
-          {/* Desktop: Streamable video iframe */}
-          <iframe
-            src="https://streamable.com/e/1solet?autoplay=1&muted=1&nocontrols=1&loop=1&preload=1&playsinline=1"
-            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-            allowFullScreen
-            loading="eager"
-            title="Dressy Hero Background Video"
-            className="absolute top-1/2 left-1/2 hidden h-full w-full md:block min-w-[110vw] md:min-h-[61.875vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
-            style={{ border: "none" }}
-          />
         </div>
 
         {/* Hero Content Container */}
