@@ -81,6 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "bLtrXSM_InewWx5NGBPFs_aoPd0dsEcoTw0H3Vdxhro" },
       { property: "og:site_name", content: "Dressy Clothing LTD" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
