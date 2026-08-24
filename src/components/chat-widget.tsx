@@ -116,7 +116,7 @@ export function ChatWidget() {
                     Ask about our products, factory, compliance or how to start a project.
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {SUGGESTIONS.map((s) => (
+                    {suggestions.map((s) => (
                       <button
                         key={s}
                         type="button"
