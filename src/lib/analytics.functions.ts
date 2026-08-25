@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader, getRequestIP } from "@tanstack/react-start/server";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const visitSchema = z.object({
   path: z.string().max(300).default("/"),
@@ -76,8 +77,8 @@ export const trackVisit = createServerFn({ method: "POST" })
   });
 
 export const bootstrapAdmin = createServerFn({ method: "POST" })
-  .inputValidator((data) => z.object({ userId: z.string().uuid() }).parse(data))
-  .handler(async ({ data }) => {
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const { count } = await supabaseAdmin
@@ -87,6 +88,6 @@ export const bootstrapAdmin = createServerFn({ method: "POST" })
 
     if ((count ?? 0) > 0) return { granted: false };
 
-    await supabaseAdmin.from("user_roles").insert({ user_id: data.userId, role: "admin" });
+    await supabaseAdmin.from("user_roles").insert({ user_id: context.userId, role: "admin" });
     return { granted: true };
   });
