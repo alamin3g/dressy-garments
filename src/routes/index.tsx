@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductCategories } from "@/lib/product-categories";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
