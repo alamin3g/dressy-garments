@@ -59,6 +59,7 @@ type SectionId =
   | "categories"
   | "products"
   | "inquiries"
+  | "popup"
   | "visitors"
   | "pages"
   | "settings"
@@ -69,11 +70,13 @@ const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: 
   { id: "categories", label: "Categories", icon: ImagePlus, hint: "Homepage categories" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
+  { id: "popup", label: "PopUp Email", icon: Mail, hint: "Captured emails" },
   { id: "visitors", label: "Visitors", icon: Globe2, hint: "Visitor Tracking" },
   { id: "pages", label: "Pages", icon: FileText, hint: "Site routes" },
   { id: "security", label: "Security", icon: ShieldAlert, hint: "Vulnerabilities" },
   { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
 ];
+
 
 
 const STATUSES = ["Live", "Draft", "Review"];
