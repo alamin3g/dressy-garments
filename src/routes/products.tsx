@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
 import { getSEOMetadata } from "@/lib/seo";
@@ -162,6 +163,7 @@ function ProductsPage() {
 }
 
 function LiveStyles() {
+  useCatalogRealtime();
   const { data } = useQuery({
     queryKey: ["public", "products"],
     queryFn: async () => {
