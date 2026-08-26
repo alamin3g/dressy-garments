@@ -23,6 +23,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
 import { AdminProductEditor } from "@/components/admin-product-editor";
+import { AdminGate } from "@/components/admin-gate";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -145,7 +146,11 @@ function Pill({ value }: { value: string }) {
 /* ------------------------------------------------------------------ console */
 
 function AdminPage() {
-  return <AdminConsole />;
+  return (
+    <AdminGate>
+      <AdminConsole />
+    </AdminGate>
+  );
 }
 
 function AdminConsole() {
