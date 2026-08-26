@@ -204,6 +204,8 @@ function AdminConsole() {
 
   const [categoryError, setCategoryError] = useState<string | null>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  /** Unsaved image previews keyed by category id (typed URL or picked file). */
+  const [previews, setPreviews] = useState<Record<string, string>>({});
 
   const saveCategory = useMutation({
     mutationFn: async (row: {
