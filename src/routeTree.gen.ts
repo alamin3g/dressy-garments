@@ -16,6 +16,7 @@ import { Route as CapabilitiesRouteImport } from './routes/capabilities'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FactoryRouteImport } from './routes/factory'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -55,6 +56,11 @@ const FactoryRoute = FactoryRouteImport.update({
   path: '/factory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
   '/factory': typeof FactoryRoute
+  '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
   '/factory': typeof FactoryRoute
+  '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/compliance': typeof ComplianceRoute
   '/contact': typeof ContactRoute
   '/factory': typeof FactoryRoute
+  '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/contact'
     | '/factory'
+    | '/privacy'
     | '/products'
     | '/sitemap.xml'
     | '/api/chat'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/contact'
     | '/factory'
+    | '/privacy'
     | '/products'
     | '/sitemap.xml'
     | '/api/chat'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/contact'
     | '/factory'
+    | '/privacy'
     | '/products'
     | '/sitemap.xml'
     | '/api/chat'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   ComplianceRoute: typeof ComplianceRoute
   ContactRoute: typeof ContactRoute
   FactoryRoute: typeof FactoryRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FactoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products': {
       id: '/products'
       path: '/products'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComplianceRoute: ComplianceRoute,
   ContactRoute: ContactRoute,
   FactoryRoute: FactoryRoute,
+  PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiChatRoute: ApiChatRoute,

@@ -19,9 +19,8 @@ import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
 const pDevelopment = pDevelopmentAsset.url;
 
 export const Route = createFileRoute("/products")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search['q'] === "string" ? (search['q'] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { q?: string } =>
+    typeof search['q'] === "string" && search['q'] ? { q: search['q'] as string } : {},
   head: () => getSEOMetadata({
     title: "Products — Garment Range & Styles",
     description: "Dressy Clothing is one of the leading Garments Manufacture. Explore our Knit, Woven, Outerwear, Fleece and Workwear collections.",
