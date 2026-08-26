@@ -53,6 +53,27 @@ export type Database = {
         }
         Relationships: []
       }
+      popup_emails: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          page: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          page?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          page?: string | null
+        }
+        Relationships: []
+      }
       product_categories: {
         Row: {
           created_at: string
