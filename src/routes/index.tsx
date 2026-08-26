@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
+import { usePageContent } from "@/lib/page-content";
 import { fetchProductCategories } from "@/lib/product-categories";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
@@ -120,6 +121,7 @@ const MARKETS = [
 
 function Index() {
   useCatalogRealtime();
+  const c = usePageContent("/");
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
     queryFn: fetchProductCategories,
@@ -170,14 +172,16 @@ function Index() {
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
-              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase">Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh</p>
+              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase">{c("hero_eyebrow", "Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh")}</p>
               <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
-                <span className="text-white">Stitching With</span>{" "}
-                <span className="text-primary">Care & Love</span>
+                <span className="text-white">{c("hero_title_1", "Stitching With")}</span>{" "}
+                <span className="text-primary">{c("hero_title_2", "Care & Love")}</span>
               </h1>
               <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-white" style={{ animationDelay: "200ms" }}>
-                Design development, sourcing and garment manufacturing from Bangladesh to global
-                fashion markets.
+                {c(
+                  "hero_intro",
+                  "Design development, sourcing and garment manufacturing from Bangladesh to global fashion markets.",
+                )}
               </p>
               <div className="mt-8 flex animate-fade-up flex-wrap items-center gap-6" style={{ animationDelay: "300ms" }}>
                 <Link

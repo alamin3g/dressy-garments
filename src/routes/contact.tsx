@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import dressyLogo from "@/assets/dressy-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import { getSEOMetadata } from "@/lib/seo";
+import { usePageContent, renderRichText } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/contact")({
@@ -66,6 +67,8 @@ function ContactPage() {
   }
 
 
+  const c = usePageContent("/contact");
+
   const field =
     "mt-2 w-full border border-border bg-card px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
 
@@ -75,14 +78,16 @@ function ContactPage() {
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 pb-14 pt-6 md:px-10">
-          <p className="label-xs text-primary">06 / Let's Make Something Great</p>
+          <p className="label-xs text-primary">{c("hero_eyebrow", "06 / Let's Make Something Great")}</p>
           <div className="mt-8 grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <h1 className="display text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">
-              Connect With Us
+              {renderRichText(c("hero_title"), "Connect With Us")}
             </h1>
             <p className="max-w-md self-end text-sm leading-relaxed text-muted-foreground">
-              Send us your tech pack, reference piece or concept. Our merchandising team replies
-              within one business day.
+              {c(
+                "hero_intro",
+                "Send us your tech pack, reference piece or concept. Our merchandising team replies within one business day.",
+              )}
             </p>
           </div>
         </div>
