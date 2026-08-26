@@ -40,7 +40,9 @@ import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/w-3.jpg.asset.json";
 import pFleece from "@/assets/w-2.jpg.asset.json";
 import pWorkwear from "@/assets/w-4.jpg.asset.json";
-import pDevelopment from "@/assets/p-development.jpg";
+import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
+
+const pDevelopment = pDevelopmentAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => {
