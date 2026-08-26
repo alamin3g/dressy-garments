@@ -119,7 +119,9 @@ function Index() {
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
     queryFn: fetchProductCategories,
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
 
   const productCards =
