@@ -28,6 +28,7 @@ import { useDragSort } from "@/components/admin-sortable";
 import { AdminPageEditor } from "@/components/admin-page-editor";
 import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
+import { CategoryLivePreview, ProductLivePreview } from "@/components/admin-live-preview";
 import { GripVertical, Pencil } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -617,6 +618,8 @@ function AdminConsole() {
                   </button>
                 }
               >
+                <CategoryLivePreview />
+
                 {categoryError && (
                   <p className="mb-4 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
                     {categoryError}
@@ -758,6 +761,8 @@ function AdminConsole() {
                   </button>
                 }
               >
+                <ProductLivePreview />
+
                 {products.isLoading ? (
                   <Loader2 className="size-5 animate-spin text-primary" />
                 ) : sortedProducts.length === 0 ? (
