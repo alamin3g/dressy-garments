@@ -243,7 +243,7 @@ function Index() {
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">02 / Our Products</p>
           <div className="mt-8 grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-6">
-            {PRODUCTS.map((p) => (
+            {productCards.map((p) => (
               <Link
                 key={p.name}
                 to="/products"
