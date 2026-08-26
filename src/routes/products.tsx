@@ -256,25 +256,23 @@ function ProductsPage() {
 }
 
 
-function LiveStyles() {
+function LiveStyles({ search }: { search: string }) {
   useCatalogRealtime();
   const cc = usePageContent("/products");
-  const { data } = useQuery({
-    queryKey: ["public", "products"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("id,name,category,moq,description,images,colors")
-        .eq("status", "Live")
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
-    staleTime: 0,
-    refetchOnWindowFocus: true,
-  });
+  const { data: all } = useLiveProducts();
 
-  if (!data || data.length === 0) return null;
+  const data = (all ?? []).filter(
+    (p) =>
+      !search ||
+      [p.name, p.category, p.description, p.moq]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(search),
+  );
+
+  if (data.length === 0) return null;
+
 
   return (
     <section className="border-b border-border">
