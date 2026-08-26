@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductCategories } from "@/lib/product-categories";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
@@ -114,6 +116,24 @@ const MARKETS = [
 ];
 
 function Index() {
+  const { data: categories } = useQuery({
+    queryKey: ["product-categories"],
+    queryFn: fetchProductCategories,
+    staleTime: 60_000,
+  });
+
+  const productCards =
+    categories && categories.length > 0
+      ? categories.map((c, i) => ({
+          n: String(i + 1).padStart(2, "0"),
+          name: c.name,
+          img:
+            c.image_url ||
+            PRODUCTS.find((p) => p.name.toLowerCase() === c.name.toLowerCase())?.img ||
+            pDevelopment,
+        }))
+      : PRODUCTS;
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <SiteHeader />
@@ -243,7 +263,7 @@ function Index() {
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">02 / Our Products</p>
           <div className="mt-8 grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-6">
-            {PRODUCTS.map((p) => (
+            {productCards.map((p) => (
               <Link
                 key={p.name}
                 to="/products"

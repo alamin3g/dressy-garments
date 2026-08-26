@@ -15,9 +15,11 @@ import {
   RefreshCw,
   Loader2,
   CheckCircle2,
+  ImagePlus,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -42,10 +44,19 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type SectionId = "dashboard" | "products" | "inquiries" | "visitors" | "pages" | "settings" | "security";
+type SectionId =
+  | "dashboard"
+  | "categories"
+  | "products"
+  | "inquiries"
+  | "visitors"
+  | "pages"
+  | "settings"
+  | "security";
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
+  { id: "categories", label: "Categories", icon: ImagePlus, hint: "Homepage categories" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
   { id: "visitors", label: "Visitors", icon: Globe2, hint: "Visitor Tracking" },
@@ -185,6 +196,70 @@ function AdminConsole() {
   });
 
   const invalidate = (key: string) => qc.invalidateQueries({ queryKey: ["admin", key] });
+
+  const categories = useQuery({
+    queryKey: ["admin", "categories"],
+    queryFn: fetchProductCategories,
+  });
+
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+
+  const saveCategory = useMutation({
+    mutationFn: async (row: {
+      id?: string;
+      name?: string;
+      image_url?: string;
+      storage_path?: string | null;
+      sort_order?: number;
+    }) => {
+      const { id, ...rest } = row;
+      if (id) {
+        const { error } = await supabase
+          .from("product_categories")
+          .update({ ...rest, updated_at: new Date().toISOString() })
+          .eq("id", id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("product_categories")
+          .insert({ name: rest.name ?? "New category", ...rest });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      setCategoryError(null);
+      invalidate("categories");
+      qc.invalidateQueries({ queryKey: ["product-categories"] });
+    },
+    onError: (e: Error) => setCategoryError(e.message),
+  });
+
+  const deleteCategory = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("product_categories").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      setCategoryError(null);
+      invalidate("categories");
+      qc.invalidateQueries({ queryKey: ["product-categories"] });
+    },
+    onError: (e: Error) => setCategoryError(e.message),
+  });
+
+  const handleCategoryUpload = async (id: string, file: File) => {
+    setUploadingId(id);
+    setCategoryError(null);
+    try {
+      const { url, path } = await uploadCategoryImage(file);
+      await saveCategory.mutateAsync({ id, image_url: url, storage_path: path });
+    } catch (e) {
+      setCategoryError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploadingId(null);
+    }
+  };
 
   const saveProduct = useMutation({
     mutationFn: async (row: ProductPatch & { id?: string }) => {
@@ -396,6 +471,126 @@ function AdminConsole() {
                     )}
                   </div>
                 </div>
+              </Panel>
+            )}
+
+            {active === "categories" && (
+              <Panel
+                title="Product Categories"
+                subtitle="These cards appear in the “Our Products” section on the homepage. Upload an image or paste an image URL, then set the category name."
+                right={
+                  <button
+                    type="button"
+                    onClick={() =>
+                      saveCategory.mutate({
+                        name: "New category",
+                        image_url: "",
+                        sort_order: (categories.data?.length ?? 0) + 1,
+                      })
+                    }
+                    className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
+                  >
+                    <Plus className="size-3.5" /> New category
+                  </button>
+                }
+              >
+                {categoryError && (
+                  <p className="mb-4 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                    {categoryError}
+                  </p>
+                )}
+
+                {categories.isLoading ? (
+                  <Loader2 className="size-5 animate-spin text-primary" />
+                ) : (categories.data ?? []).length === 0 ? (
+                  <p className="text-sm italic text-muted-foreground/80">No categories yet.</p>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {(categories.data ?? []).map((c) => (
+                      <div key={c.id} className="rounded-xl border border-border p-4">
+                        <div className="flex gap-4">
+                          <div className="relative size-24 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+                            {c.image_url ? (
+                              <img
+                                src={c.image_url}
+                                alt={c.name}
+                                className="size-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex size-full items-center justify-center text-muted-foreground">
+                                <ImagePlus className="size-5" />
+                              </div>
+                            )}
+                            {uploadingId === c.id && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-background/70">
+                                <Loader2 className="size-5 animate-spin text-primary" />
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="min-w-0 flex-1 space-y-3">
+                            <input
+                              defaultValue={c.name}
+                              placeholder="Category name"
+                              onBlur={(e) =>
+                                e.target.value !== c.name &&
+                                saveCategory.mutate({ id: c.id, name: e.target.value })
+                              }
+                              className={inputClass}
+                            />
+                            <input
+                              defaultValue={c.image_url}
+                              placeholder="Image URL (https://...)"
+                              onBlur={(e) =>
+                                e.target.value !== c.image_url &&
+                                saveCategory.mutate({
+                                  id: c.id,
+                                  image_url: e.target.value,
+                                  storage_path: null,
+                                })
+                              }
+                              className={inputClass}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-3">
+                          <label className="label-xs inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 py-2.5 transition-colors hover:border-primary">
+                            <ImagePlus className="size-3.5" /> Upload image
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                e.target.value = "";
+                                if (file) void handleCategoryUpload(c.id, file);
+                              }}
+                            />
+                          </label>
+                          <input
+                            type="number"
+                            defaultValue={c.sort_order}
+                            aria-label={`Display order for ${c.name}`}
+                            onBlur={(e) =>
+                              Number(e.target.value) !== c.sort_order &&
+                              saveCategory.mutate({ id: c.id, sort_order: Number(e.target.value) })
+                            }
+                            className={`${inputClass} w-24`}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => deleteCategory.mutate(c.id)}
+                            aria-label={`Delete ${c.name}`}
+                            className="ml-auto rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="size-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </Panel>
             )}
 
