@@ -44,6 +44,7 @@ import pOuterwear from "@/assets/w-3.jpg.asset.json";
 import pFleece from "@/assets/w-2.jpg.asset.json";
 import pWorkwear from "@/assets/w-4.jpg.asset.json";
 import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
+import certBanner from "@/assets/certifications.png.asset.json";
 
 const pDevelopment = pDevelopmentAsset.url;
 
@@ -382,13 +383,14 @@ function Index() {
               </Link>
             </div>
             <div>
-              <div className="grid grid-cols-2 divide-border border-border md:grid-cols-4 md:divide-x">
-                {certs.map((c) => (
-                  <div key={c} className="flex items-center justify-center px-4 py-8 text-center transition-colors duration-300 hover:bg-card">
-                    <span className="display text-lg text-foreground/90">{c}</span>
-                  </div>
-                ))}
-              </div>
+              <img
+                src={certBanner.url}
+                alt="Compliance certifications: BSCI, OEKO-TEX Standard 100, Sedex, Global Recycled Standard"
+                loading="lazy"
+                width={1600}
+                height={400}
+                className="w-full rounded-lg border border-border bg-black object-contain"
+              />
               <div className="grid grid-cols-2 border-t border-border md:grid-cols-5 md:divide-x md:divide-border">
                 {welfare.map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center justify-center gap-3 px-4 py-6">
