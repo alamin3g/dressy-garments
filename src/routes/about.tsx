@@ -5,7 +5,7 @@ import { Globe } from "@/components/ui/cobe-globe";
 import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { getSEOMetadata } from "@/lib/seo";
-import { usePageContent } from "@/lib/page-content";
+import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/about")({
@@ -46,29 +46,21 @@ const GLOBE_ARCS = [
   { id: "dhaka-nz", from: [23.8103, 90.4125] as [number, number], to: [-36.8485, 174.7633] as [number, number], label: "Dhaka → New Zealand" },
 ];
 
-const EXPORT_COUNTRIES = [
-  { name: "Greece", id: "greece" },
-  { name: "Spain", id: "spain" },
-  { name: "Italy", id: "italy" },
-  { name: "UK", id: "uk" },
-  { name: "France", id: "france" },
-  { name: "Germany", id: "germany" },
-  { name: "Singapore", id: "singapore" },
-  { name: "New Zealand", id: "nz" },
-  { name: "USA", id: "usa" },
-  { name: "Saudi Arabia", id: "saudi" },
-];
+const EXPORT_COUNTRIES = DEFAULTS.about.countries.map((name) => ({ name, id: name.toLowerCase().replace(/\s+/g, "-") }));
 
-const LEADERSHIP = [
-  { name: "SM Khairul Islam", role: "Managing Director" },
-  { name: "Tariq Ali", role: "Director Technical" },
-  { name: "Mehadul Hossain Sumon", role: "General Manager" },
-  { name: "MD Jahangir Alam", role: "Assistant General Manager" },
-];
+const LEADERSHIP = DEFAULTS.about.leadership.map(([name, role]) => ({ name, role }));
 
 function AboutPage() {
   const [activeCountryId, setActiveCountryId] = useState<string | null>(null);
   const c = usePageContent("/about");
+  const countries = mergeList(c("countries"), EXPORT_COUNTRIES, (parts, fb) => {
+    const name = parts[0] ?? fb.name;
+    return { name, id: name.toLowerCase().replace(/\s+/g, "-") };
+  });
+  const leadership = mergeList(c("leadership"), LEADERSHIP, (parts, fb) => ({
+    name: parts[0] ?? fb.name,
+    role: parts[1] ?? fb.role,
+  }));
 
   return (
     <PageShell
@@ -95,14 +87,10 @@ function AboutPage() {
             className="h-full w-full object-cover"
           />
           <div className="self-center">
-            <h2 className="display text-4xl md:text-5xl">Our Story</h2>
+            <h2 className="display text-4xl md:text-5xl">{c("story_title", DEFAULTS.about.story_title)}</h2>
             <div className="mt-6 h-px w-14 bg-primary" />
-            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-              Dressy Clothing started as a buying house under the profound guidance of our Managing Director. With 25 years of expertise in the garment industry, our company has achieved tremendous success and goodwill. Our team is led by the Managing Director, who has a wealth of expertise and knowledge. With the Managing Director’s vision, the company expanded to a manufacturing wing named Dressy Clothing.
-            </p>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Dressy Clothing is a 100% export-oriented readymade Garments Industry. Our product is made with high-quality yarn sourced from just the best sources across the world. We are committed to providing goods and services on time and at affordable prices. We offer to our clients a fabulous collection of woven and custom wears for men’s, women’s, boys, girls and kids.
-            </p>
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{c("story_p1", DEFAULTS.about.story_p1)}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{c("story_p2", DEFAULTS.about.story_p2)}</p>
           </div>
         </div>
       </section>
@@ -112,17 +100,13 @@ function AboutPage() {
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] items-center">
             <div>
-              <p className="label-xs text-primary">Global Distribution</p>
-              <h2 className="display mt-4 text-4xl md:text-5xl">
-                Dressy Delivering Quality Worldwide
-              </h2>
+              <p className="label-xs text-primary">{c("global_label", DEFAULTS.about.global_label)}</p>
+              <h2 className="display mt-4 text-4xl md:text-5xl">{c("global_title", DEFAULTS.about.global_title)}</h2>
               <div className="mt-6 h-px w-14 bg-primary" />
-              <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
-                From our 100% export-oriented manufacturing facility in Dhaka, Bangladesh, Dressy Clothing ships high-quality readymade garments to leading global fashion brands and retail partners across Europe, North America, Middle East, and Asia-Pacific.
-              </p>
+              <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{c("global_body", DEFAULTS.about.global_body)}</p>
               
               <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-lg">
-                {EXPORT_COUNTRIES.map((c) => (
+                {countries.map((country) => (
                   <div
                     key={c.id}
                     onMouseEnter={() => setActiveCountryId(c.id)}
@@ -162,9 +146,9 @@ function AboutPage() {
       {/* Leadership */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">Leadership</p>
+          <p className="label-xs text-primary">{c("leadership_label", "Leadership")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {LEADERSHIP.map((l) => (
+            {leadership.map((l) => (
               <div key={l.name} className="bg-background p-8">
                 <p className="display text-2xl">{l.name}</p>
                 <p className="label-xs mt-3 text-muted-foreground">{l.role}</p>
