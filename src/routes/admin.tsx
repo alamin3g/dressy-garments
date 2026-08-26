@@ -440,6 +440,15 @@ function AdminConsole() {
     onSuccess: () => invalidate("inquiries"),
   });
 
+  const deletePopupEmail = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("popup_emails").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidate("popup_emails"),
+  });
+
+
   const deleteInquiry = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("inquiries").delete().eq("id", id);
