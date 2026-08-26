@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ShieldCheck, Baby, Flame, HeartPulse, HandHeart, Recycle, Droplets, Leaf } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import { getSEOMetadata } from "@/lib/seo";
+import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/compliance")({
@@ -14,28 +15,38 @@ export const Route = createFileRoute("/compliance")({
   component: CompliancePage,
 });
 
-const CERTS = [
-  { name: "BSCI", body: "Amfori BSCI social audit, renewed annually." },
-  { name: "OEKO-TEX® STANDARD 100", body: "Tested for harmful substances across all fabrics and trims." },
-  { name: "Sedex", body: "SMETA 4-pillar audited and Sedex member." },
-  { name: "Global Recycled Standard", body: "Certified chain of custody for recycled fibre programmes." },
-];
+const CERTS = DEFAULTS.compliance.certs.map(([name, body]) => ({ name, body }));
 
-const WELFARE = [
-  { icon: ShieldCheck, label: "Worker Safety", body: "Structural, electrical and machine-guard safety checks." },
-  { icon: Baby, label: "No Child Labour", body: "Age verification at hiring with zero-tolerance policy." },
-  { icon: Flame, label: "Fire Safety", body: "Fire doors, drills every month and trained response team." },
-  { icon: HeartPulse, label: "Medical Facility", body: "On-site clinic with a full-time nurse and visiting doctor." },
-  { icon: HandHeart, label: "Worker Welfare", body: "Daycare, subsidised canteen and grievance committee." },
-];
+const WELFARE_ICONS = [ShieldCheck, Baby, Flame, HeartPulse, HandHeart];
+const WELFARE = DEFAULTS.compliance.welfare.map(([label, body], i) => ({
+  icon: WELFARE_ICONS[i % WELFARE_ICONS.length]!,
+  label,
+  body,
+}));
 
-const SUSTAIN = [
-  { icon: Recycle, label: "Recycled Fibres", body: "GRS-certified recycled polyester and cotton programmes." },
-  { icon: Droplets, label: "Water Stewardship", body: "ETP-treated effluent and reduced-water wash processes." },
-  { icon: Leaf, label: "Energy", body: "Rooftop solar and LED retrofit across the production floor." },
-];
+const SUSTAIN_ICONS = [Recycle, Droplets, Leaf];
+const SUSTAIN = DEFAULTS.compliance.sustain.map(([label, body], i) => ({
+  icon: SUSTAIN_ICONS[i % SUSTAIN_ICONS.length]!,
+  label,
+  body,
+}));
 
 function CompliancePage() {
+  const c = usePageContent("/compliance");
+  const certs = mergeList(c("certs"), CERTS, (parts, fb) => ({
+    name: parts[0] ?? fb.name,
+    body: parts[1] ?? fb.body,
+  }));
+  const welfare = mergeList(c("welfare"), WELFARE, (parts, fb) => ({
+    icon: fb.icon,
+    label: parts[0] ?? fb.label,
+    body: parts[1] ?? fb.body,
+  }));
+  const sustain = mergeList(c("sustain"), SUSTAIN, (parts, fb) => ({
+    icon: fb.icon,
+    label: parts[0] ?? fb.label,
+    body: parts[1] ?? fb.body,
+  }));
   return (
     <PageShell
       path="/compliance"
@@ -53,9 +64,9 @@ function CompliancePage() {
     >
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">Certifications</p>
+          <p className="label-xs text-primary">{c("certs_label", "Certifications")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {CERTS.map((c) => (
+            {certs.map((c) => (
               <div key={c.name} className="bg-background p-8">
                 <h2 className="display text-xl">{c.name}</h2>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
@@ -67,9 +78,9 @@ function CompliancePage() {
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">Worker Welfare</p>
+          <p className="label-xs text-primary">{c("welfare_label", "Worker Welfare")}</p>
           <ul className="mt-10 divide-y divide-border border-y border-border">
-            {WELFARE.map(({ icon: Icon, label, body }) => (
+            {welfare.map(({ icon: Icon, label, body }) => (
               <li key={label} className="flex flex-wrap items-center gap-6 py-6">
                 <Icon className="size-5 text-primary" strokeWidth={1.4} />
                 <span className="label-xs w-48">{label}</span>
@@ -82,9 +93,9 @@ function CompliancePage() {
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">Sustainability</p>
+          <p className="label-xs text-primary">{c("sustain_label", "Sustainability")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-3">
-            {SUSTAIN.map(({ icon: Icon, label, body }) => (
+            {sustain.map(({ icon: Icon, label, body }) => (
               <div key={label} className="bg-background p-8">
                 <Icon className="size-6 text-primary" strokeWidth={1.3} />
                 <h2 className="display mt-6 text-2xl">{label}</h2>

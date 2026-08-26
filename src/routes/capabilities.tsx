@@ -14,7 +14,7 @@ import {
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import { getSEOMetadata } from "@/lib/seo";
-import { usePageContent } from "@/lib/page-content";
+import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/capabilities")({
@@ -27,27 +27,32 @@ export const Route = createFileRoute("/capabilities")({
   component: CapabilitiesPage,
 });
 
-const STEPS = [
-  { icon: Search, name: "Research", body: "Trend, fabric and market research to shape a range that sells." },
-  { icon: PenTool, name: "Development", body: "Tech packs, CAD, patterns, fit sessions and pre-production samples." },
-  { icon: Boxes, name: "Sourcing", body: "Vetted mills and trims suppliers with nominated or open sourcing." },
-  { icon: Ruler, name: "Production", body: "Seven balanced lines with hourly output tracking and line audits." },
-  { icon: BadgeCheck, name: "Quality", body: "AQL 2.5 inline and final inspection with metal detection." },
-  { icon: Truck, name: "Delivery", body: "Consolidated shipments by sea and air from Chattogram and Dhaka." },
-];
+const STEP_ICONS = [Search, PenTool, Boxes, Ruler, BadgeCheck, Truck];
+const STEPS = DEFAULTS.capabilities.steps.map(([name, body], i) => ({
+  icon: STEP_ICONS[i % STEP_ICONS.length]!,
+  name,
+  body,
+}));
 
-const SERVICES = [
-  { icon: Scissors, label: "Cutting", body: "Auto-spreading and CAD-driven cutting for minimal fabric waste." },
-  { icon: Ruler, label: "Sewing", body: "7 lines, 1000+ operators, dedicated lines per product type." },
-  { icon: Sparkles, label: "Finishing", body: "Wash, press, tag, fold and pack to retail-ready standards." },
-  { icon: Stamp, label: "Print & Embellishment", body: "Screen, DTG, embroidery, heat transfer and applique." },
-  { icon: PenTool, label: "Sample & CAD", body: "In-house sample room turning tech packs around in 7–10 days." },
-  { icon: BadgeCheck, label: "Quality Control", body: "Independent QA team reporting outside of production." },
-  { icon: Briefcase, label: "Commercial", body: "Costing, L/C handling, documentation and export logistics." },
-];
+const SERVICE_ICONS = [Scissors, Ruler, Sparkles, Stamp, PenTool, BadgeCheck, Briefcase];
+const SERVICES = DEFAULTS.capabilities.services.map(([label, body], i) => ({
+  icon: SERVICE_ICONS[i % SERVICE_ICONS.length]!,
+  label,
+  body,
+}));
 
 function CapabilitiesPage() {
   const c = usePageContent("/capabilities");
+  const steps = mergeList(c("process_steps"), STEPS, (parts, fb) => ({
+    icon: fb.icon,
+    name: parts[0] ?? fb.name,
+    body: parts[1] ?? fb.body,
+  }));
+  const services = mergeList(c("services_items"), SERVICES, (parts, fb) => ({
+    icon: fb.icon,
+    label: parts[0] ?? fb.label,
+    body: parts[1] ?? fb.body,
+  }));
   return (
     <PageShell
       path="/capabilities"
@@ -63,9 +68,9 @@ function CapabilitiesPage() {
     >
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">The Process</p>
+          <p className="label-xs text-primary">{c("process_label", "The Process")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-            {STEPS.map(({ icon: Icon, name, body }, i) => (
+            {steps.map(({ icon: Icon, name, body }, i) => (
               <div key={name} className="bg-background p-8">
                 <div className="flex items-center justify-between">
                   <Icon className="size-6 text-primary" strokeWidth={1.3} />
@@ -90,9 +95,9 @@ function CapabilitiesPage() {
             className="h-full w-full object-cover"
           />
           <div>
-            <p className="label-xs text-primary">In-House Services</p>
+            <p className="label-xs text-primary">{c("services_label", "In-House Services")}</p>
             <ul className="mt-6 divide-y divide-border border-y border-border">
-              {SERVICES.map(({ icon: Icon, label, body }) => (
+              {services.map(({ icon: Icon, label, body }) => (
                 <li key={label} className="flex gap-5 py-5">
                   <Icon className="mt-1 size-4 shrink-0 text-primary" strokeWidth={1.4} />
                   <div>

@@ -99,7 +99,7 @@ function ContactPage() {
             {sent ? (
               <div className="border border-primary p-10">
                 <Check className="size-8 text-primary" />
-                <h2 className="display mt-6 text-3xl">Enquiry Received</h2>
+                <h2 className="display mt-6 text-3xl">{c("sent_title", "Enquiry Received")}</h2>
                 <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
                   Thanks {form.name.split(" ")[0]} — your enquiry about {form.product.toLowerCase()}{" "}
                   production has been logged. Our team will reply to {form.email} within one
@@ -113,7 +113,7 @@ function ContactPage() {
                   }}
                   className="label-xs mt-8 flex items-center gap-4 border-b border-primary pb-2 text-primary"
                 >
-                  Send another enquiry <ArrowRight className="size-4" />
+                  {c("sent_cta", "Send another enquiry")} <ArrowRight className="size-4" />
                 </button>
               </div>
             ) : (

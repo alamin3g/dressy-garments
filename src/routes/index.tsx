@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
-import { usePageContent } from "@/lib/page-content";
+import { usePageContent, renderRichText, mergeList, DEFAULTS } from "@/lib/page-content";
 import { fetchProductCategories } from "@/lib/product-categories";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
@@ -81,7 +81,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const STEPS = ["Research", "Development", "Sourcing", "Production", "Quality", "Delivery"];
+const STEPS: string[] = [...DEFAULTS.home.steps];
 
 const PRODUCTS = [
   { n: "01", name: "Knit", img: pKnit.url },
@@ -92,36 +92,50 @@ const PRODUCTS = [
   { n: "06", name: "Development", img: pDevelopment },
 ];
 
-const CAPABILITIES = [
-  { icon: Scissors, label: "Cutting" },
-  { icon: Ruler, label: "Sewing" },
-  { icon: Sparkles, label: "Finishing" },
-  { icon: Stamp, label: "Print & Embellishment" },
-  { icon: PenTool, label: "Sample & CAD" },
-  { icon: BadgeCheck, label: "Quality Control" },
-  { icon: Briefcase, label: "Commercial" },
-];
+const CAP_ICONS = [Scissors, Ruler, Sparkles, Stamp, PenTool, BadgeCheck, Briefcase];
+const CAPABILITIES = DEFAULTS.home.capabilities.map((label, i) => ({
+  icon: CAP_ICONS[i % CAP_ICONS.length]!,
+  label,
+}));
 
-const CERTS = ["BSCI", "OEKO-TEX® STANDARD 100", "Sedex", "Global Recycled Standard"];
+const CERTS: string[] = [...DEFAULTS.home.certs];
 
-const WELFARE = [
-  { icon: ShieldCheck, label: "Worker Safety" },
-  { icon: Baby, label: "No Child Labour" },
-  { icon: Flame, label: "Fire Safety" },
-  { icon: HeartPulse, label: "Medical Facility" },
-  { icon: HandHeart, label: "Worker Welfare" },
-];
+const WELFARE_ICONS = [ShieldCheck, Baby, Flame, HeartPulse, HandHeart];
+const WELFARE = DEFAULTS.home.welfare.map((label, i) => ({
+  icon: WELFARE_ICONS[i % WELFARE_ICONS.length]!,
+  label,
+}));
 
-const MARKETS = [
-  { label: "North America", top: "42%", left: "20%" },
-  { label: "Europe", top: "26%", left: "48%" },
-  { label: "South Africa", top: "62%", left: "45%" },
-  { label: "Australia", top: "66%", left: "76%" },
+const MARKET_POS = [
+  { top: "42%", left: "20%" },
+  { top: "26%", left: "48%" },
+  { top: "62%", left: "45%" },
+  { top: "66%", left: "76%" },
 ];
+const MARKETS = DEFAULTS.home.markets.map((label, i) => ({
+  label,
+  top: MARKET_POS[i % MARKET_POS.length]!.top,
+  left: MARKET_POS[i % MARKET_POS.length]!.left,
+}));
 
 function Index() {
   useCatalogRealtime();
   const c = usePageContent("/");
+  const steps = mergeList(c("wwd_steps"), STEPS, (parts, fb) => parts[0] ?? fb);
+  const capabilities = mergeList(c("factory_capabilities"), CAPABILITIES, (parts, fb) => ({
+    icon: fb.icon,
+    label: parts[0] ?? fb.label,
+  }));
+  const certs = mergeList(c("resp_certs"), CERTS, (parts, fb) => parts[0] ?? fb);
+  const welfare = mergeList(c("resp_welfare"), WELFARE, (parts, fb) => ({
+    icon: fb.icon,
+    label: parts[0] ?? fb.label,
+  }));
+  const markets = mergeList(c("global_markets"), MARKETS, (parts, fb) => ({
+    label: parts[0] ?? fb.label,
+    top: fb.top,
+    left: fb.left,
+  }));
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
     queryFn: fetchProductCategories,
@@ -228,32 +242,25 @@ function Index() {
       {/* What we do */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">01 / What We Do</p>
+          <p className="label-xs text-primary">{c("wwd_label", "01 / What We Do")}</p>
           <div className="mt-10 grid gap-10 lg:grid-cols-2">
             <div>
-              <h2 className="display text-5xl md:text-6xl">
-                One Partner.
-                <br />
-                Every Step.
-              </h2>
+              <h2 className="display text-5xl md:text-6xl">{renderRichText(c("wwd_title"), <>One Partner.<br />Every Step.</>)}</h2>
               <div className="mt-8 h-px w-16 bg-primary" />
             </div>
             <div className="max-w-md">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                From concept to container, we handle every step with precision, transparency and a
-                relentless focus on quality.
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{c("wwd_body", "From concept to container, we handle every step with precision, transparency and a relentless focus on quality.")}</p>
               <Link
                 to="/capabilities"
                 className="label-xs mt-8 flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
               >
-                View All Capabilities <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                {c("wwd_cta", "View All Capabilities")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
 
           <div className="mt-16 grid gap-8 sm:grid-cols-3 lg:grid-cols-6">
-            {STEPS.map((step, i) => (
+            {steps.map((step, i) => (
               <div key={step} className="flex items-end justify-between gap-4">
                 <div>
                   <p className="label-xs text-primary">{`0${i + 1}`}</p>
@@ -271,7 +278,7 @@ function Index() {
       {/* Products */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">02 / Our Products</p>
+          <p className="label-xs text-primary">{c("products_label", "02 / Our Products")}</p>
           <div className="mt-8 grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-6">
             {productCards.map((p) => (
               <Link
@@ -309,27 +316,21 @@ function Index() {
       {/* Factory */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">03 / Our Factory</p>
+          <p className="label-xs text-primary">{c("factory_label", "03 / Our Factory")}</p>
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_1.2fr_1fr]">
             <div>
-              <h2 className="display text-4xl md:text-5xl">
-                Built for
-                <br />
-                Production.
-              </h2>
+              <h2 className="display text-4xl md:text-5xl">{renderRichText(c("factory_title"), <>Built for<br />Production.</>)}</h2>
               <div className="mt-6 h-px w-14 bg-primary" />
-              <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                State-of-the-art facility in Dhaka, Bangladesh. Built to handle quality at scale.
-              </p>
+              <p className="mt-6 max-w-xs text-sm leading-relaxed text-muted-foreground">{c("factory_body", "State-of-the-art facility in Dhaka, Bangladesh. Built to handle quality at scale.")}</p>
               <Link
                 to="/factory"
                 className="label-xs mt-8 flex w-40 items-center justify-between border-b border-foreground/60 pb-3 group transition-colors hover:opacity-80"
               >
-                Take a Tour <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                {c("factory_cta", "Take a Tour")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
             <img
-              src={factoryImg}
+              src={c("factory_image", factoryImg)}
               alt="Dressy garment factory building in Dhaka"
               loading="lazy"
               width={1000}
@@ -337,7 +338,7 @@ function Index() {
               className="h-full w-full object-cover"
             />
             <ul className="divide-y divide-border">
-              {CAPABILITIES.map(({ icon: Icon, label }) => (
+              {capabilities.map(({ icon: Icon, label }) => (
                 <li key={label}>
                   <Link
                     to="/capabilities"
@@ -357,34 +358,28 @@ function Index() {
       {/* Responsibility */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">04 / Responsibility</p>
+          <p className="label-xs text-primary">{c("resp_label", "04 / Responsibility")}</p>
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_2fr]">
             <div>
-              <h2 className="display text-4xl md:text-5xl">
-                Responsibility
-                <br />
-                Is Part of
-                <br />
-                Production.
-              </h2>
+              <h2 className="display text-4xl md:text-5xl">{renderRichText(c("resp_title"), <>Responsibility<br />Is Part of<br />Production.</>)}</h2>
               <div className="mt-6 h-px w-14 bg-primary" />
               <Link
                 to="/compliance"
                 className="label-xs mt-8 flex w-56 items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
               >
-                Compliance & Ethics <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                {c("resp_cta", "Compliance & Ethics")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
             <div>
               <div className="grid grid-cols-2 divide-border border-border md:grid-cols-4 md:divide-x">
-                {CERTS.map((c) => (
+                {certs.map((c) => (
                   <div key={c} className="flex items-center justify-center px-4 py-8 text-center transition-colors duration-300 hover:bg-card">
                     <span className="display text-lg text-foreground/90">{c}</span>
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-2 border-t border-border md:grid-cols-5 md:divide-x md:divide-border">
-                {WELFARE.map(({ icon: Icon, label }) => (
+                {welfare.map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center justify-center gap-3 px-4 py-6">
                     <Icon className="size-4 text-primary" strokeWidth={1.4} />
                     <span className="label-xs text-muted-foreground">{label}</span>
@@ -399,11 +394,7 @@ function Index() {
       {/* Global reach */}
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_1.4fr_0.8fr]">
-          <h2 className="display text-4xl md:text-5xl">
-            Made Here.
-            <br />
-            Worn Everywhere.
-          </h2>
+          <h2 className="display text-4xl md:text-5xl">{renderRichText(c("global_title"), <>Made Here.<br />Worn Everywhere.</>)}</h2>
           <div className="relative aspect-[2/1] w-full">
             <img
               src={worldMap}
@@ -413,7 +404,7 @@ function Index() {
               height={700}
               className="absolute inset-0 size-full object-contain opacity-90"
             />
-            {MARKETS.map((m) => (
+            {markets.map((m) => (
               <div key={m.label} className="absolute" style={{ top: m.top, left: m.left }}>
                 <span className="block size-2 animate-pulse rounded-full bg-primary" />
                 <span className="label-xs mt-2 block whitespace-nowrap text-muted-foreground">
@@ -427,7 +418,7 @@ function Index() {
             to="/about"
             className="label-xs flex items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
           >
-            Our Global Presence <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            {c("global_cta", "Our Global Presence")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
@@ -436,27 +427,23 @@ function Index() {
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-14 md:px-10 lg:grid-cols-[1.1fr_1fr_0.8fr]">
           <div>
-            <p className="label-xs">05 / Let's Make Something Great</p>
-            <h2 className="display mt-8 text-4xl md:text-5xl">
-              Connect With Us
-            </h2>
+            <p className="label-xs">{c("cta_label", "05 / Let's Make Something Great")}</p>
+            <h2 className="display mt-8 text-4xl md:text-5xl">{c("cta_title", "Connect With Us")}</h2>
           </div>
           <div className="self-center">
-            <p className="max-w-sm text-sm leading-relaxed">
-              Send us your tech pack, reference piece or concept. Our team will take it from there.
-            </p>
+            <p className="max-w-sm text-sm leading-relaxed">{c("cta_body", "Send us your tech pack, reference piece or concept. Our team will take it from there.")}</p>
             <div className="mt-8 flex flex-wrap items-center gap-8">
               <Link
                 to="/contact"
                 className="label-xs btn-sheen group flex items-center gap-6 bg-background px-6 py-4 text-foreground"
               >
-                Start a Project <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                {c("cta_primary", "Start a Project")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/contact"
                 className="label-xs group flex items-center gap-6 border-b border-primary-foreground/70 pb-3 transition-opacity hover:opacity-80"
               >
-                Send Tech Pack <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                {c("cta_secondary", "Send Tech Pack")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>

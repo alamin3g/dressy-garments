@@ -5,6 +5,7 @@ import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
 import { getSEOMetadata } from "@/lib/seo";
+import { usePageContent } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 
 
@@ -167,6 +168,7 @@ function ProductsPage() {
 
 function LiveStyles() {
   useCatalogRealtime();
+  const cc = usePageContent("/products");
   const { data } = useQuery({
     queryKey: ["public", "products"],
     queryFn: async () => {
@@ -187,7 +189,7 @@ function LiveStyles() {
   return (
     <section className="border-b border-border">
       <div className="mx-auto max-w-[1400px] px-6 py-12 md:px-10">
-        <h2 className="display text-4xl">Current Styles</h2>
+        <h2 className="display text-4xl">{cc("styles_title", "Current Styles")}</h2>
         <div className="mt-8 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
           {data.map((p) => {
             const images = (p.images ?? []) as string[];
