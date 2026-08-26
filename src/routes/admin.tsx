@@ -197,6 +197,70 @@ function AdminConsole() {
 
   const invalidate = (key: string) => qc.invalidateQueries({ queryKey: ["admin", key] });
 
+  const categories = useQuery({
+    queryKey: ["admin", "categories"],
+    queryFn: fetchProductCategories,
+  });
+
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+
+  const saveCategory = useMutation({
+    mutationFn: async (row: {
+      id?: string;
+      name?: string;
+      image_url?: string;
+      storage_path?: string | null;
+      sort_order?: number;
+    }) => {
+      const { id, ...rest } = row;
+      if (id) {
+        const { error } = await supabase
+          .from("product_categories")
+          .update({ ...rest, updated_at: new Date().toISOString() })
+          .eq("id", id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("product_categories")
+          .insert({ name: rest.name ?? "New category", ...rest });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      setCategoryError(null);
+      invalidate("categories");
+      qc.invalidateQueries({ queryKey: ["product-categories"] });
+    },
+    onError: (e: Error) => setCategoryError(e.message),
+  });
+
+  const deleteCategory = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("product_categories").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      setCategoryError(null);
+      invalidate("categories");
+      qc.invalidateQueries({ queryKey: ["product-categories"] });
+    },
+    onError: (e: Error) => setCategoryError(e.message),
+  });
+
+  const handleCategoryUpload = async (id: string, file: File) => {
+    setUploadingId(id);
+    setCategoryError(null);
+    try {
+      const { url, path } = await uploadCategoryImage(file);
+      await saveCategory.mutateAsync({ id, image_url: url, storage_path: path });
+    } catch (e) {
+      setCategoryError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploadingId(null);
+    }
+  };
+
   const saveProduct = useMutation({
     mutationFn: async (row: ProductPatch & { id?: string }) => {
       const { id, ...rest } = row;
