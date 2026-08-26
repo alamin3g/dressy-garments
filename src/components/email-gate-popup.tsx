@@ -80,14 +80,14 @@ export function EmailGatePopup() {
       role="dialog"
       aria-modal="true"
       aria-labelledby="email-gate-title"
-      className="fixed inset-0 z-[120] flex items-center justify-center bg-foreground/70 p-5 backdrop-blur-sm"
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/40 p-5"
     >
-      <div className="w-full max-w-md border border-border bg-background p-8 shadow-2xl">
+      <div className="w-full max-w-md rounded-2xl border border-white/20 bg-white/10 p-8 shadow-2xl backdrop-blur-xl">
         <p className="label-xs text-primary">Dressy Clothing Ltd.</p>
-        <h2 id="email-gate-title" className="display mt-3 text-3xl leading-tight">
+        <h2 id="email-gate-title" className="display mt-3 text-3xl leading-tight text-white">
           Enter your email to continue
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-3 text-sm leading-relaxed text-white/70">
           Get our latest collections, capabilities and factory updates straight to your inbox.
         </p>
 
@@ -104,13 +104,13 @@ export function EmailGatePopup() {
             }}
             placeholder="you@company.com"
             aria-label="Email address"
-            className="w-full border border-border bg-background px-4 py-3.5 text-sm outline-none transition-colors focus:border-primary"
+            className="w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3.5 text-sm text-white placeholder:text-white/50 outline-none transition-colors focus:border-primary"
           />
           {error && <p className="text-xs text-destructive">{error}</p>}
           <button
             type="submit"
             disabled={saving}
-            className="label-xs w-full bg-primary px-5 py-4 text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="label-xs w-full rounded-xl bg-primary px-5 py-4 text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? "Submitting…" : "Continue"}
           </button>
