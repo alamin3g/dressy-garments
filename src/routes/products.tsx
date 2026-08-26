@@ -88,9 +88,56 @@ const PRODUCTS = [
 
 const FILTERS = ["All", "Jersey", "Woven", "Service"] as const;
 
+function useLiveProducts() {
+  return useQuery({
+    queryKey: ["public", "products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("id,name,category,moq,description,images,colors")
+        .eq("status", "Live")
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+  });
+}
+
 function ProductsPage() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
-  const visible = PRODUCTS.filter((p) => filter === "All" || p.group === filter);
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const { data: live } = useLiveProducts();
+
+  const q = query.trim().toLowerCase();
+
+  const suggestions = (() => {
+    if (!q) return [] as string[];
+    const pool = new Set<string>();
+    PRODUCTS.forEach((p) => {
+      pool.add(p.name);
+      pool.add(p.group);
+      p.items.forEach((i) => pool.add(i));
+    });
+    (live ?? []).forEach((p) => {
+      if (p.name) pool.add(p.name);
+      if (p.category) pool.add(p.category);
+    });
+    return [...pool]
+      .filter((s) => s.toLowerCase().includes(q))
+      .sort((a, b) => a.toLowerCase().indexOf(q) - b.toLowerCase().indexOf(q))
+      .slice(0, 8);
+  })();
+
+  const matches = (p: (typeof PRODUCTS)[number]) =>
+    !q ||
+    [p.name, p.group, p.body, p.moq, ...p.items].join(" ").toLowerCase().includes(q);
+
+  const visible = PRODUCTS.filter(
+    (p) => (filter === "All" || p.group === filter) && matches(p),
+  );
 
   return (
     <PageShell
@@ -107,7 +154,43 @@ function ProductsPage() {
     >
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-12 md:px-10">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="relative max-w-xl">
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setOpen(true);
+              }}
+              onFocus={() => setOpen(true)}
+              onBlur={() => window.setTimeout(() => setOpen(false), 150)}
+              placeholder="Search products — e.g. hoodies, parkas, workwear…"
+              aria-label="Search products"
+              className="w-full border border-border bg-background px-5 py-4 text-sm outline-none transition-colors focus:border-primary"
+            />
+            {open && suggestions.length > 0 && (
+              <ul className="absolute z-30 mt-1 w-full border border-border bg-background shadow-lg">
+                {suggestions.map((s) => (
+                  <li key={s}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setQuery(s);
+                        setFilter("All");
+                        setOpen(false);
+                      }}
+                      className="block w-full px-5 py-3 text-left text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      {s}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             {FILTERS.map((f) => (
               <button
                 key={f}
@@ -158,13 +241,20 @@ function ProductsPage() {
               </article>
             ))}
           </div>
+
+          {visible.length === 0 && (
+            <p className="mt-10 text-sm text-muted-foreground">
+              No programmes match “{query}”.
+            </p>
+          )}
         </div>
       </section>
 
-      <LiveStyles />
+      <LiveStyles search={q} />
     </PageShell>
   );
 }
+
 
 function LiveStyles() {
   useCatalogRealtime();
