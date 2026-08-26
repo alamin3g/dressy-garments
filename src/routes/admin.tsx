@@ -445,6 +445,13 @@ function AdminConsole() {
     onError: (e: Error) => setCategoryError(e.message),
   });
 
+  const categoryDrag = useDragSort(sortedCategories.map((c) => c.id), (ids) =>
+    void reorderCategories(ids),
+  );
+  const productDrag = useDragSort(sortedProducts.map((p) => p.id), (ids) =>
+    void reorderProducts(ids),
+  );
+
   const updateInquiry = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       const { error } = await supabase.from("inquiries").update({ status }).eq("id", id);
@@ -639,17 +646,11 @@ function AdminConsole() {
             {active === "categories" && (
               <Panel
                 title="Product Categories"
-                subtitle="These cards appear in the “Our Products” section on the homepage. Upload an image or paste an image URL, then set the category name."
+                subtitle="Cards shown in the “Our Products” section on the homepage. Click a card to edit, drag to reorder."
                 right={
                   <button
                     type="button"
-                    onClick={() =>
-                      saveCategory.mutate({
-                        name: "New category",
-                        image_url: "",
-                        sort_order: (categories.data?.length ?? 0) + 1,
-                      })
-                    }
+                    onClick={() => createCategory.mutate()}
                     className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
                   >
                     <Plus className="size-3.5" /> New category
@@ -664,123 +665,121 @@ function AdminConsole() {
 
                 {categories.isLoading ? (
                   <Loader2 className="size-5 animate-spin text-primary" />
-                ) : (categories.data ?? []).length === 0 ? (
+                ) : sortedCategories.length === 0 ? (
                   <p className="text-sm italic text-muted-foreground/80">No categories yet.</p>
                 ) : (
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {[...(categories.data ?? [])]
-                      .sort((a, b) => a.sort_order - b.sort_order)
-                      .map((c, index, sorted) => {
-                        const preview = previews[c.id] ?? c.image_url;
-                        const unsaved = !!previews[c.id] && previews[c.id] !== c.image_url;
-                        return (
-                      <div key={c.id} className="rounded-xl border border-border p-4">
-                        <div className="flex gap-4">
-                          <div className="relative size-24 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {sortedCategories.map((c, index) => {
+                      const drag = categoryDrag.itemProps(c.id);
+                      const { className: dragClass, ...dragRest } = drag;
+                      const preview = previews[c.id] ?? c.image_url;
+                      return (
+                        <button
+                          key={c.id}
+                          type="button"
+                          {...dragRest}
+                          onClick={() => setEditingCategoryId(c.id)}
+                          className={`group overflow-hidden rounded-2xl border border-border text-left transition-all hover:border-primary ${dragClass}`}
+                        >
+                          <div className="relative aspect-[4/3] bg-muted">
                             {preview ? (
-                              <img
-                                src={preview}
-                                alt={`${c.name} preview`}
-                                className="size-full object-cover"
-                                onError={(e) => {
-                                  (e.currentTarget as HTMLImageElement).style.opacity = "0.2";
-                                }}
-                              />
+                              <img src={preview} alt={c.name} className="size-full object-cover" />
                             ) : (
                               <div className="flex size-full items-center justify-center text-muted-foreground">
-                                <ImagePlus className="size-5" />
+                                <ImagePlus className="size-6" />
                               </div>
                             )}
-                            {unsaved && uploadingId !== c.id && (
-                              <span className="label-xs absolute inset-x-0 bottom-0 bg-primary/90 py-0.5 text-center text-[10px] text-primary-foreground">
-                                Preview
-                              </span>
-                            )}
+                            <span className="label-xs absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-[10px]">
+                              <GripVertical className="size-3" /> #{index + 1}
+                            </span>
                             {uploadingId === c.id && (
                               <div className="absolute inset-0 flex items-center justify-center bg-background/70">
                                 <Loader2 className="size-5 animate-spin text-primary" />
                               </div>
                             )}
                           </div>
-
-                          <div className="min-w-0 flex-1 space-y-3">
-                            <input
-                              defaultValue={c.name}
-                              placeholder="Category name"
-                              onBlur={(e) =>
-                                e.target.value !== c.name &&
-                                saveCategory.mutate({ id: c.id, name: e.target.value })
-                              }
-                              className={inputClass}
-                            />
-                            <input
-                              defaultValue={c.image_url}
-                              placeholder="Image URL (https://...)"
-                              onChange={(e) =>
-                                setPreviews((p) => ({ ...p, [c.id]: e.target.value }))
-                              }
-                              onBlur={(e) =>
-                                e.target.value !== c.image_url &&
-                                saveCategory.mutate({
-                                  id: c.id,
-                                  image_url: e.target.value,
-                                  storage_path: null,
-                                })
-                              }
-                              className={inputClass}
-                            />
+                          <div className="flex items-center justify-between gap-2 px-4 py-3">
+                            <p className="truncate text-sm font-semibold">{c.name}</p>
+                            <Pencil className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
                           </div>
-                        </div>
-
-                        <div className="mt-3 flex flex-wrap items-center gap-3">
-                          <label className="label-xs inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 py-2.5 transition-colors hover:border-primary">
-                            <ImagePlus className="size-3.5" /> Upload image
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                e.target.value = "";
-                                if (file) void handleCategoryUpload(c.id, file);
-                              }}
-                            />
-                          </label>
-                          <div className="flex items-center gap-1">
-                            <button
-                              type="button"
-                              disabled={index === 0}
-                              onClick={() => void moveCategory(c.id, -1)}
-                              aria-label={`Move ${c.name} earlier`}
-                              className="rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-primary hover:text-foreground disabled:opacity-30"
-                            >
-                              <ArrowUp className="size-4" />
-                            </button>
-                            <button
-                              type="button"
-                              disabled={index === sorted.length - 1}
-                              onClick={() => void moveCategory(c.id, 1)}
-                              aria-label={`Move ${c.name} later`}
-                              className="rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-primary hover:text-foreground disabled:opacity-30"
-                            >
-                              <ArrowDown className="size-4" />
-                            </button>
-                            <span className="label-xs pl-1 text-muted-foreground">#{index + 1}</span>
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => deleteCategory.mutate(c.id)}
-                            aria-label={`Delete ${c.name}`}
-                            className="ml-auto rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
-                          >
-                            <Trash2 className="size-4" />
-                          </button>
-                        </div>
-                      </div>
-                        );
-                      })}
+                        </button>
+                      );
+                    })}
                   </div>
+                )}
+
+                {editingCategory && (
+                  <AdminModal
+                    title={editingCategory.name || "Category"}
+                    subtitle="Edit the homepage category card."
+                    onClose={() => setEditingCategoryId(null)}
+                  >
+                    <div className="space-y-4">
+                      <div className="aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
+                        {(previews[editingCategory.id] ?? editingCategory.image_url) ? (
+                          <img
+                            src={previews[editingCategory.id] ?? editingCategory.image_url}
+                            alt={editingCategory.name}
+                            className="size-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex size-full items-center justify-center text-muted-foreground">
+                            <ImagePlus className="size-6" />
+                          </div>
+                        )}
+                      </div>
+                      <input
+                        defaultValue={editingCategory.name}
+                        placeholder="Category name"
+                        onBlur={(e) =>
+                          e.target.value !== editingCategory.name &&
+                          saveCategory.mutate({ id: editingCategory.id, name: e.target.value })
+                        }
+                        className={inputClass}
+                      />
+                      <input
+                        defaultValue={editingCategory.image_url}
+                        placeholder="Image URL (https://...)"
+                        onChange={(e) =>
+                          setPreviews((p) => ({ ...p, [editingCategory.id]: e.target.value }))
+                        }
+                        onBlur={(e) =>
+                          e.target.value !== editingCategory.image_url &&
+                          saveCategory.mutate({
+                            id: editingCategory.id,
+                            image_url: e.target.value,
+                            storage_path: null,
+                          })
+                        }
+                        className={inputClass}
+                      />
+                      <div className="flex flex-wrap items-center gap-3">
+                        <label className="label-xs inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 py-2.5 transition-colors hover:border-primary">
+                          <ImagePlus className="size-3.5" /> Upload image
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              e.target.value = "";
+                              if (file) void handleCategoryUpload(editingCategory.id, file);
+                            }}
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            deleteCategory.mutate(editingCategory.id);
+                            setEditingCategoryId(null);
+                          }}
+                          className="label-xs ml-auto inline-flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="size-4" /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  </AdminModal>
                 )}
               </Panel>
             )}
@@ -788,20 +787,11 @@ function AdminConsole() {
             {active === "products" && (
               <Panel
                 title="Products"
-                subtitle="Styles shown on the public products page."
+                subtitle="Styles shown on the public products page. Click a card to edit, drag to reorder."
                 right={
                   <button
                     type="button"
-                    onClick={() =>
-                      saveProduct.mutate({
-                        name: "New style",
-                        category: "Knitwear",
-                        moq: "500 pcs",
-                        status: "Draft",
-                        description: "",
-                        sort_order: (products.data?.length ?? 0) + 1,
-                      })
-                    }
+                    onClick={() => createProduct.mutate()}
                     className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
                   >
                     <Plus className="size-3.5" /> New style
@@ -810,21 +800,100 @@ function AdminConsole() {
               >
                 {products.isLoading ? (
                   <Loader2 className="size-5 animate-spin text-primary" />
+                ) : sortedProducts.length === 0 ? (
+                  <p className="text-sm italic text-muted-foreground/80">No products yet.</p>
                 ) : (
-                  <div className="space-y-3">
-                    {(products.data ?? []).map((p) => (
-                      <AdminProductEditor
-                        key={p.id}
-                        product={p as never}
-                        categories={(categories.data ?? []).map((c) => c.name)}
-                        statuses={STATUSES}
-                        onSave={(patch: Record<string, unknown>) => saveProduct.mutate({ id: p.id, ...patch })}
-                        onDelete={() => deleteProduct.mutate(p.id)}
-                      />
-                    ))}
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {sortedProducts.map((p, index) => {
+                      const drag = productDrag.itemProps(p.id);
+                      const { className: dragClass, ...dragRest } = drag;
+                      const images = (p.images ?? []) as string[];
+                      const colors = (p.colors ?? []) as string[];
+                      return (
+                        <button
+                          key={p.id}
+                          type="button"
+                          {...dragRest}
+                          onClick={() => setEditingProductId(p.id)}
+                          className={`group overflow-hidden rounded-2xl border border-border text-left transition-all hover:border-primary ${dragClass}`}
+                        >
+                          <div className="relative aspect-[4/3] bg-muted">
+                            {images[0] ? (
+                              <img src={images[0]} alt={p.name} className="size-full object-cover" />
+                            ) : (
+                              <div className="flex size-full items-center justify-center text-muted-foreground">
+                                <ImagePlus className="size-6" />
+                              </div>
+                            )}
+                            <span className="label-xs absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-[10px]">
+                              <GripVertical className="size-3" /> #{index + 1}
+                            </span>
+                            <span className="absolute right-3 top-3">
+                              <Pill value={p.status} />
+                            </span>
+                            {images.length > 1 && (
+                              <span className="label-xs absolute bottom-3 right-3 rounded-full bg-background/90 px-2 py-0.5 text-[10px]">
+                                +{images.length - 1}
+                              </span>
+                            )}
+                          </div>
+                          <div className="space-y-2 px-4 py-3">
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="truncate text-sm font-semibold">{p.name}</p>
+                              <Pencil className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {p.category} · {p.moq}
+                            </p>
+                            {p.description && (
+                              <p className="line-clamp-2 text-xs text-muted-foreground/80">
+                                {p.description}
+                              </p>
+                            )}
+                            {colors.length > 0 && (
+                              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                                {colors.slice(0, 6).map((c, i) => (
+                                  <span
+                                    key={`${c}-${i}`}
+                                    title={parseColor(c).name}
+                                    className="size-4 rounded-full border border-border"
+                                    style={{ backgroundColor: parseColor(c).hex }}
+                                  />
+                                ))}
+                                {colors.length > 6 && (
+                                  <span className="text-[10px] text-muted-foreground">
+                                    +{colors.length - 6}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
+                {editingProduct && (
+                  <AdminModal
+                    title={editingProduct.name || "Product"}
+                    subtitle="Images, title, description, MOQ and colours."
+                    onClose={() => setEditingProductId(null)}
+                  >
+                    <AdminProductEditor
+                      product={editingProduct as never}
+                      categories={sortedCategories.map((c) => c.name)}
+                      statuses={STATUSES}
+                      onSave={(patch: Record<string, unknown>) =>
+                        saveProduct.mutate({ id: editingProduct.id, ...patch })
+                      }
+                      onDelete={() => {
+                        deleteProduct.mutate(editingProduct.id);
+                        setEditingProductId(null);
+                      }}
+                    />
+                  </AdminModal>
+                )}
               </Panel>
             )}
 
