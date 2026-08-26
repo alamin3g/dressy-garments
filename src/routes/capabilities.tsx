@@ -66,7 +66,7 @@ function CapabilitiesPage() {
       }
       intro="From concept to container, we handle every step with precision, transparency and a relentless focus on quality."
     >
-      <section className="border-b border-border">
+      <section id="process" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">{c("process_label", "The Process")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
@@ -84,7 +84,7 @@ function CapabilitiesPage() {
         </div>
       </section>
 
-      <section className="border-b border-border">
+      <section id="services" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_1.1fr]">
           <img
             src={c("services_image", factoryImg)}

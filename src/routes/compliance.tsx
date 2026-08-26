@@ -62,7 +62,7 @@ function CompliancePage() {
       }
       intro="Audited, certified and transparent. Compliance is not a certificate on the wall — it is how the floor runs every day."
     >
-      <section className="border-b border-border">
+      <section id="certifications" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">{c("certs_label", "Certifications")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
@@ -76,7 +76,7 @@ function CompliancePage() {
         </div>
       </section>
 
-      <section className="border-b border-border">
+      <section id="welfare" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">{c("welfare_label", "Worker Welfare")}</p>
           <ul className="mt-10 divide-y divide-border border-y border-border">
@@ -91,7 +91,7 @@ function CompliancePage() {
         </div>
       </section>
 
-      <section className="border-b border-border">
+      <section id="sustainability" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">{c("sustain_label", "Sustainability")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-3">

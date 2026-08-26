@@ -76,7 +76,7 @@ function AboutPage() {
       intro="Dressy Clothing Ltd is a Dhaka-based manufacturer partnering with fashion brands that need reliable quality, honest timelines and clear communication."
     >
       {/* Our Story */}
-      <section className="border-b border-border">
+      <section id="story" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 md:px-10 lg:grid-cols-2">
           <img
             src={c("story_image", factoryImg)}
@@ -96,7 +96,7 @@ function AboutPage() {
       </section>
 
       {/* Global Export Interactive 3D Globe */}
-      <section className="border-b border-border overflow-hidden">
+      <section id="global" className="scroll-mt-28 border-b border-border overflow-hidden">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] items-center">
             <div>
@@ -144,7 +144,7 @@ function AboutPage() {
       </section>
 
       {/* Leadership */}
-      <section className="border-b border-border">
+      <section id="leadership" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">{c("leadership_label", "Leadership")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
