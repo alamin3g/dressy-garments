@@ -16,6 +16,8 @@ import {
   Loader2,
   CheckCircle2,
   ImagePlus,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -204,6 +206,8 @@ function AdminConsole() {
 
   const [categoryError, setCategoryError] = useState<string | null>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+  /** Unsaved image previews keyed by category id (typed URL or picked file). */
+  const [previews, setPreviews] = useState<Record<string, string>>({});
 
   const saveCategory = useMutation({
     mutationFn: async (row: {
@@ -249,15 +253,57 @@ function AdminConsole() {
   });
 
   const handleCategoryUpload = async (id: string, file: File) => {
+    const localUrl = URL.createObjectURL(file);
+    setPreviews((p) => ({ ...p, [id]: localUrl }));
     setUploadingId(id);
     setCategoryError(null);
     try {
       const { url, path } = await uploadCategoryImage(file);
       await saveCategory.mutateAsync({ id, image_url: url, storage_path: path });
+      setPreviews((p) => ({ ...p, [id]: url }));
     } catch (e) {
       setCategoryError(e instanceof Error ? e.message : "Upload failed");
+      setPreviews((p) => {
+        const next = { ...p };
+        delete next[id];
+        return next;
+      });
     } finally {
+      URL.revokeObjectURL(localUrl);
       setUploadingId(null);
+    }
+  };
+
+  const moveCategory = async (id: string, direction: -1 | 1) => {
+    const list = [...(categories.data ?? [])].sort((a, b) => a.sort_order - b.sort_order);
+    const index = list.findIndex((c) => c.id === id);
+    const target = index + direction;
+    if (index < 0 || target < 0 || target >= list.length) return;
+    const a = list[index]!;
+    const b = list[target]!;
+    list[index] = b;
+    list[target] = a;
+
+    // Persist a clean 1..n ordering, then let the homepage query pick it up.
+    qc.setQueryData(
+      ["admin", "categories"],
+      list.map((c, i) => ({ ...c, sort_order: i + 1 })),
+    );
+    try {
+      for (const [i, c] of list.entries()) {
+        if (c.sort_order === i + 1) continue;
+        const { error } = await supabase
+          .from("product_categories")
+          .update({ sort_order: i + 1, updated_at: new Date().toISOString() })
+          .eq("id", c.id);
+        if (error) throw error;
+      }
+      setCategoryError(null);
+    } catch (e) {
+      setCategoryError(e instanceof Error ? e.message : "Could not save order");
+    } finally {
+      invalidate("categories");
+      qc.invalidateQueries({ queryKey: ["product-categories"] });
     }
   };
 
@@ -506,20 +552,33 @@ function AdminConsole() {
                   <p className="text-sm italic text-muted-foreground/80">No categories yet.</p>
                 ) : (
                   <div className="grid gap-4 md:grid-cols-2">
-                    {(categories.data ?? []).map((c) => (
+                    {[...(categories.data ?? [])]
+                      .sort((a, b) => a.sort_order - b.sort_order)
+                      .map((c, index, sorted) => {
+                        const preview = previews[c.id] ?? c.image_url;
+                        const unsaved = !!previews[c.id] && previews[c.id] !== c.image_url;
+                        return (
                       <div key={c.id} className="rounded-xl border border-border p-4">
                         <div className="flex gap-4">
                           <div className="relative size-24 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
-                            {c.image_url ? (
+                            {preview ? (
                               <img
-                                src={c.image_url}
-                                alt={c.name}
+                                src={preview}
+                                alt={`${c.name} preview`}
                                 className="size-full object-cover"
+                                onError={(e) => {
+                                  (e.currentTarget as HTMLImageElement).style.opacity = "0.2";
+                                }}
                               />
                             ) : (
                               <div className="flex size-full items-center justify-center text-muted-foreground">
                                 <ImagePlus className="size-5" />
                               </div>
+                            )}
+                            {unsaved && uploadingId !== c.id && (
+                              <span className="label-xs absolute inset-x-0 bottom-0 bg-primary/90 py-0.5 text-center text-[10px] text-primary-foreground">
+                                Preview
+                              </span>
                             )}
                             {uploadingId === c.id && (
                               <div className="absolute inset-0 flex items-center justify-center bg-background/70">
@@ -541,6 +600,9 @@ function AdminConsole() {
                             <input
                               defaultValue={c.image_url}
                               placeholder="Image URL (https://...)"
+                              onChange={(e) =>
+                                setPreviews((p) => ({ ...p, [c.id]: e.target.value }))
+                              }
                               onBlur={(e) =>
                                 e.target.value !== c.image_url &&
                                 saveCategory.mutate({
@@ -568,16 +630,28 @@ function AdminConsole() {
                               }}
                             />
                           </label>
-                          <input
-                            type="number"
-                            defaultValue={c.sort_order}
-                            aria-label={`Display order for ${c.name}`}
-                            onBlur={(e) =>
-                              Number(e.target.value) !== c.sort_order &&
-                              saveCategory.mutate({ id: c.id, sort_order: Number(e.target.value) })
-                            }
-                            className={`${inputClass} w-24`}
-                          />
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              disabled={index === 0}
+                              onClick={() => void moveCategory(c.id, -1)}
+                              aria-label={`Move ${c.name} earlier`}
+                              className="rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-primary hover:text-foreground disabled:opacity-30"
+                            >
+                              <ArrowUp className="size-4" />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={index === sorted.length - 1}
+                              onClick={() => void moveCategory(c.id, 1)}
+                              aria-label={`Move ${c.name} later`}
+                              className="rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-primary hover:text-foreground disabled:opacity-30"
+                            >
+                              <ArrowDown className="size-4" />
+                            </button>
+                            <span className="label-xs pl-1 text-muted-foreground">#{index + 1}</span>
+                          </div>
+
                           <button
                             type="button"
                             onClick={() => deleteCategory.mutate(c.id)}
@@ -588,7 +662,8 @@ function AdminConsole() {
                           </button>
                         </div>
                       </div>
-                    ))}
+                        );
+                      })}
                   </div>
                 )}
               </Panel>
