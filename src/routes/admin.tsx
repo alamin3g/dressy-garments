@@ -550,20 +550,33 @@ function AdminConsole() {
                   <p className="text-sm italic text-muted-foreground/80">No categories yet.</p>
                 ) : (
                   <div className="grid gap-4 md:grid-cols-2">
-                    {(categories.data ?? []).map((c) => (
+                    {[...(categories.data ?? [])]
+                      .sort((a, b) => a.sort_order - b.sort_order)
+                      .map((c, index, sorted) => {
+                        const preview = previews[c.id] ?? c.image_url;
+                        const unsaved = !!previews[c.id] && previews[c.id] !== c.image_url;
+                        return (
                       <div key={c.id} className="rounded-xl border border-border p-4">
                         <div className="flex gap-4">
                           <div className="relative size-24 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
-                            {c.image_url ? (
+                            {preview ? (
                               <img
-                                src={c.image_url}
-                                alt={c.name}
+                                src={preview}
+                                alt={`${c.name} preview`}
                                 className="size-full object-cover"
+                                onError={(e) => {
+                                  (e.currentTarget as HTMLImageElement).style.opacity = "0.2";
+                                }}
                               />
                             ) : (
                               <div className="flex size-full items-center justify-center text-muted-foreground">
                                 <ImagePlus className="size-5" />
                               </div>
+                            )}
+                            {unsaved && uploadingId !== c.id && (
+                              <span className="label-xs absolute inset-x-0 bottom-0 bg-primary/90 py-0.5 text-center text-[10px] text-primary-foreground">
+                                Preview
+                              </span>
                             )}
                             {uploadingId === c.id && (
                               <div className="absolute inset-0 flex items-center justify-center bg-background/70">
@@ -585,6 +598,9 @@ function AdminConsole() {
                             <input
                               defaultValue={c.image_url}
                               placeholder="Image URL (https://...)"
+                              onChange={(e) =>
+                                setPreviews((p) => ({ ...p, [c.id]: e.target.value }))
+                              }
                               onBlur={(e) =>
                                 e.target.value !== c.image_url &&
                                 saveCategory.mutate({
@@ -612,16 +628,28 @@ function AdminConsole() {
                               }}
                             />
                           </label>
-                          <input
-                            type="number"
-                            defaultValue={c.sort_order}
-                            aria-label={`Display order for ${c.name}`}
-                            onBlur={(e) =>
-                              Number(e.target.value) !== c.sort_order &&
-                              saveCategory.mutate({ id: c.id, sort_order: Number(e.target.value) })
-                            }
-                            className={`${inputClass} w-24`}
-                          />
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              disabled={index === 0}
+                              onClick={() => void moveCategory(c.id, -1)}
+                              aria-label={`Move ${c.name} earlier`}
+                              className="rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-primary hover:text-foreground disabled:opacity-30"
+                            >
+                              <ArrowUp className="size-4" />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={index === sorted.length - 1}
+                              onClick={() => void moveCategory(c.id, 1)}
+                              aria-label={`Move ${c.name} later`}
+                              className="rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-primary hover:text-foreground disabled:opacity-30"
+                            >
+                              <ArrowDown className="size-4" />
+                            </button>
+                            <span className="label-xs pl-1 text-muted-foreground">#{index + 1}</span>
+                          </div>
+
                           <button
                             type="button"
                             onClick={() => deleteCategory.mutate(c.id)}
