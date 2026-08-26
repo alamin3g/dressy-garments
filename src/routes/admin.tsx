@@ -44,10 +44,19 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type SectionId = "dashboard" | "products" | "inquiries" | "visitors" | "pages" | "settings" | "security";
+type SectionId =
+  | "dashboard"
+  | "categories"
+  | "products"
+  | "inquiries"
+  | "visitors"
+  | "pages"
+  | "settings"
+  | "security";
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
+  { id: "categories", label: "Categories", icon: ImagePlus, hint: "Homepage categories" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
   { id: "visitors", label: "Visitors", icon: Globe2, hint: "Visitor Tracking" },
