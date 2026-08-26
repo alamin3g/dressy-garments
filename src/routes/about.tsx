@@ -108,16 +108,16 @@ function AboutPage() {
               <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-lg">
                 {countries.map((country) => (
                   <div
-                    key={c.id}
-                    onMouseEnter={() => setActiveCountryId(c.id)}
+                    key={country.id}
+                    onMouseEnter={() => setActiveCountryId(country.id)}
                     onMouseLeave={() => setActiveCountryId(null)}
                     className={`flex items-center justify-center rounded-md border px-3 py-2 text-xs transition-all duration-200 cursor-pointer ${
-                      activeCountryId === c.id
+                      activeCountryId === country.id
                         ? "border-primary bg-primary/10 text-primary font-bold shadow-sm scale-[1.02]"
                         : "border-border/60 bg-card/40 text-foreground hover:border-primary/50 hover:bg-card"
                     }`}
                   >
-                    <span className="font-medium truncate">{c.name}</span>
+                    <span className="font-medium truncate">{country.name}</span>
                   </div>
                 ))}
               </div>
