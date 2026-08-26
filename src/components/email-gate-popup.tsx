@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
+import { checkPopupEmail, submitPopupEmail } from "@/lib/popup-email.functions";
 
 const STORAGE_KEY = "dressy_popup_email";
 
@@ -19,8 +19,23 @@ export function EmailGatePopup() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.localStorage.getItem(STORAGE_KEY)) return;
-    const t = window.setTimeout(() => setOpen(true), 5000);
-    return () => window.clearTimeout(t);
+    let cancelled = false;
+    const t = window.setTimeout(async () => {
+      try {
+        const res = await checkPopupEmail();
+        if (res?.captured) {
+          window.localStorage.setItem(STORAGE_KEY, "1");
+          return;
+        }
+      } catch {
+        // if the check fails, still show the popup
+      }
+      if (!cancelled) setOpen(true);
+    }, 5000);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+    };
   }, []);
 
   useEffect(() => {
@@ -41,15 +56,19 @@ export function EmailGatePopup() {
     }
     setSaving(true);
     setError(null);
-    const { error: dbError } = await supabase.from("popup_emails").insert({
-      email: parsed.data.toLowerCase(),
-      page: typeof window !== "undefined" ? window.location.pathname : null,
-    });
-    setSaving(false);
-    if (dbError) {
+    try {
+      await submitPopupEmail({
+        data: {
+          email: parsed.data,
+          page: typeof window !== "undefined" ? window.location.pathname : "/",
+        },
+      });
+    } catch {
+      setSaving(false);
       setError("Something went wrong. Please try again.");
       return;
     }
+    setSaving(false);
     window.localStorage.setItem(STORAGE_KEY, "1");
     setOpen(false);
   }
