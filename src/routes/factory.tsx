@@ -4,7 +4,7 @@ import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
 import { getSEOMetadata } from "@/lib/seo";
-import { usePageContent } from "@/lib/page-content";
+import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/factory")({
@@ -18,24 +18,26 @@ export const Route = createFileRoute("/factory")({
   component: FactoryPage,
 });
 
-const STATS = [
-  { icon: Users, value: "500+", label: "People" },
-  { icon: Shirt, value: "6M+", label: "PCS / Year" },
-  { icon: FactoryIcon, value: "7", label: "Production Lines" },
-  { icon: Ruler, value: "120k", label: "Sq. Ft. Floor" },
-];
+const STAT_ICONS = [Users, Shirt, FactoryIcon, Ruler];
+const STATS = DEFAULTS.factory.stats.map(([value, label], i) => ({
+  icon: STAT_ICONS[i % STAT_ICONS.length]!,
+  value,
+  label,
+}));
 
-const FLOORS = [
-  { name: "Cutting Floor", body: "Auto-spreaders, CAD marker making and fabric relaxation area." },
-  { name: "Sewing Floor", body: "Seven balanced lines with hourly output boards and line supervisors." },
-  { name: "Print & Embroidery", body: "Screen print tables, DTG units and 12-head embroidery machines." },
-  { name: "Sample Room", body: "Dedicated pattern and sample team with 7–10 day turnaround." },
-  { name: "Finishing & Packing", body: "Steam tunnels, needle detection, carton packing and shipment staging." },
-  { name: "QA Lab", body: "Fabric inspection, shrinkage and colourfastness checks before bulk." },
-];
+const FLOORS = DEFAULTS.factory.floors.map(([name, body]) => ({ name, body }));
 
 function FactoryPage() {
   const c = usePageContent("/factory");
+  const stats = mergeList(c("stats"), STATS, (parts, fb) => ({
+    icon: fb.icon,
+    value: parts[0] ?? fb.value,
+    label: parts[1] ?? fb.label,
+  }));
+  const floors = mergeList(c("floors"), FLOORS, (parts, fb) => ({
+    name: parts[0] ?? fb.name,
+    body: parts[1] ?? fb.body,
+  }));
   return (
     <PageShell
       path="/factory"
@@ -51,7 +53,7 @@ function FactoryPage() {
     >
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 divide-y divide-border sm:grid-cols-2 md:grid-cols-4 md:divide-x md:divide-y-0">
-          {STATS.map(({ icon: Icon, value, label }) => (
+          {stats.map(({ icon: Icon, value, label }) => (
             <div key={label} className="flex items-center justify-center gap-4 px-4 py-8 sm:gap-5 sm:px-6 sm:py-12">
               <Icon className="size-8 text-primary sm:size-9" strokeWidth={1.2} />
               <div>
@@ -86,9 +88,9 @@ function FactoryPage() {
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <p className="label-xs text-primary">Inside the Facility</p>
+          <p className="label-xs text-primary">{c("floors_label", "Inside the Facility")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-            {FLOORS.map((f, i) => (
+            {floors.map((f, i) => (
               <div key={f.name} className="bg-background p-8">
                 <span className="display text-3xl text-muted-foreground">{`0${i + 1}`}</span>
                 <h2 className="display mt-4 text-2xl">{f.name}</h2>
