@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { fetchProductCategories } from "@/lib/product-categories";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
@@ -116,6 +117,7 @@ const MARKETS = [
 ];
 
 function Index() {
+  useCatalogRealtime();
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
     queryFn: fetchProductCategories,

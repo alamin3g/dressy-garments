@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import {
   LayoutDashboard,
   Shirt,
@@ -155,6 +156,7 @@ function AdminPage() {
 
 function AdminConsole() {
 
+  useCatalogRealtime();
   const [active, setActive] = useState<SectionId>("dashboard");
   const qc = useQueryClient();
   const current = MENU.find((m) => m.id === active)!;
@@ -326,7 +328,10 @@ function AdminConsole() {
         if (error) throw error;
       }
     },
-    onSuccess: () => invalidate("products"),
+    onSuccess: () => {
+      void invalidate("products");
+      void qc.invalidateQueries({ queryKey: ["public", "products"] });
+    },
   });
 
   const deleteProduct = useMutation({
@@ -334,7 +339,10 @@ function AdminConsole() {
       const { error } = await supabase.from("products").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => invalidate("products"),
+    onSuccess: () => {
+      void invalidate("products");
+      void qc.invalidateQueries({ queryKey: ["public", "products"] });
+    },
   });
 
   const updateInquiry = useMutation({
