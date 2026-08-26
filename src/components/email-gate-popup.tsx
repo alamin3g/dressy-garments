@@ -1,0 +1,102 @@
+import { useEffect, useState } from "react";
+import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
+
+const STORAGE_KEY = "dressy_popup_email";
+
+const emailSchema = z
+  .string()
+  .trim()
+  .email({ message: "Please enter a valid email address" })
+  .max(255, { message: "Email must be less than 255 characters" });
+
+export function EmailGatePopup() {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.localStorage.getItem(STORAGE_KEY)) return;
+    const t = window.setTimeout(() => setOpen(true), 5000);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!open || typeof document === "undefined") return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const parsed = emailSchema.safeParse(email);
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Invalid email");
+      return;
+    }
+    setSaving(true);
+    setError(null);
+    const { error: dbError } = await supabase.from("popup_emails").insert({
+      email: parsed.data.toLowerCase(),
+      page: typeof window !== "undefined" ? window.location.pathname : null,
+    });
+    setSaving(false);
+    if (dbError) {
+      setError("Something went wrong. Please try again.");
+      return;
+    }
+    window.localStorage.setItem(STORAGE_KEY, "1");
+    setOpen(false);
+  }
+
+  if (!open) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="email-gate-title"
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-foreground/70 p-5 backdrop-blur-sm"
+    >
+      <div className="w-full max-w-md border border-border bg-background p-8 shadow-2xl">
+        <p className="label-xs text-primary">Dressy Clothing Ltd.</p>
+        <h2 id="email-gate-title" className="display mt-3 text-3xl leading-tight">
+          Enter your email to continue
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          Get our latest collections, capabilities and factory updates straight to your inbox.
+        </p>
+
+        <form onSubmit={submit} className="mt-6 space-y-3">
+          <input
+            type="email"
+            required
+            autoFocus
+            maxLength={255}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(null);
+            }}
+            placeholder="you@company.com"
+            aria-label="Email address"
+            className="w-full border border-border bg-background px-4 py-3.5 text-sm outline-none transition-colors focus:border-primary"
+          />
+          {error && <p className="text-xs text-destructive">{error}</p>}
+          <button
+            type="submit"
+            disabled={saving}
+            className="label-xs w-full bg-primary px-5 py-4 text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {saving ? "Submitting…" : "Continue"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
