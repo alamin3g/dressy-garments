@@ -194,7 +194,7 @@ export const DEFAULTS = {
       ["MD Jahangir Alam", "Assistant General Manager"],
     ],
   },
-} as const;
+};
 
 export const PAGE_CONTENT: PageDef[] = [
   {
