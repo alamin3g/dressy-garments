@@ -230,9 +230,9 @@ export function AdminProductEditor({
           />
           <input
             value={colorDraft}
-            onChange={(e) => setColorDraft(e.target.value)}
+            onChange={(e) => handleColorDraft(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addColor()}
-            placeholder="Colour name (e.g. Ecru)"
+            placeholder="Name + code (e.g. Ecru #E4D2BA)"
             className={`${inputClass} max-w-xs`}
           />
           <button
