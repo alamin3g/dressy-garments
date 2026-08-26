@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
 import { getSEOMetadata } from "@/lib/seo";
+import { parseColor } from "@/lib/product-media";
 
 
 import pKnit from "@/assets/p-knit.jpg";
