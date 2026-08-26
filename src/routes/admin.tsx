@@ -474,6 +474,126 @@ function AdminConsole() {
               </Panel>
             )}
 
+            {active === "categories" && (
+              <Panel
+                title="Product Categories"
+                subtitle="These cards appear in the “Our Products” section on the homepage. Upload an image or paste an image URL, then set the category name."
+                right={
+                  <button
+                    type="button"
+                    onClick={() =>
+                      saveCategory.mutate({
+                        name: "New category",
+                        image_url: "",
+                        sort_order: (categories.data?.length ?? 0) + 1,
+                      })
+                    }
+                    className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
+                  >
+                    <Plus className="size-3.5" /> New category
+                  </button>
+                }
+              >
+                {categoryError && (
+                  <p className="mb-4 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                    {categoryError}
+                  </p>
+                )}
+
+                {categories.isLoading ? (
+                  <Loader2 className="size-5 animate-spin text-primary" />
+                ) : (categories.data ?? []).length === 0 ? (
+                  <p className="text-sm italic text-muted-foreground/80">No categories yet.</p>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {(categories.data ?? []).map((c) => (
+                      <div key={c.id} className="rounded-xl border border-border p-4">
+                        <div className="flex gap-4">
+                          <div className="relative size-24 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+                            {c.image_url ? (
+                              <img
+                                src={c.image_url}
+                                alt={c.name}
+                                className="size-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex size-full items-center justify-center text-muted-foreground">
+                                <ImagePlus className="size-5" />
+                              </div>
+                            )}
+                            {uploadingId === c.id && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-background/70">
+                                <Loader2 className="size-5 animate-spin text-primary" />
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="min-w-0 flex-1 space-y-3">
+                            <input
+                              defaultValue={c.name}
+                              placeholder="Category name"
+                              onBlur={(e) =>
+                                e.target.value !== c.name &&
+                                saveCategory.mutate({ id: c.id, name: e.target.value })
+                              }
+                              className={inputClass}
+                            />
+                            <input
+                              defaultValue={c.image_url}
+                              placeholder="Image URL (https://...)"
+                              onBlur={(e) =>
+                                e.target.value !== c.image_url &&
+                                saveCategory.mutate({
+                                  id: c.id,
+                                  image_url: e.target.value,
+                                  storage_path: null,
+                                })
+                              }
+                              className={inputClass}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-3">
+                          <label className="label-xs inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 py-2.5 transition-colors hover:border-primary">
+                            <ImagePlus className="size-3.5" /> Upload image
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                e.target.value = "";
+                                if (file) void handleCategoryUpload(c.id, file);
+                              }}
+                            />
+                          </label>
+                          <input
+                            type="number"
+                            defaultValue={c.sort_order}
+                            aria-label={`Display order for ${c.name}`}
+                            onBlur={(e) =>
+                              Number(e.target.value) !== c.sort_order &&
+                              saveCategory.mutate({ id: c.id, sort_order: Number(e.target.value) })
+                            }
+                            className={`${inputClass} w-24`}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => deleteCategory.mutate(c.id)}
+                            aria-label={`Delete ${c.name}`}
+                            className="ml-auto rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="size-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Panel>
+            )}
+
             {active === "products" && (
               <Panel
                 title="Products"
