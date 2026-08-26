@@ -16,6 +16,8 @@ import {
   Loader2,
   CheckCircle2,
   ImagePlus,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
