@@ -19,6 +19,8 @@ import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
 const pDevelopment = pDevelopmentAsset.url;
 
 export const Route = createFileRoute("/products")({
+  validateSearch: (search: Record<string, unknown>): { q?: string } =>
+    typeof search['q'] === "string" && search['q'] ? { q: search['q'] as string } : {},
   head: () => getSEOMetadata({
     title: "Products — Garment Range & Styles",
     description: "Dressy Clothing is one of the leading Garments Manufacture. Explore our Knit, Woven, Outerwear, Fleece and Workwear collections.",
@@ -106,8 +108,9 @@ function useLiveProducts() {
 }
 
 function ProductsPage() {
+  const { q: initialQuery } = Route.useSearch();
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery ?? "");
   const [open, setOpen] = useState(false);
   const { data: live } = useLiveProducts();
 
@@ -152,7 +155,7 @@ function ProductsPage() {
       }
       intro="Six core programmes covering jersey, woven and technical garments — each with dedicated lines, patterns and quality standards."
     >
-      <section className="border-b border-border">
+      <section id="search" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-12 md:px-10">
           <div className="relative max-w-xl">
             <input
