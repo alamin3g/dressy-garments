@@ -165,7 +165,6 @@ function Index() {
       <section className="relative min-h-screen md:min-h-[85vh] lg:min-h-[88vh] w-full overflow-hidden border-b border-border flex flex-col justify-center pb-12">
         {/* Background Video Layer */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] z-10" />
           <video
             autoPlay
             muted
@@ -175,23 +174,32 @@ function Index() {
             disableRemotePlayback
             webkit-playsinline="true"
             poster={heroImg}
-            className="absolute top-1/2 left-1/2 h-full w-auto min-w-[200vh] md:min-w-[110vw] md:min-h-[61.875vw] -translate-x-1/2 -translate-y-1/2 object-cover opacity-90 pointer-events-none"
-            style={{ border: "none" }}
+            className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none"
+            style={{
+              border: "none",
+              transform: "translateZ(0)",
+              imageRendering: "auto",
+              filter: "contrast(1.06) saturate(1.08) brightness(1.02)",
+            }}
           >
             <source src={heroVideo.url} type="video/mp4" />
           </video>
+          {/* Cinematic scrims: keep the footage crisp, darken only where the type sits */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/45 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-background/40" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
         </div>
 
         {/* Hero Content Container */}
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
-              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase">{c("hero_eyebrow", "Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh")}</p>
-              <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl" style={{ animationDelay: "100ms" }}>
+              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">{c("hero_eyebrow", "Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh")}</p>
+              <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" style={{ animationDelay: "100ms" }}>
                 <span className="text-white">{c("hero_title_1", "Stitching With")}</span>{" "}
                 <span className="text-primary">{c("hero_title_2", "Care & Love")}</span>
               </h1>
-              <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-white" style={{ animationDelay: "200ms" }}>
+              <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]" style={{ animationDelay: "200ms" }}>
                 {c(
                   "hero_intro",
                   "Design development, sourcing and garment manufacturing from Bangladesh to global fashion markets.",
@@ -200,7 +208,7 @@ function Index() {
               <div className="mt-8 flex animate-fade-up flex-wrap items-center gap-6" style={{ animationDelay: "300ms" }}>
                 <Link
                   to="/factory"
-                  className="label-xs btn-sheen group flex items-center gap-3 bg-primary px-6 py-3.5 font-semibold text-primary-foreground shadow-lg shadow-primary/20"
+                  className="label-xs btn-sheen group flex items-center gap-3 bg-primary px-6 py-3.5 font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform duration-300 hover:-translate-y-0.5"
                 >
                   Explore Our Factory <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
@@ -217,6 +225,7 @@ function Index() {
           </div>
         </div>
       </section>
+
 
       {/* Stats */}
       <section className="border-y border-border">
