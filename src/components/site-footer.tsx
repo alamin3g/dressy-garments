@@ -2,45 +2,52 @@ import { Link } from "@tanstack/react-router";
 import { Linkedin, Instagram, Mail, ArrowUp } from "lucide-react";
 import { Logo } from "./site-header";
 
-const FOOTER = [
+type FooterLink = {
+  label: string;
+  to: string;
+  hash?: string;
+  search?: { q: string };
+};
+
+const FOOTER: { title: string; links: FooterLink[] }[] = [
   {
     title: "Company",
     links: [
-      { label: "About Dressy", to: "/about" },
+      { label: "About Dressy", to: "/about", hash: "story" },
       { label: "Our Factory", to: "/factory" },
-      { label: "Leadership", to: "/about" },
-      { label: "Global Presence", to: "/about" },
+      { label: "Leadership", to: "/about", hash: "leadership" },
+      { label: "Global Presence", to: "/about", hash: "global" },
     ],
   },
   {
     title: "Capabilities",
     links: [
-      { label: "Development", to: "/capabilities" },
-      { label: "Sourcing", to: "/capabilities" },
-      { label: "Manufacturing", to: "/capabilities" },
-      { label: "Quality", to: "/capabilities" },
-      { label: "Delivery", to: "/capabilities" },
+      { label: "Development", to: "/capabilities", hash: "process" },
+      { label: "Sourcing", to: "/capabilities", hash: "process" },
+      { label: "Manufacturing", to: "/capabilities", hash: "services" },
+      { label: "Quality", to: "/capabilities", hash: "services" },
+      { label: "Delivery", to: "/capabilities", hash: "process" },
     ],
   },
   {
     title: "Products",
     links: [
-      { label: "Knit", to: "/products" },
-      { label: "Woven", to: "/products" },
-      { label: "Outerwear", to: "/products" },
-      { label: "Fleece", to: "/products" },
-      { label: "Workwear", to: "/products" },
+      { label: "Knit", to: "/products", search: { q: "Knit" } },
+      { label: "Woven", to: "/products", search: { q: "Woven" } },
+      { label: "Outerwear", to: "/products", search: { q: "Outerwear" } },
+      { label: "Fleece", to: "/products", search: { q: "Fleece" } },
+      { label: "Workwear", to: "/products", search: { q: "Workwear" } },
     ],
   },
   {
     title: "Compliance",
     links: [
-      { label: "Compliance", to: "/compliance" },
-      { label: "Sustainability", to: "/compliance" },
-      { label: "Worker Welfare", to: "/compliance" },
+      { label: "Compliance", to: "/compliance", hash: "certifications" },
+      { label: "Sustainability", to: "/compliance", hash: "sustainability" },
+      { label: "Worker Welfare", to: "/compliance", hash: "welfare" },
     ],
   },
-] as const;
+];
 
 export function SiteFooter() {
   return (
@@ -71,7 +78,12 @@ export function SiteFooter() {
             <ul className="mt-5 space-y-2">
               {col.links.map((l) => (
                 <li key={l.label}>
-                  <Link to={l.to} className="text-xs text-muted-foreground hover:text-foreground">
+                  <Link
+                    to={l.to}
+                    {...(l.hash ? { hash: l.hash } : {})}
+                    {...(l.search ? { search: l.search } : {})}
+                    className="text-xs text-muted-foreground hover:text-foreground"
+                  >
                     {l.label}
                   </Link>
                 </li>
@@ -109,9 +121,13 @@ export function SiteFooter() {
           © 2026 Dressy Clothing Ltd. All rights reserved.
         </p>
         <div className="flex items-center gap-6">
-          <span className="text-[11px] text-muted-foreground">Privacy Policy</span>
+          <Link to="/privacy" className="text-[11px] text-muted-foreground transition-colors hover:text-foreground">
+            Privacy Policy
+          </Link>
           <span className="text-[11px] text-muted-foreground">/</span>
-          <span className="text-[11px] text-muted-foreground">Terms &amp; Conditions</span>
+          <Link to="/terms" className="text-[11px] text-muted-foreground transition-colors hover:text-foreground">
+            Terms &amp; Conditions
+          </Link>
           <button
             type="button"
             aria-label="Back to top"
