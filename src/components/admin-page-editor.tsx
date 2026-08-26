@@ -137,6 +137,14 @@ export function AdminPageEditor({ page, onDone }: { page: PageDef; onDone: () =>
 
               {f.type === "image" ? (
                 <ImageField value={values[f.key] ?? ""} onChange={(v) => set(f.key, v)} />
+              ) : f.type === "list" ? (
+                <textarea
+                  rows={Math.min(12, ((f.fallback ?? "").split("\n").length || 3) + 1)}
+                  value={values[f.key] ?? ""}
+                  placeholder={f.fallback}
+                  onChange={(e) => set(f.key, e.target.value)}
+                  className={`${inputClass} font-mono text-xs leading-relaxed`}
+                />
               ) : f.type === "textarea" ? (
                 <textarea
                   rows={3}
