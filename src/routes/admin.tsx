@@ -17,6 +17,8 @@ import {
   Loader2,
   CheckCircle2,
   ImagePlus,
+  Mail,
+
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
