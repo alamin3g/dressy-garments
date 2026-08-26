@@ -30,6 +30,8 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { AutoReveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
+import { EmailGatePopup } from "@/components/email-gate-popup";
+
 
 import heroImg from "@/assets/hero-sewing.jpg";
 import heroVideo from "@/assets/dressy-hero-video.mp4.asset.json";
