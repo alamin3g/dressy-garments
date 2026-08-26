@@ -28,7 +28,7 @@ export const trackVisit = createServerFn({ method: "POST" })
     let city = getRequestHeader("cf-ipcity") ?? "";
     let region = getRequestHeader("cf-region") ?? "";
     let countryCode = getRequestHeader("cf-ipcountry") ?? "";
-    let country = countryCode ? (COUNTRY_NAMES[countryCode] ?? countryCode) : "";
+    let country = countryName(countryCode);
 
     const isPrivate =
       !ip ||
