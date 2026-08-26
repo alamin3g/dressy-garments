@@ -38,6 +38,7 @@ const SUSTAIN = [
 function CompliancePage() {
   return (
     <PageShell
+      path="/compliance"
       eyebrow="04 / Responsibility"
       title={
         <>

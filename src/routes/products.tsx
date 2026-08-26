@@ -93,6 +93,7 @@ function ProductsPage() {
 
   return (
     <PageShell
+      path="/products"
       eyebrow="02 / Our Products"
       title={
         <>
