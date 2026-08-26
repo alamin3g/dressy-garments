@@ -660,7 +660,8 @@ function AdminConsole() {
                           </button>
                         </div>
                       </div>
-                    ))}
+                        );
+                      })}
                   </div>
                 )}
               </Panel>
