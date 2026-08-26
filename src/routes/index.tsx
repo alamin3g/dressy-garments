@@ -114,6 +114,24 @@ const MARKETS = [
 ];
 
 function Index() {
+  const { data: categories } = useQuery({
+    queryKey: ["product-categories"],
+    queryFn: fetchProductCategories,
+    staleTime: 60_000,
+  });
+
+  const productCards =
+    categories && categories.length > 0
+      ? categories.map((c, i) => ({
+          n: String(i + 1).padStart(2, "0"),
+          name: c.name,
+          img:
+            c.image_url ||
+            PRODUCTS.find((p) => p.name.toLowerCase() === c.name.toLowerCase())?.img ||
+            pDevelopment,
+        }))
+      : PRODUCTS;
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       <SiteHeader />
