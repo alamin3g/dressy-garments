@@ -945,6 +945,64 @@ function AdminConsole() {
               </Panel>
             )}
 
+            {active === "popup" && (
+              <Panel
+                title="PopUp Email"
+                subtitle="Emails collected by the welcome popup shown on the homepage after 5 seconds."
+              >
+                <div className="mb-4 flex flex-wrap items-center gap-3">
+                  <span className="rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground">
+                    {(popupEmails.data ?? []).length} email
+                    {(popupEmails.data ?? []).length === 1 ? "" : "s"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      navigator.clipboard?.writeText(
+                        (popupEmails.data ?? []).map((e) => e.email).join(", "),
+                      )
+                    }
+                    className="rounded-full border border-border px-3 py-1.5 text-xs transition-colors hover:border-primary hover:text-primary"
+                  >
+                    Copy all
+                  </button>
+                  {popupEmails.isFetching && (
+                    <Loader2 className="size-3.5 animate-spin text-muted-foreground" />
+                  )}
+                </div>
+                {(popupEmails.data ?? []).length === 0 ? (
+                  <p className="text-sm italic text-muted-foreground/80">No emails collected yet.</p>
+                ) : (
+                  <ul className="space-y-2">
+                    {(popupEmails.data ?? []).map((e) => (
+                      <li
+                        key={e.id}
+                        className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border p-4"
+                      >
+                        <div>
+                          <p className="text-sm font-semibold">{e.email}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {timeAgo(e.created_at)}
+                            {e.page ? ` · ${e.page}` : ""}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => deletePopupEmail.mutate(e.id)}
+                          aria-label="Delete email"
+                          className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Panel>
+            )}
+
+
+
             {active === "visitors" && (
               <Panel
                 title="Visitor Tracking"
