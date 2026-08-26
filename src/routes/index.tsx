@@ -472,6 +472,8 @@ function Index() {
       </AutoReveal>
 
       <SiteFooter />
+      <EmailGatePopup />
+
     </div>
   );
 }
