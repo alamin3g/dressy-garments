@@ -188,6 +188,20 @@ function AdminConsole() {
     },
   });
 
+  const popupEmails = useQuery({
+    queryKey: ["admin", "popup_emails"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("popup_emails")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+
+
   const visitors = useQuery({
     queryKey: ["admin", "visitors"],
     queryFn: async () => {
