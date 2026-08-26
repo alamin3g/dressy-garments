@@ -22,6 +22,7 @@ import {
 
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
+import { AdminProductEditor } from "@/components/admin-product-editor";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -87,6 +88,8 @@ type ProductPatch = {
   status?: string;
   description?: string;
   sort_order?: number;
+  images?: string[];
+  colors?: string[];
 };
 type ProductInsert = ProductPatch & { name: string };
 
@@ -697,65 +700,18 @@ function AdminConsole() {
                 ) : (
                   <div className="space-y-3">
                     {(products.data ?? []).map((p) => (
-                      <div key={p.id} className="rounded-xl border border-border p-4">
-                        <div className="grid gap-3 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-center">
-                          <input
-                            defaultValue={p.name}
-                            onBlur={(e) =>
-                              e.target.value !== p.name &&
-                              saveProduct.mutate({ id: p.id, name: e.target.value })
-                            }
-                            className={inputClass}
-                          />
-                          <input
-                            defaultValue={p.category}
-                            onBlur={(e) =>
-                              e.target.value !== p.category &&
-                              saveProduct.mutate({ id: p.id, category: e.target.value })
-                            }
-                            className={inputClass}
-                          />
-                          <select
-                            defaultValue={p.status}
-                            onChange={(e) => saveProduct.mutate({ id: p.id, status: e.target.value })}
-                            className={inputClass}
-                          >
-                            {STATUSES.map((s) => (
-                              <option key={s}>{s}</option>
-                            ))}
-                          </select>
-                          <button
-                            type="button"
-                            onClick={() => deleteProduct.mutate(p.id)}
-                            aria-label={`Delete ${p.name}`}
-                            className="justify-self-start rounded-xl border border-border p-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
-                          >
-                            <Trash2 className="size-4" />
-                          </button>
-                        </div>
-                        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_2fr]">
-                          <input
-                            defaultValue={p.moq}
-                            onBlur={(e) =>
-                              e.target.value !== p.moq &&
-                              saveProduct.mutate({ id: p.id, moq: e.target.value })
-                            }
-                            className={inputClass}
-                          />
-                          <input
-                            defaultValue={p.description}
-                            placeholder="Short description"
-                            onBlur={(e) =>
-                              e.target.value !== p.description &&
-                              saveProduct.mutate({ id: p.id, description: e.target.value })
-                            }
-                            className={inputClass}
-                          />
-                        </div>
-                      </div>
+                      <AdminProductEditor
+                        key={p.id}
+                        product={p as never}
+                        categories={(categories.data ?? []).map((c) => c.name)}
+                        statuses={STATUSES}
+                        onSave={(patch: Record<string, unknown>) => saveProduct.mutate({ id: p.id, ...patch })}
+                        onDelete={() => deleteProduct.mutate(p.id)}
+                      />
                     ))}
                   </div>
                 )}
+
               </Panel>
             )}
 
