@@ -86,9 +86,11 @@ export type Database = {
       products: {
         Row: {
           category: string
+          colors: string[]
           created_at: string
           description: string
           id: string
+          images: string[]
           moq: string
           name: string
           sort_order: number
@@ -97,9 +99,11 @@ export type Database = {
         }
         Insert: {
           category?: string
+          colors?: string[]
           created_at?: string
           description?: string
           id?: string
+          images?: string[]
           moq?: string
           name: string
           sort_order?: number
@@ -108,9 +112,11 @@ export type Database = {
         }
         Update: {
           category?: string
+          colors?: string[]
           created_at?: string
           description?: string
           id?: string
+          images?: string[]
           moq?: string
           name?: string
           sort_order?: number
