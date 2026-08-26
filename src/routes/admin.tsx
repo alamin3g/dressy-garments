@@ -162,6 +162,8 @@ function AdminConsole() {
 
   useCatalogRealtime();
   const [active, setActive] = useState<SectionId>("dashboard");
+  const [editingPage, setEditingPage] = useState<PageDef | null>(null);
+
   const qc = useQueryClient();
   const current = MENU.find((m) => m.id === active)!;
 
