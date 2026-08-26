@@ -15,9 +15,11 @@ import {
   RefreshCw,
   Loader2,
   CheckCircle2,
+  ImagePlus,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
