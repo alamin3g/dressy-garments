@@ -14,6 +14,7 @@ import {
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import { getSEOMetadata } from "@/lib/seo";
+import { usePageContent } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/capabilities")({
@@ -46,8 +47,10 @@ const SERVICES = [
 ];
 
 function CapabilitiesPage() {
+  const c = usePageContent("/capabilities");
   return (
     <PageShell
+      path="/capabilities"
       eyebrow="01 / Capabilities"
       title={
         <>
@@ -79,7 +82,7 @@ function CapabilitiesPage() {
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_1.1fr]">
           <img
-            src={factoryImg}
+            src={c("services_image", factoryImg)}
             alt="Dressy production floor in Dhaka"
             loading="lazy"
             width={1000}

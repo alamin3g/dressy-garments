@@ -25,6 +25,8 @@ import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
 import { useDragSort } from "@/components/admin-sortable";
+import { AdminPageEditor } from "@/components/admin-page-editor";
+import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 import { GripVertical, Pencil } from "lucide-react";
 
@@ -72,15 +74,6 @@ const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: 
   { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
 ];
 
-const PAGES = [
-  { path: "/", title: "Home" },
-  { path: "/capabilities", title: "Capabilities" },
-  { path: "/products", title: "Products" },
-  { path: "/factory", title: "Factory" },
-  { path: "/compliance", title: "Compliance" },
-  { path: "/about", title: "About" },
-  { path: "/contact", title: "Contact" },
-];
 
 const STATUSES = ["Live", "Draft", "Review"];
 const INQUIRY_STATUSES = ["New", "In progress", "Won", "Closed"];
@@ -160,6 +153,8 @@ function AdminConsole() {
 
   useCatalogRealtime();
   const [active, setActive] = useState<SectionId>("dashboard");
+  const [editingPage, setEditingPage] = useState<PageDef | null>(null);
+
   const qc = useQueryClient();
   const current = MENU.find((m) => m.id === active)!;
 
@@ -1058,13 +1053,23 @@ function AdminConsole() {
             )}
 
             {active === "pages" && (
-              <Panel title="Pages" subtitle="Public routes on the website.">
+              <Panel title="Pages" subtitle="Public routes on the website. Click the pencil to edit page content and images.">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {PAGES.map((p) => (
-                    <div key={p.path} className="rounded-xl border border-border p-4">
+                  {PAGE_CONTENT.map((p) => (
+                    <div key={p.path} className="group rounded-xl border border-border p-4 transition-colors hover:border-primary">
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-semibold">{p.title}</p>
-                        <Pill value="Live" />
+                        <div className="flex items-center gap-2">
+                          <Pill value="Live" />
+                          <button
+                            type="button"
+                            aria-label={`Edit ${p.title} page`}
+                            onClick={() => setEditingPage(p)}
+                            className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+                          >
+                            <Pencil className="size-3.5" />
+                          </button>
+                        </div>
                       </div>
                       <p className="mt-1 font-mono text-xs text-muted-foreground">{p.path}</p>
                       <p className="mt-2 text-xs text-muted-foreground">
@@ -1073,8 +1078,19 @@ function AdminConsole() {
                     </div>
                   ))}
                 </div>
+
+                {editingPage && (
+                  <AdminModal
+                    title={`Edit ${editingPage.title} page`}
+                    subtitle={`Content and images for ${editingPage.path} — leave a field empty to keep the website default.`}
+                    onClose={() => setEditingPage(null)}
+                  >
+                    <AdminPageEditor page={editingPage} onDone={() => setEditingPage(null)} />
+                  </AdminModal>
+                )}
               </Panel>
             )}
+
 
             {active === "security" && (
               <Panel 

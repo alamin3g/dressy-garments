@@ -4,6 +4,7 @@ import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
 import { getSEOMetadata } from "@/lib/seo";
+import { usePageContent } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/factory")({
@@ -34,8 +35,10 @@ const FLOORS = [
 ];
 
 function FactoryPage() {
+  const c = usePageContent("/factory");
   return (
     <PageShell
+      path="/factory"
       eyebrow="03 / Our Factory"
       title={
         <>
@@ -63,7 +66,7 @@ function FactoryPage() {
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-[1400px] gap-px bg-border px-0 py-0 md:grid-cols-2">
           <img
-            src={factoryImg}
+            src={c("gallery_image_1", factoryImg)}
             alt="Dressy factory building exterior in Dhaka"
             loading="lazy"
             width={1000}
@@ -71,7 +74,7 @@ function FactoryPage() {
             className="h-full max-h-[520px] w-full object-cover"
           />
           <img
-            src={heroImg}
+            src={c("gallery_image_2", heroImg)}
             alt="Operator sewing a garment on the production line"
             loading="lazy"
             width={1000}

@@ -5,6 +5,7 @@ import { Globe } from "@/components/ui/cobe-globe";
 import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import { getSEOMetadata } from "@/lib/seo";
+import { usePageContent } from "@/lib/page-content";
 
 
 export const Route = createFileRoute("/about")({
@@ -67,9 +68,11 @@ const LEADERSHIP = [
 
 function AboutPage() {
   const [activeCountryId, setActiveCountryId] = useState<string | null>(null);
+  const c = usePageContent("/about");
 
   return (
     <PageShell
+      path="/about"
       eyebrow="05 / About Dressy"
       title={
         <>
@@ -84,7 +87,7 @@ function AboutPage() {
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-[1400px] gap-10 px-6 py-16 md:px-10 lg:grid-cols-2">
           <img
-            src={factoryImg}
+            src={c("story_image", factoryImg)}
             alt="Dressy headquarters in Dhaka, Bangladesh"
             loading="lazy"
             width={1000}
