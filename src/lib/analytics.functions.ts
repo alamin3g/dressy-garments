@@ -8,22 +8,16 @@ const visitSchema = z.object({
   referrer: z.string().max(500).default(""),
 });
 
-const COUNTRY_NAMES: Record<string, string> = {
-  BD: "Bangladesh",
-  US: "USA",
-  GB: "United Kingdom",
-  DE: "Germany",
-  FR: "France",
-  SE: "Sweden",
-  NL: "Netherlands",
-  ES: "Spain",
-  IT: "Italy",
-  CA: "Canada",
-  AU: "Australia",
-  IN: "India",
-  JP: "Japan",
-  CN: "China",
-};
+const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+
+function countryName(code: string): string {
+  if (!code) return "";
+  try {
+    return regionNames.of(code.toUpperCase()) ?? code;
+  } catch {
+    return code;
+  }
+}
 
 export const trackVisit = createServerFn({ method: "POST" })
   .inputValidator((data) => visitSchema.parse(data))
