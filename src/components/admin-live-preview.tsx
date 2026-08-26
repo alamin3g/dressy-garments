@@ -62,28 +62,33 @@ export function CategoryLivePreview() {
           Nothing published yet — the homepage falls back to default categories.
         </p>
       ) : (
-        <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {data.map((c) => (
-            <article key={c.id} className="group relative overflow-hidden bg-background">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                {c.image_url ? (
-                  <img
-                    src={c.image_url}
-                    alt={c.name}
-                    loading="lazy"
-                    className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center bg-muted text-xs text-muted-foreground">
-                    No image
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/10 to-transparent" />
-                <h3 className="display absolute bottom-4 left-4 text-xl">{c.name}</h3>
+        <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-6">
+          {data.map((c, i) => (
+            <article
+              key={c.id}
+              className="group relative aspect-[3/4] overflow-hidden bg-card"
+            >
+              {c.image_url ? (
+                <img
+                  src={c.image_url}
+                  alt={`${c.name} garment detail`}
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex size-full items-center justify-center bg-muted text-xs text-muted-foreground">
+                  No image
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/40" />
+              <div className="absolute left-4 top-4">
+                <p className="display text-2xl">{String(i + 1).padStart(2, "0")}</p>
+                <p className="label-xs mt-1">{c.name}</p>
               </div>
             </article>
           ))}
         </div>
+
       )}
     </PreviewFrame>
   );
