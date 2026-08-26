@@ -61,9 +61,24 @@ export function AdminProductEditor({
     setUrlDraft("");
   };
 
+  const HEX_RE = /#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b/;
+
+  const handleColorDraft = (value: string) => {
+    setColorDraft(value);
+    const match = value.match(HEX_RE);
+    if (match) setSwatch(match[0]);
+  };
+
   const addColor = () => {
     const label = colorDraft.trim();
-    const value = label ? `${label} ${swatch}` : swatch;
+    if (!label) return;
+    const match = label.match(HEX_RE);
+    const name = match ? label.replace(match[0], "").trim() : label;
+    const value = match
+      ? name
+        ? `${name} ${match[0]}`
+        : match[0]
+      : `${name} ${swatch}`;
     if (colors.includes(value)) return;
     onSave({ colors: [...colors, value] });
     setColorDraft("");
@@ -215,9 +230,9 @@ export function AdminProductEditor({
           />
           <input
             value={colorDraft}
-            onChange={(e) => setColorDraft(e.target.value)}
+            onChange={(e) => handleColorDraft(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addColor()}
-            placeholder="Colour name (e.g. Ecru)"
+            placeholder="Name + code (e.g. Ecru #E4D2BA)"
             className={`${inputClass} max-w-xs`}
           />
           <button

@@ -13,7 +13,9 @@ import pWoven from "@/assets/p-woven.jpg";
 import pOuterwear from "@/assets/p-outerwear.jpg";
 import pFleece from "@/assets/p-fleece.jpg";
 import pWorkwear from "@/assets/p-workwear.jpg";
-import pDevelopment from "@/assets/p-development.jpg";
+import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
+
+const pDevelopment = pDevelopmentAsset.url;
 
 export const Route = createFileRoute("/products")({
   head: () => getSEOMetadata({
