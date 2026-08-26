@@ -277,7 +277,10 @@ function AdminConsole() {
     const index = list.findIndex((c) => c.id === id);
     const target = index + direction;
     if (index < 0 || target < 0 || target >= list.length) return;
-    [list[index], list[target]] = [list[target], list[index]];
+    const a = list[index]!;
+    const b = list[target]!;
+    list[index] = b;
+    list[target] = a;
 
     // Persist a clean 1..n ordering, then let the homepage query pick it up.
     qc.setQueryData(
