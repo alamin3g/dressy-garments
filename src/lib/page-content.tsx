@@ -72,7 +72,7 @@ const area = (key: string, label: string, fallback: string, hint?: string): Page
   label,
   type: "textarea",
   fallback,
-  hint,
+  ...(hint ? { hint } : {}),
 });
 
 const heroSection = (eyebrow: string, title: string, intro: string): PageSectionDef => ({
