@@ -74,15 +74,6 @@ const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: 
   { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
 ];
 
-const PAGES = [
-  { path: "/", title: "Home" },
-  { path: "/capabilities", title: "Capabilities" },
-  { path: "/products", title: "Products" },
-  { path: "/factory", title: "Factory" },
-  { path: "/compliance", title: "Compliance" },
-  { path: "/about", title: "About" },
-  { path: "/contact", title: "Contact" },
-];
 
 const STATUSES = ["Live", "Draft", "Review"];
 const INQUIRY_STATUSES = ["New", "In progress", "Won", "Closed"];
