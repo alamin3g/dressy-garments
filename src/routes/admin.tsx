@@ -9,7 +9,6 @@ import {
   Globe2,
   FileText,
   Settings,
-  ShieldAlert,
   ExternalLink,
   Plus,
   Trash2,
@@ -64,8 +63,7 @@ type SectionId =
   | "popup"
   | "visitors"
   | "pages"
-  | "settings"
-  | "security";
+  | "settings";
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
@@ -75,7 +73,6 @@ const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: 
   { id: "popup", label: "PopUp Email", icon: Mail, hint: "Captured emails" },
   { id: "visitors", label: "Visitors", icon: Globe2, hint: "Visitor Tracking" },
   { id: "pages", label: "Pages", icon: FileText, hint: "Site routes" },
-  { id: "security", label: "Security", icon: ShieldAlert, hint: "Vulnerabilities" },
   { id: "settings", label: "Settings", icon: Settings, hint: "Company details" },
 ];
 
@@ -1183,142 +1180,6 @@ function AdminConsole() {
             )}
 
 
-            {active === "security" && (
-              <Panel 
-                title="Security Issues" 
-                subtitle="Make the admin page fully functional, with each and every features and admin page shoe real time data"
-              >
-                <div className="space-y-8 max-w-2xl">
-                  <div className="space-y-6">
-                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
-                      <div className="flex items-center gap-3 text-destructive">
-                        <ShieldAlert className="size-5" />
-                        <p className="font-semibold text-sm">Customer contact submissions exposed to anonymous users</p>
-                      </div>
-                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
-                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
-                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
-                      </p>
-                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                        The 'inquiries' table has an 'Allow all to inquiries' policy granting anon role full SELECT/UPDATE/DELETE access, and a separate policy allowing anon/authenticated to SELECT and DELETE all rows. This exposes customer names, emails, and messages to unauthenticated users. Remove the 'Allow all to inquiries', 'Allow authenticated users to see inquiries', and 'Allow authenticated users to delete inquiries' policies so only the insert and admin-only policies remain.
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
-                      <div className="flex items-center gap-3 text-destructive">
-                        <ShieldAlert className="size-5" />
-                        <p className="font-semibold text-sm">Visitor IP and analytics data exposed to anonymous users</p>
-                      </div>
-                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
-                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
-                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
-                      </p>
-                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                        The 'visitors' table has an 'Allow all to visitors' policy granting the anon role full read/write/delete access, exposing IP addresses and browsing data to any unauthenticated client and allowing tampering/deletion. Remove this policy so writes only occur via the server/service role and reads remain admin-only.
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
-                      <div className="flex items-center gap-3 text-destructive">
-                        <ShieldAlert className="size-5" />
-                        <p className="font-semibold text-sm">Product catalog can be modified by anonymous users</p>
-                      </div>
-                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
-                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
-                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
-                      </p>
-                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                        The 'products' table has an 'Allow all to products' policy granting anon full ALL (SELECT/INSERT/UPDATE/DELETE) access, allowing any unauthenticated user to modify or delete product data, not just view live products. Remove this policy and rely on 'Live products are public' and 'Admins manage products' instead.
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 shadow-sm">
-                      <div className="flex items-center gap-3 text-destructive">
-                        <ShieldAlert className="size-5" />
-                        <p className="font-semibold text-sm">Site settings can be modified by anonymous users</p>
-                      </div>
-                      <p className="mt-2 text-xs font-bold text-destructive uppercase tracking-wider">Critical</p>
-                      <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
-                        Database schema review <span className="text-primary hover:underline cursor-pointer">Learn more about database security</span>
-                      </p>
-                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                        The 'site_settings' table has an 'Allow all to site_settings' policy granting anon full ALL access, allowing anyone to modify or delete site configuration data such as contact email/phone. Remove this policy and rely on 'Settings are public' (SELECT) and 'Admins manage settings' instead.
-                      </p>
-                    </div>
-
-                    <p className="mt-6 text-sm text-muted-foreground italic">
-                      Fixed this problem but do not change any function of website
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-border bg-card/50 p-6">
-                    <h3 className="text-sm font-semibold text-foreground">Next Steps & Maintenance</h3>
-                    <ul className="mt-4 space-y-4 text-sm text-muted-foreground leading-relaxed">
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Verify that each page renders the correct title, meta description, and Open Graph tags in the browser and when shared on social media.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add a sitemap.xml and robots.txt so search engines can discover and crawl all site pages.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add canonical URL tags on every page to prevent duplicate content issues and ensure search engines index the correct URLs.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Make sure the website's main logo is visible online, and verify this working</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>add so many functions on admin page settings</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Load the security issues from the scan results and fix the selected issues.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add more functions to the admin page settings</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Make the website scroll bar shorter</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>add email and whatsapp</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add this password to admin page- 1234, only password not email</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Add Google-style sitelinks/navigation links to the website and make them visible and fully responsive across all devices. Use these links: Contact, Product, Capabilities, and About. Each link should point to its corresponding page or section, work correctly on desktop, tablet, and mobile, and maintain the existing website’s design, typography, spacing, and visual style.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Make sure that the website logo shows online and also shows the verified batch</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>Oh, hero section "02 / Our Products," this is all a product category section where so only product category section and also make a admin page name "Product Category" where admin create and edit and delete category by naming and category image by url and uplaod.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>the Product Category admin page so only admins can create, edit, or delete categories.</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <span className="size-1.5 mt-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>When a user searches online or in a browser for "Dressy Clothing Ltd", this website must be on top, make sure</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </Panel>
-            )}
 
             {active === "settings" && (
 
