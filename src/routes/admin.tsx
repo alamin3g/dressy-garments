@@ -251,15 +251,54 @@ function AdminConsole() {
   });
 
   const handleCategoryUpload = async (id: string, file: File) => {
+    const localUrl = URL.createObjectURL(file);
+    setPreviews((p) => ({ ...p, [id]: localUrl }));
     setUploadingId(id);
     setCategoryError(null);
     try {
       const { url, path } = await uploadCategoryImage(file);
       await saveCategory.mutateAsync({ id, image_url: url, storage_path: path });
+      setPreviews((p) => ({ ...p, [id]: url }));
     } catch (e) {
       setCategoryError(e instanceof Error ? e.message : "Upload failed");
+      setPreviews((p) => {
+        const next = { ...p };
+        delete next[id];
+        return next;
+      });
     } finally {
+      URL.revokeObjectURL(localUrl);
       setUploadingId(null);
+    }
+  };
+
+  const moveCategory = async (id: string, direction: -1 | 1) => {
+    const list = [...(categories.data ?? [])].sort((a, b) => a.sort_order - b.sort_order);
+    const index = list.findIndex((c) => c.id === id);
+    const target = index + direction;
+    if (index < 0 || target < 0 || target >= list.length) return;
+    [list[index], list[target]] = [list[target], list[index]];
+
+    // Persist a clean 1..n ordering, then let the homepage query pick it up.
+    qc.setQueryData(
+      ["admin", "categories"],
+      list.map((c, i) => ({ ...c, sort_order: i + 1 })),
+    );
+    try {
+      for (const [i, c] of list.entries()) {
+        if (c.sort_order === i + 1) continue;
+        const { error } = await supabase
+          .from("product_categories")
+          .update({ sort_order: i + 1, updated_at: new Date().toISOString() })
+          .eq("id", c.id);
+        if (error) throw error;
+      }
+      setCategoryError(null);
+    } catch (e) {
+      setCategoryError(e instanceof Error ? e.message : "Could not save order");
+    } finally {
+      invalidate("categories");
+      qc.invalidateQueries({ queryKey: ["product-categories"] });
     }
   };
 
