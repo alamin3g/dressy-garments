@@ -22,6 +22,7 @@ import {
 
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
+import { AdminProductEditor } from "@/components/admin-product-editor";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -87,6 +88,8 @@ type ProductPatch = {
   status?: string;
   description?: string;
   sort_order?: number;
+  images?: string[];
+  colors?: string[];
 };
 type ProductInsert = ProductPatch & { name: string };
 
@@ -702,7 +705,7 @@ function AdminConsole() {
                         product={p as never}
                         categories={(categories.data ?? []).map((c) => c.name)}
                         statuses={STATUSES}
-                        onSave={(patch) => saveProduct.mutate({ id: p.id, ...patch })}
+                        onSave={(patch: Record<string, unknown>) => saveProduct.mutate({ id: p.id, ...patch })}
                         onDelete={() => deleteProduct.mutate(p.id)}
                       />
                     ))}
