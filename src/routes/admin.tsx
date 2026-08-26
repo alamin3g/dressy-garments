@@ -25,6 +25,8 @@ import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
 import { useDragSort } from "@/components/admin-sortable";
+import { AdminPageEditor } from "@/components/admin-page-editor";
+import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 import { GripVertical, Pencil } from "lucide-react";
 
