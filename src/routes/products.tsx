@@ -9,13 +9,18 @@ import { usePageContent } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 
 
-import pKnit from "@/assets/p-knit.jpg";
-import pWoven from "@/assets/p-woven.jpg";
-import pOuterwear from "@/assets/p-outerwear.jpg";
-import pFleece from "@/assets/p-fleece.jpg";
-import pWorkwear from "@/assets/p-workwear.jpg";
-import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
+import pKnitAsset from "@/assets/product-knit.png.asset.json";
+import pWovenAsset from "@/assets/product-woven.png.asset.json";
+import pOuterwearAsset from "@/assets/product-outerwear.png.asset.json";
+import pFleeceAsset from "@/assets/product-fleece.png.asset.json";
+import pWorkwearAsset from "@/assets/product-workwear.png.asset.json";
+import pDevelopmentAsset from "@/assets/product-development.png.asset.json";
 
+const pKnit = pKnitAsset.url;
+const pWoven = pWovenAsset.url;
+const pOuterwear = pOuterwearAsset.url;
+const pFleece = pFleeceAsset.url;
+const pWorkwear = pWorkwearAsset.url;
 const pDevelopment = pDevelopmentAsset.url;
 
 export const Route = createFileRoute("/products")({
