@@ -163,13 +163,15 @@ function AboutPage() {
         <div className="mx-auto max-w-[1400px] px-6 py-10 md:px-10">
           <div className="overflow-hidden border border-border bg-card shadow-xl flex flex-col md:flex-row">
             {/* Portrait column */}
-            <div className="md:w-5/12 relative min-h-[220px] bg-muted">
+            <div className="md:w-5/12 relative aspect-[3/4] sm:aspect-[4/5] md:aspect-auto md:min-h-[320px] bg-muted">
               {c("md_image", DEFAULTS.about.md_image) ? (
                 <img
                   src={c("md_image", DEFAULTS.about.md_image)}
                   alt={c("md_name", DEFAULTS.about.md_name)}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  width={800}
+                  height={1000}
+                  className="absolute inset-0 h-full w-full object-cover object-top"
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d]">
