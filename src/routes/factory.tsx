@@ -32,8 +32,10 @@ const STATS = DEFAULTS.factory.stats.map(([value, label], i) => ({
 const FLOORS = DEFAULTS.factory.floors.map(([name, body]) => ({ name, body }));
 
 const GALLERY = [
-  { src: buildingAsset.url, alt: "Dressy Clothing Ltd. factory building exterior with yellow Dressy sign" },
-  { src: machineAsset.url, alt: "Close-up of an industrial sewing machine on the Dressy production floor" },
+  { src: futureBuildingAsset.url, alt: "Aerial view of the Dressy Clothing Ltd. factory campus in Ashulia, Dhaka" },
+  { src: receptionAsset.url, alt: "Dressy reception and showroom lobby with brick walls and yellow Dressy sign" },
+  { src: sewingFloorAsset.url, alt: "Dressy sewing floor with operators at industrial machines" },
+  { src: packedCartonsAsset.url, alt: "Stacked Dressy-branded export cartons ready for shipping" },
 ];
 
 
