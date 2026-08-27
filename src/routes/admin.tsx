@@ -367,6 +367,21 @@ function AdminConsole() {
     },
   });
 
+  const deleteAllProducts = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from("products")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000");
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      refreshProducts();
+      toast.success("All products removed");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
 
   /* --------------------------------------------- card popups + drag ordering */
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
@@ -836,13 +851,31 @@ function AdminConsole() {
                 title="Products"
                 subtitle="Styles shown on the public products page. Click a card to edit, drag to reorder."
                 right={
-                  <button
-                    type="button"
-                    onClick={() => createProduct.mutate()}
-                    className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
-                  >
-                    <Plus className="size-3.5" /> New style
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (window.confirm("Delete ALL products? This cannot be undone."))
+                          deleteAllProducts.mutate();
+                      }}
+                      disabled={deleteAllProducts.isPending || sortedProducts.length === 0}
+                      className="label-xs inline-flex items-center gap-2 rounded-xl border border-destructive/50 px-4 py-2.5 text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground disabled:opacity-50"
+                    >
+                      {deleteAllProducts.isPending ? (
+                        <Loader2 className="size-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="size-3.5" />
+                      )}
+                      Delete all
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => createProduct.mutate()}
+                      className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
+                    >
+                      <Plus className="size-3.5" /> New style
+                    </button>
+                  </div>
                 }
               >
                 <ProductLivePreview />
