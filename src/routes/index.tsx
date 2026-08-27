@@ -149,9 +149,6 @@ function Index() {
     icon: fb.icon,
     label: parts[0] ?? fb.label,
   }));
-  const markets = mergeList(c("global_markets"), DEFAULTS.home.markets, (parts, fb) => ({
-    label: parts[0] ?? fb,
-  }));
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
     queryFn: fetchProductCategories,
