@@ -851,13 +851,31 @@ function AdminConsole() {
                 title="Products"
                 subtitle="Styles shown on the public products page. Click a card to edit, drag to reorder."
                 right={
-                  <button
-                    type="button"
-                    onClick={() => createProduct.mutate()}
-                    className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
-                  >
-                    <Plus className="size-3.5" /> New style
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (window.confirm("Delete ALL products? This cannot be undone."))
+                          deleteAllProducts.mutate();
+                      }}
+                      disabled={deleteAllProducts.isPending || sortedProducts.length === 0}
+                      className="label-xs inline-flex items-center gap-2 rounded-xl border border-destructive/50 px-4 py-2.5 text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground disabled:opacity-50"
+                    >
+                      {deleteAllProducts.isPending ? (
+                        <Loader2 className="size-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="size-3.5" />
+                      )}
+                      Delete all
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => createProduct.mutate()}
+                      className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
+                    >
+                      <Plus className="size-3.5" /> New style
+                    </button>
+                  </div>
                 }
               >
                 <ProductLivePreview />
