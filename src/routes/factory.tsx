@@ -32,7 +32,6 @@ const STATS = DEFAULTS.factory.stats.map(([value, label], i) => ({
 const FLOORS = DEFAULTS.factory.floors.map(([name, body]) => ({ name, body }));
 
 const GALLERY = [
-const GALLERY = [
   { src: futureUpAsset.url, alt: "Aerial view of the Dressy Clothing Ltd. factory campus in Ashulia, Dhaka" },
   { src: receptionAsset.url, alt: "Dressy reception and showroom lobby" },
   { src: insideAsset.url, alt: "Dressy sewing floor with operators at production lines" },
