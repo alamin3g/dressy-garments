@@ -367,6 +367,21 @@ function AdminConsole() {
     },
   });
 
+  const deleteAllProducts = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from("products")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000");
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      refreshProducts();
+      toast.success("All products removed");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
 
   /* --------------------------------------------- card popups + drag ordering */
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
