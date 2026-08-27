@@ -30,6 +30,12 @@ const STATS = DEFAULTS.factory.stats.map(([value, label], i) => ({
 
 const FLOORS = DEFAULTS.factory.floors.map(([name, body]) => ({ name, body }));
 
+const GALLERY = [
+  { src: cuttingAsset.url, alt: "Cutting floor with auto-spreaders and fabric rolls" },
+  { src: printAsset.url, alt: "Print and embroidery production floor" },
+  { src: packingAsset.url, alt: "Finishing, steam tunnel and carton packing area" },
+];
+
 function FactoryPage() {
   const c = usePageContent("/factory");
   const stats = mergeList(c("stats"), STATS, (parts, fb) => ({
