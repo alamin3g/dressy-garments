@@ -194,7 +194,7 @@ export const DEFAULTS = {
       ["MD Jahangir Alam", "Assistant General Manager"],
     ],
     md_label: "Message from Managing Director",
-    md_name: "SM Khairul Islam",
+    md_name: "SM. KHAIRUL ISLAM",
     md_role: "Managing Director",
     md_initials: "MD",
     md_image: "/__l5e/assets-v1/6c747491-2dcb-457b-bf02-98e835fc3c9e/md-portrait.webp",
