@@ -3,10 +3,8 @@ import { Users, Shirt, Factory as FactoryIcon, Ruler } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
-import futureUpAsset from "@/assets/Dressy_Future_Up.png.asset.json";
-import receptionAsset from "@/assets/Dressy_Receiption.png.asset.json";
-import insideAsset from "@/assets/Dressy_Inside_Preview.png.asset.json";
-import packageAsset from "@/assets/Dressy_Package_real.png.asset.json";
+import buildingAsset from "@/assets/dressy-building.png.asset.json";
+import machineAsset from "@/assets/dressy-machine.png.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
 import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
@@ -32,10 +30,8 @@ const STATS = DEFAULTS.factory.stats.map(([value, label], i) => ({
 const FLOORS = DEFAULTS.factory.floors.map(([name, body]) => ({ name, body }));
 
 const GALLERY = [
-  { src: futureUpAsset.url, alt: "Aerial view of the Dressy Clothing Ltd. factory campus in Ashulia, Dhaka" },
-  { src: receptionAsset.url, alt: "Dressy reception and showroom lobby" },
-  { src: insideAsset.url, alt: "Dressy sewing floor with operators at production lines" },
-  { src: packageAsset.url, alt: "Packed Dressy cartons ready for export" },
+  { src: buildingAsset.url, alt: "Dressy Clothing Ltd. factory building exterior with yellow Dressy sign" },
+  { src: machineAsset.url, alt: "Close-up of an industrial sewing machine on the Dressy production floor" },
 ];
 
 
@@ -103,16 +99,16 @@ function FactoryPage() {
           <div className="mb-16">
             <p className="label-xs text-primary">Future Projects</p>
             <h2 className="display mt-2 text-2xl sm:text-3xl">Capacity expansion & new lines</h2>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-px bg-border sm:grid-cols-2">
               {GALLERY.map((img) => (
                 <img
                   key={img.alt}
                   src={img.src}
                   alt={img.alt}
                   loading="lazy"
-                  width={1024}
-                  height={576}
-                  className="h-56 w-full rounded-2xl object-cover transition-transform duration-500 hover:scale-[1.02]"
+                  width={886}
+                  height={671}
+                  className="h-64 w-full object-cover transition-transform duration-500 hover:scale-[1.02] sm:h-80 lg:h-[420px]"
                 />
               ))}
             </div>
