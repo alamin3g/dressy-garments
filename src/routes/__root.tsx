@@ -13,6 +13,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChatWidget } from "@/components/chat-widget";
+import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { Toaster } from "@/components/ui/sonner";
 import { trackVisit } from "@/lib/analytics.functions";
 
