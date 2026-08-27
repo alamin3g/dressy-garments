@@ -31,11 +31,11 @@ import { SiteHeader } from "@/components/site-header";
 import { AutoReveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { EmailGatePopup } from "@/components/email-gate-popup";
+import { Globe } from "@/components/ui/cobe-globe";
 
 
 import heroImg from "@/assets/hero-sewing.jpg";
 import heroVideo from "@/assets/dressy-hero-video.mp4.asset.json";
-import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/w-5.jpg.asset.json";
@@ -109,17 +109,32 @@ const WELFARE = DEFAULTS.home.welfare.map((label, i) => ({
   label,
 }));
 
-const MARKET_POS = [
-  { top: "42%", left: "20%" },
-  { top: "26%", left: "48%" },
-  { top: "62%", left: "45%" },
-  { top: "66%", left: "76%" },
+const GLOBE_MARKERS = [
+  { id: "dhaka", location: [23.8103, 90.4125] as [number, number], label: "Dhaka (HQ)" },
+  { id: "usa", location: [40.7128, -74.006] as [number, number], label: "USA" },
+  { id: "uk", location: [51.5074, -0.1278] as [number, number], label: "UK" },
+  { id: "germany", location: [52.52, 13.405] as [number, number], label: "Germany" },
+  { id: "france", location: [48.8566, 2.3522] as [number, number], label: "France" },
+  { id: "italy", location: [41.9028, 12.4964] as [number, number], label: "Italy" },
+  { id: "spain", location: [40.4168, -3.7038] as [number, number], label: "Spain" },
+  { id: "greece", location: [37.9838, 23.7275] as [number, number], label: "Greece" },
+  { id: "saudi", location: [24.7136, 46.6753] as [number, number], label: "Saudi Arabia" },
+  { id: "singapore", location: [1.3521, 103.8198] as [number, number], label: "Singapore" },
+  { id: "nz", location: [-36.8485, 174.7633] as [number, number], label: "New Zealand" },
 ];
-const MARKETS = DEFAULTS.home.markets.map((label, i) => ({
-  label,
-  top: MARKET_POS[i % MARKET_POS.length]!.top,
-  left: MARKET_POS[i % MARKET_POS.length]!.left,
-}));
+
+const GLOBE_ARCS = [
+  { id: "dhaka-usa", from: [23.8103, 90.4125] as [number, number], to: [40.7128, -74.006] as [number, number], label: "Dhaka → USA" },
+  { id: "dhaka-uk", from: [23.8103, 90.4125] as [number, number], to: [51.5074, -0.1278] as [number, number], label: "Dhaka → UK" },
+  { id: "dhaka-germany", from: [23.8103, 90.4125] as [number, number], to: [52.52, 13.405] as [number, number], label: "Dhaka → Germany" },
+  { id: "dhaka-france", from: [23.8103, 90.4125] as [number, number], to: [48.8566, 2.3522] as [number, number], label: "Dhaka → France" },
+  { id: "dhaka-italy", from: [23.8103, 90.4125] as [number, number], to: [41.9028, 12.4964] as [number, number], label: "Dhaka → Italy" },
+  { id: "dhaka-spain", from: [23.8103, 90.4125] as [number, number], to: [40.4168, -3.7038] as [number, number], label: "Dhaka → Spain" },
+  { id: "dhaka-greece", from: [23.8103, 90.4125] as [number, number], to: [37.9838, 23.7275] as [number, number], label: "Dhaka → Greece" },
+  { id: "dhaka-saudi", from: [23.8103, 90.4125] as [number, number], to: [24.7136, 46.6753] as [number, number], label: "Dhaka → Saudi Arabia" },
+  { id: "dhaka-singapore", from: [23.8103, 90.4125] as [number, number], to: [1.3521, 103.8198] as [number, number], label: "Dhaka → Singapore" },
+  { id: "dhaka-nz", from: [23.8103, 90.4125] as [number, number], to: [-36.8485, 174.7633] as [number, number], label: "Dhaka → New Zealand" },
+];
 
 function Index() {
   useCatalogRealtime();
@@ -133,11 +148,6 @@ function Index() {
   const welfare = mergeList(c("resp_welfare"), WELFARE, (parts, fb) => ({
     icon: fb.icon,
     label: parts[0] ?? fb.label,
-  }));
-  const markets = mergeList(c("global_markets"), MARKETS, (parts, fb) => ({
-    label: parts[0] ?? fb.label,
-    top: fb.top,
-    left: fb.left,
   }));
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
@@ -409,22 +419,21 @@ function Index() {
         <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_1.4fr_0.8fr]">
           <h2 className="display text-4xl md:text-5xl">{renderRichText(c("global_title"), <>Made Here.<br />Worn Everywhere.</>)}</h2>
           <div className="relative aspect-[2/1] w-full">
-            <img
-              src={worldMap}
-              alt="World map showing Dressy export markets"
-              loading="lazy"
-              width={1400}
-              height={700}
-              className="absolute inset-0 size-full object-contain opacity-90"
-            />
-            {markets.map((m) => (
-              <div key={m.label} className="absolute" style={{ top: m.top, left: m.left }}>
-                <span className="block size-2 animate-pulse rounded-full bg-primary" />
-                <span className="label-xs mt-2 block whitespace-nowrap text-muted-foreground">
-                  {m.label}
-                </span>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-full aspect-square">
+                <Globe
+                  markers={GLOBE_MARKERS}
+                  arcs={GLOBE_ARCS}
+                  markerColor={[0.85, 0.72, 0.2]}
+                  baseColor={[0.2, 0.2, 0.25]}
+                  arcColor={[0.85, 0.72, 0.2]}
+                  glowColor={[0.3, 0.3, 0.35]}
+                  dark={1}
+                  mapBrightness={8}
+                  markerSize={0.03}
+                />
               </div>
-            ))}
+            </div>
           </div>
 
           <Link
