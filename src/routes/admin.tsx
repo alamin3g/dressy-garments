@@ -685,6 +685,24 @@ function AdminConsole() {
                                 <Loader2 className="size-5 animate-spin text-primary" />
                               </div>
                             )}
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              aria-label={`Delete ${c.name}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (window.confirm(`Delete category "${c.name}"?`))
+                                  deleteCategory.mutate(c.id);
+                              }}
+                              onKeyDown={(e) => e.stopPropagation()}
+                              className="absolute right-3 top-3 rounded-full bg-background/90 p-1.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
+                            >
+                              {deleteCategory.isPending && deleteCategory.variables === c.id ? (
+                                <Loader2 className="size-3.5 animate-spin" />
+                              ) : (
+                                <Trash2 className="size-3.5" />
+                              )}
+                            </span>
                           </div>
                           <div className="flex items-center justify-between gap-2 px-4 py-3">
                             <p className="truncate text-sm font-semibold">{c.name}</p>
@@ -818,8 +836,26 @@ function AdminConsole() {
                             <span className="label-xs absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-[10px]">
                               <GripVertical className="size-3" /> #{index + 1}
                             </span>
-                            <span className="absolute right-3 top-3">
+                            <span className="absolute right-3 top-3 flex items-center gap-2">
                               <Pill value={p.status} />
+                              <span
+                                role="button"
+                                tabIndex={0}
+                                aria-label={`Delete ${p.name}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (window.confirm(`Delete product "${p.name}"?`))
+                                    deleteProduct.mutate(p.id);
+                                }}
+                                onKeyDown={(e) => e.stopPropagation()}
+                                className="rounded-full bg-background/90 p-1.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
+                              >
+                                {deleteProduct.isPending && deleteProduct.variables === p.id ? (
+                                  <Loader2 className="size-3.5 animate-spin" />
+                                ) : (
+                                  <Trash2 className="size-3.5" />
+                                )}
+                              </span>
                             </span>
                             {images.length > 1 && (
                               <span className="label-xs absolute bottom-3 right-3 rounded-full bg-background/90 px-2 py-0.5 text-[10px]">
