@@ -39,7 +39,7 @@ export function PageShell({
               {titleNode}
             </h1>
             <p
-              className="max-w-md animate-fade-up self-end text-sm leading-relaxed text-muted-foreground"
+              className="max-w-md animate-fade-up self-end font-sans text-sm leading-relaxed text-muted-foreground"
               style={{ animationDelay: "180ms" }}
             >
               {introText}
