@@ -215,12 +215,7 @@ function AboutPage() {
                   <p className="label-xs mt-1 text-muted-foreground">{c("md_role", DEFAULTS.about.md_role)}</p>
                 </div>
                 <span className="font-script text-2xl text-primary/80 -rotate-2 select-none">
-                  {c("md_name", DEFAULTS.about.md_name)
-                    .split(" ")
-                    .filter(Boolean)
-                    .slice(-2)
-                    .map((n) => n[0])
-                    .join("")}
+                  {c("md_initials", DEFAULTS.about.md_initials)}
                 </span>
               </div>
             </div>
