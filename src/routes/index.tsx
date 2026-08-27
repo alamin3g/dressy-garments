@@ -416,9 +416,9 @@ function Index() {
 
       {/* Global reach */}
       <section className="border-b border-border">
-        <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_1.4fr_0.8fr]">
+        <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-6 py-16 md:px-10 lg:grid-cols-[0.8fr_2fr_0.8fr]">
           <h2 className="display text-4xl md:text-5xl">{renderRichText(c("global_title"), <>Made Here.<br />Worn Everywhere.</>)}</h2>
-          <div className="relative aspect-[2/1] w-full">
+          <div className="relative aspect-[4/3] min-h-[420px] w-full md:min-h-[520px]">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="h-full aspect-square">
                 <Globe
