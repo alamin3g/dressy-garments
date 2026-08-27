@@ -189,7 +189,7 @@ function RootComponent() {
       <div className="pt-16 md:pt-20">
         <Outlet />
       </div>
-      <ChatWidget />
+      {!pathname.startsWith("/admin") && <ChatWidget />}
       <Toaster position="bottom-center" richColors closeButton />
     </QueryClientProvider>
   );
