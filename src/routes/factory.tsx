@@ -3,9 +3,10 @@ import { Users, Shirt, Factory as FactoryIcon, Ruler } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
-import cuttingAsset from "@/assets/gallery-cutting.jpg.asset.json";
-import printAsset from "@/assets/gallery-print.jpg.asset.json";
-import packingAsset from "@/assets/gallery-packing.jpg.asset.json";
+import futureUpAsset from "@/assets/Dressy_Future_Up.png.asset.json";
+import receptionAsset from "@/assets/Dressy_Receiption.png.asset.json";
+import insideAsset from "@/assets/Dressy_Inside_Preview.png.asset.json";
+import packageAsset from "@/assets/Dressy_Package_real.png.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
 import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
