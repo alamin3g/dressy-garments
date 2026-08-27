@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import {
   LayoutDashboard,
@@ -263,15 +264,36 @@ function AdminConsole() {
     onError: (e: Error) => setCategoryError(e.message),
   });
 
+  const refreshCategories = () => {
+    setCategoryError(null);
+    invalidate("categories");
+    qc.invalidateQueries({ queryKey: ["product-categories"] });
+  };
+
   const deleteCategory = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("product_categories").delete().eq("id", id);
+    mutationFn: async (row: { id: string } & Record<string, unknown>) => {
+      const { error } = await supabase.from("product_categories").delete().eq("id", row.id);
       if (error) throw error;
+      return row;
     },
-    onSuccess: () => {
-      setCategoryError(null);
-      invalidate("categories");
-      qc.invalidateQueries({ queryKey: ["product-categories"] });
+    onSuccess: (row) => {
+      refreshCategories();
+      toast.success(`Deleted "${String(row["name"] ?? "category")}"`, {
+        duration: 8000,
+        action: {
+          label: "Undo",
+          onClick: async () => {
+            const { error } = await supabase
+              .from("product_categories")
+              .insert(row as never);
+            if (error) toast.error(error.message);
+            else {
+              refreshCategories();
+              toast.success("Category restored");
+            }
+          },
+        },
+      });
     },
     onError: (e: Error) => setCategoryError(e.message),
   });
@@ -315,14 +337,33 @@ function AdminConsole() {
     },
   });
 
+  const refreshProducts = () => {
+    void invalidate("products");
+    void qc.invalidateQueries({ queryKey: ["public", "products"] });
+  };
+
   const deleteProduct = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("products").delete().eq("id", id);
+    mutationFn: async (row: { id: string } & Record<string, unknown>) => {
+      const { error } = await supabase.from("products").delete().eq("id", row.id);
       if (error) throw error;
+      return row;
     },
-    onSuccess: () => {
-      void invalidate("products");
-      void qc.invalidateQueries({ queryKey: ["public", "products"] });
+    onSuccess: (row) => {
+      refreshProducts();
+      toast.success(`Deleted "${String(row["name"] ?? "product")}"`, {
+        duration: 8000,
+        action: {
+          label: "Undo",
+          onClick: async () => {
+            const { error } = await supabase.from("products").insert(row as never);
+            if (error) toast.error(error.message);
+            else {
+              refreshProducts();
+              toast.success("Product restored");
+            }
+          },
+        },
+      });
     },
   });
 
@@ -692,12 +733,12 @@ function AdminConsole() {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 if (window.confirm(`Delete category "${c.name}"?`))
-                                  deleteCategory.mutate(c.id);
+                                  deleteCategory.mutate(c);
                               }}
                               onKeyDown={(e) => e.stopPropagation()}
                               className="absolute right-3 top-3 rounded-full bg-background/90 p-1.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
                             >
-                              {deleteCategory.isPending && deleteCategory.variables === c.id ? (
+                              {deleteCategory.isPending && deleteCategory.variables?.id === c.id ? (
                                 <Loader2 className="size-3.5 animate-spin" />
                               ) : (
                                 <Trash2 className="size-3.5" />
@@ -776,7 +817,7 @@ function AdminConsole() {
                         <button
                           type="button"
                           onClick={() => {
-                            deleteCategory.mutate(editingCategory.id);
+                            deleteCategory.mutate(editingCategory);
                             setEditingCategoryId(null);
                           }}
                           className="label-xs ml-auto inline-flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
@@ -845,12 +886,12 @@ function AdminConsole() {
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   if (window.confirm(`Delete product "${p.name}"?`))
-                                    deleteProduct.mutate(p.id);
+                                    deleteProduct.mutate(p);
                                 }}
                                 onKeyDown={(e) => e.stopPropagation()}
                                 className="rounded-full bg-background/90 p-1.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
                               >
-                                {deleteProduct.isPending && deleteProduct.variables === p.id ? (
+                                {deleteProduct.isPending && deleteProduct.variables?.id === p.id ? (
                                   <Loader2 className="size-3.5 animate-spin" />
                                 ) : (
                                   <Trash2 className="size-3.5" />
@@ -914,7 +955,7 @@ function AdminConsole() {
                         saveProduct.mutate({ id: editingProduct.id, ...patch })
                       }
                       onDelete={() => {
-                        deleteProduct.mutate(editingProduct.id);
+                        deleteProduct.mutate(editingProduct);
                         setEditingProductId(null);
                       }}
                     />
