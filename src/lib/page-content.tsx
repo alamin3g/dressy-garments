@@ -188,7 +188,7 @@ export const DEFAULTS = {
       "Saudi Arabia",
     ],
     leadership: [
-      ["SM Khairul Islam", "Managing Director"],
+      ["SM. KHAIRUL ISLAM", "Managing Director"],
       ["Tariq Ali", "Director Technical"],
       ["Mehadul Hossain Sumon", "General Manager"],
       ["MD Jahangir Alam", "Assistant General Manager"],
