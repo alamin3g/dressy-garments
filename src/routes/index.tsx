@@ -38,12 +38,12 @@ import heroImg from "@/assets/hero-sewing.jpg";
 import heroVideo from "@/assets/dressy-hero-video.mp4.asset.json";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/dressy-cartons.png.asset.json";
-import pKnit from "@/assets/w-5.jpg.asset.json";
-import pWoven from "@/assets/w-1.jpg.asset.json";
-import pOuterwear from "@/assets/w-3.jpg.asset.json";
-import pFleece from "@/assets/w-2.jpg.asset.json";
-import pWorkwear from "@/assets/w-4.jpg.asset.json";
-import pDevelopmentAsset from "@/assets/p-development.jpg.asset.json";
+import pKnit from "@/assets/product-knit.png.asset.json";
+import pWoven from "@/assets/product-woven.png.asset.json";
+import pOuterwear from "@/assets/product-outerwear.png.asset.json";
+import pFleece from "@/assets/product-fleece.png.asset.json";
+import pWorkwear from "@/assets/product-workwear.png.asset.json";
+import pDevelopmentAsset from "@/assets/product-development.png.asset.json";
 import certBanner from "@/assets/certifications.png.asset.json";
 
 const pDevelopment = pDevelopmentAsset.url;
