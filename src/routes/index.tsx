@@ -209,8 +209,8 @@ function Index() {
             <div>
               <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">{c("hero_eyebrow", "DRESSY CLOTHING LTD")}</p>
               <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" style={{ animationDelay: "100ms" }}>
-                <span className="text-white">{c("hero_title_1", "Stitching With")}</span>{" "}
-                <span className="text-primary">{c("hero_title_2", "Care & Love")}</span>
+                <span className="text-white">{c("hero_title_1", "DRESSY CLOTHING LTD")}</span>{" "}
+                <span className="text-primary">{c("hero_title_2", "Stitching With Care & Love")}</span>
               </h1>
               <p className="mt-6 max-w-sm animate-fade-up text-sm leading-relaxed text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]" style={{ animationDelay: "200ms" }}>
                 {c(
