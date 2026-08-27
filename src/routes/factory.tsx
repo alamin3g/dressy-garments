@@ -97,6 +97,23 @@ function FactoryPage() {
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
+          <div className="mb-16">
+            <p className="label-xs text-primary">Future Projects</p>
+            <h2 className="display mt-2 text-2xl sm:text-3xl">Capacity expansion & new lines</h2>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {GALLERY.map((img) => (
+                <img
+                  key={img.alt}
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  width={1024}
+                  height={576}
+                  className="h-56 w-full rounded-2xl object-cover transition-transform duration-500 hover:scale-[1.02]"
+                />
+              ))}
+            </div>
+          </div>
           <p className="label-xs text-primary">{c("floors_label", "Inside the Facility")}</p>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
             {floors.map((f, i) => (
