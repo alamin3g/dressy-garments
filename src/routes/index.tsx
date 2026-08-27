@@ -149,10 +149,8 @@ function Index() {
     icon: fb.icon,
     label: parts[0] ?? fb.label,
   }));
-  const markets = mergeList(c("global_markets"), MARKETS, (parts, fb) => ({
-    label: parts[0] ?? fb.label,
-    top: fb.top,
-    left: fb.left,
+  const markets = mergeList(c("global_markets"), DEFAULTS.home.markets, (parts, fb) => ({
+    label: parts[0] ?? fb,
   }));
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
@@ -424,22 +422,21 @@ function Index() {
         <div className="mx-auto grid max-w-[1400px] items-center gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1fr_1.4fr_0.8fr]">
           <h2 className="display text-4xl md:text-5xl">{renderRichText(c("global_title"), <>Made Here.<br />Worn Everywhere.</>)}</h2>
           <div className="relative aspect-[2/1] w-full">
-            <img
-              src={worldMap}
-              alt="World map showing Dressy export markets"
-              loading="lazy"
-              width={1400}
-              height={700}
-              className="absolute inset-0 size-full object-contain opacity-90"
-            />
-            {markets.map((m) => (
-              <div key={m.label} className="absolute" style={{ top: m.top, left: m.left }}>
-                <span className="block size-2 animate-pulse rounded-full bg-primary" />
-                <span className="label-xs mt-2 block whitespace-nowrap text-muted-foreground">
-                  {m.label}
-                </span>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-full aspect-square">
+                <Globe
+                  markers={GLOBE_MARKERS}
+                  arcs={GLOBE_ARCS}
+                  markerColor={[0.85, 0.72, 0.2]}
+                  baseColor={[0.2, 0.2, 0.25]}
+                  arcColor={[0.85, 0.72, 0.2]}
+                  glowColor={[0.3, 0.3, 0.35]}
+                  dark={1}
+                  mapBrightness={8}
+                  markerSize={0.03}
+                />
               </div>
-            ))}
+            </div>
           </div>
 
           <Link
