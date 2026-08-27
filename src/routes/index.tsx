@@ -31,11 +31,11 @@ import { SiteHeader } from "@/components/site-header";
 import { AutoReveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { EmailGatePopup } from "@/components/email-gate-popup";
+import { Globe } from "@/components/ui/cobe-globe";
 
 
 import heroImg from "@/assets/hero-sewing.jpg";
 import heroVideo from "@/assets/dressy-hero-video.mp4.asset.json";
-import worldMap from "@/assets/world-map.jpg";
 import factoryImg from "@/assets/factory.jpg";
 import ctaImg from "@/assets/cta-tags.png";
 import pKnit from "@/assets/w-5.jpg.asset.json";
