@@ -109,17 +109,32 @@ const WELFARE = DEFAULTS.home.welfare.map((label, i) => ({
   label,
 }));
 
-const MARKET_POS = [
-  { top: "42%", left: "20%" },
-  { top: "26%", left: "48%" },
-  { top: "62%", left: "45%" },
-  { top: "66%", left: "76%" },
+const GLOBE_MARKERS = [
+  { id: "dhaka", location: [23.8103, 90.4125] as [number, number], label: "Dhaka (HQ)" },
+  { id: "usa", location: [40.7128, -74.006] as [number, number], label: "USA" },
+  { id: "uk", location: [51.5074, -0.1278] as [number, number], label: "UK" },
+  { id: "germany", location: [52.52, 13.405] as [number, number], label: "Germany" },
+  { id: "france", location: [48.8566, 2.3522] as [number, number], label: "France" },
+  { id: "italy", location: [41.9028, 12.4964] as [number, number], label: "Italy" },
+  { id: "spain", location: [40.4168, -3.7038] as [number, number], label: "Spain" },
+  { id: "greece", location: [37.9838, 23.7275] as [number, number], label: "Greece" },
+  { id: "saudi", location: [24.7136, 46.6753] as [number, number], label: "Saudi Arabia" },
+  { id: "singapore", location: [1.3521, 103.8198] as [number, number], label: "Singapore" },
+  { id: "nz", location: [-36.8485, 174.7633] as [number, number], label: "New Zealand" },
 ];
-const MARKETS = DEFAULTS.home.markets.map((label, i) => ({
-  label,
-  top: MARKET_POS[i % MARKET_POS.length]!.top,
-  left: MARKET_POS[i % MARKET_POS.length]!.left,
-}));
+
+const GLOBE_ARCS = [
+  { id: "dhaka-usa", from: [23.8103, 90.4125] as [number, number], to: [40.7128, -74.006] as [number, number], label: "Dhaka → USA" },
+  { id: "dhaka-uk", from: [23.8103, 90.4125] as [number, number], to: [51.5074, -0.1278] as [number, number], label: "Dhaka → UK" },
+  { id: "dhaka-germany", from: [23.8103, 90.4125] as [number, number], to: [52.52, 13.405] as [number, number], label: "Dhaka → Germany" },
+  { id: "dhaka-france", from: [23.8103, 90.4125] as [number, number], to: [48.8566, 2.3522] as [number, number], label: "Dhaka → France" },
+  { id: "dhaka-italy", from: [23.8103, 90.4125] as [number, number], to: [41.9028, 12.4964] as [number, number], label: "Dhaka → Italy" },
+  { id: "dhaka-spain", from: [23.8103, 90.4125] as [number, number], to: [40.4168, -3.7038] as [number, number], label: "Dhaka → Spain" },
+  { id: "dhaka-greece", from: [23.8103, 90.4125] as [number, number], to: [37.9838, 23.7275] as [number, number], label: "Dhaka → Greece" },
+  { id: "dhaka-saudi", from: [23.8103, 90.4125] as [number, number], to: [24.7136, 46.6753] as [number, number], label: "Dhaka → Saudi Arabia" },
+  { id: "dhaka-singapore", from: [23.8103, 90.4125] as [number, number], to: [1.3521, 103.8198] as [number, number], label: "Dhaka → Singapore" },
+  { id: "dhaka-nz", from: [23.8103, 90.4125] as [number, number], to: [-36.8485, 174.7633] as [number, number], label: "Dhaka → New Zealand" },
+];
 
 function Index() {
   useCatalogRealtime();
