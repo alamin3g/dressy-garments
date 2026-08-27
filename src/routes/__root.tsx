@@ -167,6 +167,11 @@ function ScrollProgress() {
   return null;
 }
 
+function RealtimeSync() {
+  useCatalogRealtime();
+  return null;
+}
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
