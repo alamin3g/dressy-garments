@@ -103,7 +103,7 @@ function FactoryPage() {
           <div className="mb-16">
             <p className="label-xs text-primary">Future Projects</p>
             <h2 className="display mt-2 text-2xl sm:text-3xl">Capacity expansion & new lines</h2>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {GALLERY.map((img) => (
                 <img
                   key={img.alt}
