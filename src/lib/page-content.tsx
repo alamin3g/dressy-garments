@@ -168,9 +168,9 @@ export const DEFAULTS = {
   about: {
     story_title: "Our Story",
     story_p1:
-      "Dressy Clothing started as a buying house under the profound guidance of our Managing Director. With 25 years of expertise in the garment industry, our company has achieved tremendous success and goodwill. Our team is led by the Managing Director, who has a wealth of expertise and knowledge. With the Managing Director’s vision, the company expanded to a manufacturing wing named Dressy Clothing.",
+      "Dressy Clothing started as a buying house under the profound guidance of our Managing Director. With 25 years of expertise in the garment industry, our company has achieved tremendous success and goodwill. Our team is led by the Managing Director, who has a wealth of expertise and knowledge. With the Managing Director's vision, the company expanded to a manufacturing wing named Dressy Clothing.",
     story_p2:
-      "Dressy Clothing is a 100% export-oriented readymade Garments Industry. Our product is made with high-quality yarn sourced from just the best sources across the world. We are committed to providing goods and services on time and at affordable prices. We offer to our clients a fabulous collection of woven and custom wears for men’s, women’s, boys, girls and kids.",
+      "Dressy Clothing is a 100% export-oriented readymade Garments Industry. Our product is made with high-quality yarn sourced from just the best sources across the world. We are committed to providing goods and services on time and at affordable prices. We offer to our clients a fabulous collection of woven and custom wears for men's, women's, boys, girls and kids.",
     global_label: "Global Distribution",
     global_title: "Dressy Delivering Quality Worldwide",
     global_body:
@@ -193,6 +193,11 @@ export const DEFAULTS = {
       ["Mehadul Hossain Sumon", "General Manager"],
       ["MD Jahangir Alam", "Assistant General Manager"],
     ],
+    md_label: "Message from Managing Director",
+    md_name: "SM Khairul Islam",
+    md_role: "Managing Director",
+    md_message:
+      "At Dressy Clothing, our commitment is simple: deliver quality garments with integrity, on time and at the right value. Every product we ship carries the care of our people and the trust of our partners. We look forward to growing together.",
   },
 };
 
