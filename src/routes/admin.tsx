@@ -263,15 +263,36 @@ function AdminConsole() {
     onError: (e: Error) => setCategoryError(e.message),
   });
 
+  const refreshCategories = () => {
+    setCategoryError(null);
+    invalidate("categories");
+    qc.invalidateQueries({ queryKey: ["product-categories"] });
+  };
+
   const deleteCategory = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("product_categories").delete().eq("id", id);
+    mutationFn: async (row: { id: string } & Record<string, unknown>) => {
+      const { error } = await supabase.from("product_categories").delete().eq("id", row.id);
       if (error) throw error;
+      return row;
     },
-    onSuccess: () => {
-      setCategoryError(null);
-      invalidate("categories");
-      qc.invalidateQueries({ queryKey: ["product-categories"] });
+    onSuccess: (row) => {
+      refreshCategories();
+      toast.success(`Deleted "${String(row.name ?? "category")}"`, {
+        duration: 8000,
+        action: {
+          label: "Undo",
+          onClick: async () => {
+            const { error } = await supabase
+              .from("product_categories")
+              .insert(row as never);
+            if (error) toast.error(error.message);
+            else {
+              refreshCategories();
+              toast.success("Category restored");
+            }
+          },
+        },
+      });
     },
     onError: (e: Error) => setCategoryError(e.message),
   });
