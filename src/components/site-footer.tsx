@@ -110,7 +110,7 @@ export function SiteFooter() {
               <a href="tel:+8801751244211" className="hover:text-foreground">+88 01751244211</a>
             </li>
             <li>
-              <a href="mailto:info@dressyclothing.com" className="hover:text-foreground">info@dressyclothing.com</a>
+              <a href="mailto:Khairul@dressyltd.com" className="hover:text-foreground">Khairul@dressyltd.com</a>
             </li>
           </ul>
         </div>
