@@ -190,7 +190,7 @@ function AboutPage() {
               <div className="mb-8">
                 <span className="label-xs text-primary block mb-3">{c("md_label", DEFAULTS.about.md_label)}</span>
                 <h2 className="display text-3xl md:text-4xl lg:text-5xl leading-tight">
-                  {c("md_title", "A commitment to care & quality")}
+                  {c("md_title", "WELCOME TO DRESSY CLOTHING LTD.")}
                 </h2>
                 <div className="mt-4 h-px w-16 bg-primary" />
               </div>
