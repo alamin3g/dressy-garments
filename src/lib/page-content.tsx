@@ -197,7 +197,7 @@ export const DEFAULTS = {
     md_name: "SM Khairul Islam",
     md_role: "Managing Director",
     md_message:
-      "At Dressy Clothing, our commitment is simple: deliver quality garments with integrity, on time and at the right value. Every product we ship carries the care of our people and the trust of our partners. We look forward to growing together.",
+      "Our journey began with a clear vision: to build a garment manufacturing company that international partners can trust for quality, consistency, and responsible production. Every garment we manufacture represents the dedication of our people, the strength of our craftsmanship, and our commitment to delivering excellence.\n\nWe believe successful partnerships are built through transparency, reliability, and mutual respect. By continuously improving our technology, production capabilities, and workforce, we strive to meet the evolving needs of the global fashion industry while delivering every order with precision and care.\n\nOn behalf of the entire Dressy Clothing family, I sincerely thank our valued clients, partners, employees, and everyone who has contributed to our journey. We look forward to building lasting relationships and taking Bangladeshi manufacturing excellence to markets worldwide.",
   },
 };
 
