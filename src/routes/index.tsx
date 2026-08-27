@@ -298,32 +298,36 @@ function Index() {
 
       {/* Products */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
+        <div className="mx-auto max-w-[1400px] px-6 py-20 md:px-10">
           <p className="label-xs text-primary">{c("products_label", "02 / Our Products")}</p>
-          <div className="mt-8 grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-10 grid grid-cols-1 gap-px bg-border border border-border sm:grid-cols-2 lg:grid-cols-3">
             {productCards.map((p) => (
               <Link
                 key={p.name}
                 to="/products"
-                className="group media-zoom relative aspect-[3/4] overflow-hidden bg-card"
+                className="group media-zoom relative aspect-[4/5] overflow-hidden bg-card"
               >
                 <img
                   src={p.img}
                   alt={`${p.name} garment detail`}
                   loading="lazy"
-                  width={600}
-                  height={800}
-                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  width={800}
+                  height={1000}
+                  className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-transparent to-background/40" />
-                <div className="absolute left-4 top-4">
-                  <p className="display text-2xl">{p.n}</p>
-                  <p className="label-xs mt-1">{p.name}</p>
+                <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-background/80" />
+                <div className="absolute left-5 top-5">
+                  <p className="display text-2xl text-white/90">{p.n}</p>
+                  <p className="label-xs mt-1 text-white/80">{p.name}</p>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-5 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+                  <span className="label-xs text-white">View Category</span>
+                  <ArrowRight className="size-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
               </Link>
             ))}
           </div>
-          <div className="mt-10 flex justify-end">
+          <div className="mt-12 flex justify-end">
             <Link
               to="/products"
               className="label-xs flex w-full max-w-xs items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"

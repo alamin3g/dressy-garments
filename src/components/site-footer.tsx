@@ -121,6 +121,9 @@ export function SiteFooter() {
           © 2026 Dressy Clothing Ltd. All rights reserved.
         </p>
         <div className="flex items-center gap-6">
+          <p className="text-[11px] text-muted-foreground">
+            Build by FlamaFlys.
+          </p>
           <Link to="/privacy" className="text-[11px] text-muted-foreground transition-colors hover:text-foreground">
             Privacy Policy
           </Link>
