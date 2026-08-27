@@ -189,6 +189,7 @@ function RootComponent() {
         <Outlet />
       </div>
       <ChatWidget />
+      <Toaster position="bottom-center" richColors closeButton />
     </QueryClientProvider>
   );
 
