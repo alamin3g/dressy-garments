@@ -157,6 +157,27 @@ function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Message from Managing Director */}
+      <section id="md-message" className="scroll-mt-28 border-b border-border">
+        <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
+          <div className="grid gap-10 lg:grid-cols-[0.35fr_1fr] items-start">
+            <div>
+              <p className="label-xs text-primary">{c("md_label", DEFAULTS.about.md_label)}</p>
+              <div className="mt-6">
+                <p className="display text-2xl">{c("md_name", DEFAULTS.about.md_name)}</p>
+                <p className="label-xs mt-2 text-muted-foreground">{c("md_role", DEFAULTS.about.md_role)}</p>
+              </div>
+            </div>
+            <blockquote className="relative">
+              <span className="absolute -left-2 -top-6 text-6xl text-primary/20 select-none">"</span>
+              <p className="relative pt-2 text-lg leading-relaxed md:text-xl text-foreground">
+                {c("md_message", DEFAULTS.about.md_message)}
+              </p>
+            </blockquote>
+          </div>
+        </div>
+      </section>
     </PageShell>
   );
 }
