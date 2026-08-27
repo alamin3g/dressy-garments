@@ -13,6 +13,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChatWidget } from "@/components/chat-widget";
+import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { Toaster } from "@/components/ui/sonner";
 import { trackVisit } from "@/lib/analytics.functions";
 
@@ -167,6 +168,11 @@ function ScrollProgress() {
   return null;
 }
 
+function RealtimeSync() {
+  useCatalogRealtime();
+  return null;
+}
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -184,6 +190,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <RealtimeSync />
       <ScrollProgress />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <div className="pt-16 md:pt-20">
