@@ -3,8 +3,10 @@ import { Users, Shirt, Factory as FactoryIcon, Ruler } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
-import buildingAsset from "@/assets/dressy-building.png.asset.json";
-import machineAsset from "@/assets/dressy-machine.png.asset.json";
+import futureBuildingAsset from "@/assets/future-building.png.asset.json";
+import receptionAsset from "@/assets/reception.png.asset.json";
+import sewingFloorAsset from "@/assets/sewing-floor.png.asset.json";
+import packedCartonsAsset from "@/assets/packed-cartons.png.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
 import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
