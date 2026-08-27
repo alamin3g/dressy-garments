@@ -196,6 +196,7 @@ export const DEFAULTS = {
     md_label: "Message from Managing Director",
     md_name: "SM Khairul Islam",
     md_role: "Managing Director",
+    md_image: "/md-portrait.jpg",
     md_message:
       "Our journey began with a clear vision: to build a garment manufacturing company that international partners can trust for quality, consistency, and responsible production. Every garment we manufacture represents the dedication of our people, the strength of our craftsmanship, and our commitment to delivering excellence.\n\nWe believe successful partnerships are built through transparency, reliability, and mutual respect. By continuously improving our technology, production capabilities, and workforce, we strive to meet the evolving needs of the global fashion industry while delivering every order with precision and care.\n\nOn behalf of the entire Dressy Clothing family, I sincerely thank our valued clients, partners, employees, and everyone who has contributed to our journey. We look forward to building lasting relationships and taking Bangladeshi manufacturing excellence to markets worldwide.",
   },
@@ -462,7 +463,7 @@ export const PAGE_CONTENT: PageDef[] = [
           text("md_name", "Name", DEFAULTS.about.md_name),
           text("md_role", "Role", DEFAULTS.about.md_role),
           area("md_message", "Message", DEFAULTS.about.md_message),
-          { key: "md_image", label: "Director portrait", type: "image" },
+          { key: "md_image", label: "Director portrait", type: "image", fallback: DEFAULTS.about.md_image },
         ],
       },
     ],
