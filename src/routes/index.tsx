@@ -37,7 +37,7 @@ import { Globe } from "@/components/ui/cobe-globe";
 import heroImg from "@/assets/hero-sewing.jpg";
 import heroVideo from "@/assets/dressy-hero-video.mp4.asset.json";
 import factoryImg from "@/assets/factory.jpg";
-import ctaImg from "@/assets/cta-tags.png";
+import ctaImg from "@/assets/dressy-cartons.png.asset.json";
 import pKnit from "@/assets/w-5.jpg.asset.json";
 import pWoven from "@/assets/w-1.jpg.asset.json";
 import pOuterwear from "@/assets/w-3.jpg.asset.json";
@@ -471,8 +471,8 @@ function Index() {
           </div>
           <div className="flex items-center justify-center">
             <img
-              src={ctaImg}
-              alt="Dressy branded hang tags and paper bag"
+              src={ctaImg.url}
+              alt="Dressy Clothing LTD branded export cartons stacked and ready for shipment"
               loading="lazy"
               width={900}
               height={700}
