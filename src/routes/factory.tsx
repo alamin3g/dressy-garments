@@ -99,16 +99,16 @@ function FactoryPage() {
           <div className="mb-16">
             <p className="label-xs text-primary">Future Projects</p>
             <h2 className="display mt-2 text-2xl sm:text-3xl">Capacity expansion & new lines</h2>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-px bg-border sm:grid-cols-2">
               {GALLERY.map((img) => (
                 <img
                   key={img.alt}
                   src={img.src}
                   alt={img.alt}
                   loading="lazy"
-                  width={1024}
-                  height={576}
-                  className="h-56 w-full rounded-2xl object-cover transition-transform duration-500 hover:scale-[1.02]"
+                  width={886}
+                  height={671}
+                  className="h-64 w-full object-cover transition-transform duration-500 hover:scale-[1.02] sm:h-80 lg:h-[420px]"
                 />
               ))}
             </div>
