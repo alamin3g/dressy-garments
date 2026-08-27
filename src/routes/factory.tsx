@@ -3,6 +3,9 @@ import { Users, Shirt, Factory as FactoryIcon, Ruler } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
+import cuttingAsset from "@/assets/gallery-cutting.jpg.asset.json";
+import printAsset from "@/assets/gallery-print.jpg.asset.json";
+import packingAsset from "@/assets/gallery-packing.jpg.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
 import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
