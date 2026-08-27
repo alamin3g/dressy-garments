@@ -3,8 +3,10 @@ import { Users, Shirt, Factory as FactoryIcon, Ruler } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import factoryImg from "@/assets/factory.jpg";
 import heroImg from "@/assets/hero-sewing.jpg";
-import buildingAsset from "@/assets/dressy-building.png.asset.json";
-import machineAsset from "@/assets/dressy-machine.png.asset.json";
+import futureBuildingAsset from "@/assets/future-building.png.asset.json";
+import receptionAsset from "@/assets/reception.png.asset.json";
+import sewingFloorAsset from "@/assets/sewing-floor.png.asset.json";
+import packedCartonsAsset from "@/assets/packed-cartons.png.asset.json";
 import { getSEOMetadata } from "@/lib/seo";
 import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
 
@@ -30,8 +32,10 @@ const STATS = DEFAULTS.factory.stats.map(([value, label], i) => ({
 const FLOORS = DEFAULTS.factory.floors.map(([name, body]) => ({ name, body }));
 
 const GALLERY = [
-  { src: buildingAsset.url, alt: "Dressy Clothing Ltd. factory building exterior with yellow Dressy sign" },
-  { src: machineAsset.url, alt: "Close-up of an industrial sewing machine on the Dressy production floor" },
+  { src: futureBuildingAsset.url, alt: "Aerial view of the Dressy Clothing Ltd. factory campus in Ashulia, Dhaka" },
+  { src: receptionAsset.url, alt: "Dressy reception and showroom lobby with brick walls and yellow Dressy sign" },
+  { src: sewingFloorAsset.url, alt: "Dressy sewing floor with operators at industrial machines" },
+  { src: packedCartonsAsset.url, alt: "Stacked Dressy-branded export cartons ready for shipping" },
 ];
 
 
