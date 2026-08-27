@@ -161,20 +161,62 @@ function AboutPage() {
       {/* Message from Managing Director */}
       <section id="md-message" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-          <div className="grid gap-10 lg:grid-cols-[0.35fr_1fr] items-start">
-            <div>
-              <p className="label-xs text-primary">{c("md_label", DEFAULTS.about.md_label)}</p>
-              <div className="mt-6">
-                <p className="display text-2xl">{c("md_name", DEFAULTS.about.md_name)}</p>
-                <p className="label-xs mt-2 text-muted-foreground">{c("md_role", DEFAULTS.about.md_role)}</p>
+          <div className="overflow-hidden border border-border bg-card shadow-2xl flex flex-col md:flex-row">
+            {/* Portrait column */}
+            <div className="md:w-5/12 relative min-h-[340px] bg-muted">
+              {c("md_image") ? (
+                <img
+                  src={c("md_image")}
+                  alt={c("md_name", DEFAULTS.about.md_name)}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d]">
+                  <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-primary bg-background/10">
+                    <span className="display text-4xl text-primary">SK</span>
+                  </div>
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:hidden">
+                <p className="display text-xl text-white">{c("md_name", DEFAULTS.about.md_name)}</p>
+                <p className="label-xs mt-1 text-white/80">{c("md_role", DEFAULTS.about.md_role)}</p>
               </div>
             </div>
-            <blockquote className="relative">
-              <span className="absolute -left-2 -top-6 text-6xl text-primary/20 select-none">"</span>
-              <p className="relative pt-2 text-lg leading-relaxed md:text-xl text-foreground">
-                {c("md_message", DEFAULTS.about.md_message)}
-              </p>
-            </blockquote>
+
+            {/* Message column */}
+            <div className="md:w-7/12 p-8 md:p-12 lg:p-16 flex flex-col justify-center relative">
+              <div className="mb-8">
+                <span className="label-xs text-primary block mb-3">{c("md_label", DEFAULTS.about.md_label)}</span>
+                <h2 className="display text-3xl md:text-4xl lg:text-5xl leading-tight">
+                  {c("md_title", "A commitment to care & quality")}
+                </h2>
+                <div className="mt-4 h-px w-16 bg-primary" />
+              </div>
+
+              <div className="relative">
+                <span className="absolute -top-4 -left-2 text-7xl text-primary/10 font-serif select-none -z-10">“</span>
+                <p className="relative pt-2 text-base md:text-lg leading-relaxed italic text-foreground font-serif">
+                  {c("md_message", DEFAULTS.about.md_message)}
+                </p>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <p className="display text-lg text-foreground">{c("md_name", DEFAULTS.about.md_name)}</p>
+                  <p className="label-xs mt-1 text-muted-foreground">{c("md_role", DEFAULTS.about.md_role)}</p>
+                </div>
+                <span className="font-script text-3xl text-primary/80 -rotate-2 select-none">
+                  {c("md_name", DEFAULTS.about.md_name)
+                    .split(" ")
+                    .filter(Boolean)
+                    .slice(-2)
+                    .map((n) => n[0])
+                    .join("")}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
