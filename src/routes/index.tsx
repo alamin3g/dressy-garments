@@ -438,9 +438,10 @@ function Index() {
 
           <Link
             to="/about"
-            className="label-xs flex items-center justify-between border-b border-primary pb-3 text-primary group transition-colors hover:opacity-80"
+            className="label-xs group flex w-full min-w-0 items-center justify-between gap-3 border-b border-primary py-3 text-primary transition-colors hover:opacity-80 sm:w-auto sm:py-0 sm:pb-3"
           >
-            {c("global_cta", "Our Global Presence")} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            <span className="truncate">{c("global_cta", "Our Global Presence")}</span>
+            <ArrowRight className="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
