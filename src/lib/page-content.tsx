@@ -454,6 +454,15 @@ export const PAGE_CONTENT: PageDef[] = [
           ]),
         ],
       },
+      {
+        name: "Message from Managing Director",
+        fields: [
+          text("md_label", "Section label", DEFAULTS.about.md_label),
+          text("md_name", "Name", DEFAULTS.about.md_name),
+          text("md_role", "Role", DEFAULTS.about.md_role),
+          area("md_message", "Message", DEFAULTS.about.md_message),
+        ],
+      },
     ],
   },
   {
