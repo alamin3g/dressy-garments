@@ -208,7 +208,7 @@ function Index() {
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
               
-              <h1 className="display mt-4 flex animate-fade-up flex-col text-5xl sm:text-7xl lg:text-8xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" style={{ animationDelay: "100ms" }}>
+              <h1 className="display mt-4 flex animate-fade-up flex-col items-start gap-1 text-5xl leading-[1.05] sm:text-7xl lg:text-8xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" style={{ animationDelay: "100ms" }}>
                 <span className="text-primary">{c("hero_title_1", "DRESSY CLOTHING LTD.")}</span>
                 <span className="text-white">{c("hero_title_2", "Stitching With")}</span>
                 <span className="text-primary">{c("hero_title_3", "Care & Love")}</span>
