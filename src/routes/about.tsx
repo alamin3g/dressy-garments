@@ -175,12 +175,7 @@ function AboutPage() {
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d]">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-primary bg-background/10">
                     <span className="display text-2xl text-primary">
-                      {c("md_name", DEFAULTS.about.md_name)
-                        .split(" ")
-                        .filter(Boolean)
-                        .slice(-2)
-                        .map((n) => n[0])
-                        .join("")}
+                      {c("md_initials", DEFAULTS.about.md_initials)}
                     </span>
                   </div>
                 </div>
