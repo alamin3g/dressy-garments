@@ -173,8 +173,8 @@ function AboutPage() {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d]">
-                  <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-primary bg-background/10">
-                    <span className="display text-4xl text-primary">SK</span>
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-primary bg-background/10">
+                    <span className="display text-3xl text-primary">SK</span>
                   </div>
                 </div>
               )}
