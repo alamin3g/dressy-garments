@@ -207,7 +207,7 @@ function Index() {
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div>
-              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">{c("hero_eyebrow", "DRESSY CLOTHING LTD KATHGARA")}</p>
+              <p className="label-xs animate-fade-up text-primary font-medium tracking-widest uppercase drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">{c("hero_eyebrow", "DRESSY CLOTHING LTD")}</p>
               <h1 className="display mt-4 animate-fade-up text-5xl sm:text-7xl lg:text-8xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" style={{ animationDelay: "100ms" }}>
                 <span className="text-white">{c("hero_title_1", "Stitching With")}</span>{" "}
                 <span className="text-primary">{c("hero_title_2", "Care & Love")}</span>
