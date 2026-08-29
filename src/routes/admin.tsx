@@ -291,38 +291,13 @@ function AdminConsole() {
 
 
   /* --------------------------------------------- card popups + drag ordering */
-  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
   const sortedCategories = [...(categories.data ?? [])].sort((a, b) => a.sort_order - b.sort_order);
   const sortedProducts = [...(products.data ?? [])].sort(
     (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
   );
-  const editingCategory = sortedCategories.find((c) => c.id === editingCategoryId) ?? null;
   const editingProduct = sortedProducts.find((p) => p.id === editingProductId) ?? null;
-
-  const reorderCategories = async (orderedIds: string[]) => {
-    const byId = new Map(sortedCategories.map((c) => [c.id, c]));
-    const next = orderedIds.map((id, i) => ({ ...byId.get(id)!, sort_order: i + 1 }));
-    qc.setQueryData(["admin", "categories"], next);
-    try {
-      for (const [i, c] of next.entries()) {
-        const before = byId.get(c.id)!;
-        if (before.sort_order === i + 1) continue;
-        const { error } = await supabase
-          .from("product_categories")
-          .update({ sort_order: i + 1, updated_at: new Date().toISOString() })
-          .eq("id", c.id);
-        if (error) throw error;
-      }
-      setCategoryError(null);
-    } catch (e) {
-      setCategoryError(e instanceof Error ? e.message : "Could not save order");
-    } finally {
-      void invalidate("categories");
-      void qc.invalidateQueries({ queryKey: ["product-categories"] });
-    }
-  };
 
   const reorderProducts = async (orderedIds: string[]) => {
     const byId = new Map(sortedProducts.map((p) => [p.id, p]));
