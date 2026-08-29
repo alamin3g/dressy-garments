@@ -27,7 +27,7 @@ import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
 import { useDragSort } from "@/components/admin-sortable";
-import { AdminPageEditor } from "@/components/admin-page-editor";
+import { AdminPageStudio } from "@/components/admin-page-studio";
 import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 import { ProductLivePreview } from "@/components/admin-live-preview";
@@ -951,10 +951,10 @@ function AdminConsole() {
             )}
 
             {active === "pages" && (
-              <Panel title="Pages" subtitle="Public routes on the website. Click the pencil to edit page content and images.">
+              <Panel title="Pages" subtitle="Public routes on the website. Click a page to open the full editor with a live preview.">
                 <div className="grid gap-3 sm:grid-cols-2">
                   {PAGE_CONTENT.map((p) => (
-                    <div key={p.path} className="group rounded-xl border border-border p-4 transition-colors hover:border-primary">
+                    <div key={p.path} onClick={() => setEditingPage(p)} className="group cursor-pointer rounded-xl border border-border p-4 transition-colors hover:border-primary">
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-semibold">{p.title}</p>
                         <div className="flex items-center gap-2">
@@ -978,13 +978,7 @@ function AdminConsole() {
                 </div>
 
                 {editingPage && (
-                  <AdminModal
-                    title={`Edit ${editingPage.title} page`}
-                    subtitle={`Content and images for ${editingPage.path} — leave a field empty to keep the website default.`}
-                    onClose={() => setEditingPage(null)}
-                  >
-                    <AdminPageEditor page={editingPage} onDone={() => setEditingPage(null)} />
-                  </AdminModal>
+                  <AdminPageStudio page={editingPage} onDone={() => setEditingPage(null)} />
                 )}
               </Panel>
             )}
