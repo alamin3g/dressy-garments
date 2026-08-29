@@ -342,27 +342,6 @@ function AdminConsole() {
     },
   });
 
-  const createCategory = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase
-        .from("product_categories")
-        .insert({ name: "New category", image_url: "", sort_order: sortedCategories.length + 1 })
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (row) => {
-      void invalidate("categories");
-      void qc.invalidateQueries({ queryKey: ["product-categories"] });
-      setEditingCategoryId(row.id);
-    },
-    onError: (e: Error) => setCategoryError(e.message),
-  });
-
-  const categoryDrag = useDragSort(sortedCategories.map((c) => c.id), (ids) =>
-    void reorderCategories(ids),
-  );
   const productDrag = useDragSort(sortedProducts.map((p) => p.id), (ids) =>
     void reorderProducts(ids),
   );
