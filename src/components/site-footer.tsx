@@ -57,19 +57,17 @@ export function SiteFooter() {
       <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,1fr)]">
         <div>
           <Logo />
-          <p className="mt-4 text-xs text-muted-foreground">
-            Garments made to
-            <br />
-            move brands.
+          <p className="mt-4 whitespace-pre-line text-xs text-muted-foreground">
+            {c("footer_tagline", "Garments made to\nmove brands.")}
           </p>
           <div className="mt-10 flex items-center gap-5 text-muted-foreground">
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-primary">
+            <a href={c("footer_linkedin", "https://www.linkedin.com")} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-primary">
               <Linkedin className="size-4" />
             </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-primary">
+            <a href={c("footer_instagram", "https://www.instagram.com")} target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-primary">
               <Instagram className="size-4" />
             </a>
-            <a href="mailto:info@dressyclothing.com" aria-label="Email" className="hover:text-primary">
+            <a href={`mailto:${c("footer_email", "Khairul@dressyltd.com")}`} aria-label="Email" className="hover:text-primary">
               <Mail className="size-4" />
             </a>
           </div>
