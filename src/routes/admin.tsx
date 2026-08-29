@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
+import { fetchProductCategories } from "@/lib/product-categories";
 import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
@@ -30,7 +30,7 @@ import { useDragSort } from "@/components/admin-sortable";
 import { AdminPageEditor } from "@/components/admin-page-editor";
 import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
-import { CategoryLivePreview, ProductLivePreview } from "@/components/admin-live-preview";
+import { ProductLivePreview } from "@/components/admin-live-preview";
 import { GripVertical, Pencil } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
