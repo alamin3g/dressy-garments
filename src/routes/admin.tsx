@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { fetchProductCategories, uploadCategoryImage } from "@/lib/product-categories";
+import { fetchProductCategories } from "@/lib/product-categories";
 import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
@@ -30,7 +30,7 @@ import { useDragSort } from "@/components/admin-sortable";
 import { AdminPageEditor } from "@/components/admin-page-editor";
 import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
-import { CategoryLivePreview, ProductLivePreview } from "@/components/admin-live-preview";
+import { ProductLivePreview } from "@/components/admin-live-preview";
 import { GripVertical, Pencil } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -58,7 +58,6 @@ export const Route = createFileRoute("/admin")({
 
 type SectionId =
   | "dashboard"
-  | "categories"
   | "products"
   | "inquiries"
   | "popup"
@@ -68,7 +67,6 @@ type SectionId =
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
-  { id: "categories", label: "Categories", icon: ImagePlus, hint: "Homepage categories" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
   { id: "popup", label: "PopUp Email", icon: Mail, hint: "Captured emails" },
@@ -229,97 +227,6 @@ function AdminConsole() {
     queryFn: fetchProductCategories,
   });
 
-  const [categoryError, setCategoryError] = useState<string | null>(null);
-  const [uploadingId, setUploadingId] = useState<string | null>(null);
-  /** Unsaved image previews keyed by category id (typed URL or picked file). */
-  const [previews, setPreviews] = useState<Record<string, string>>({});
-
-  const saveCategory = useMutation({
-    mutationFn: async (row: {
-      id?: string;
-      name?: string;
-      image_url?: string;
-      storage_path?: string | null;
-      sort_order?: number;
-    }) => {
-      const { id, ...rest } = row;
-      if (id) {
-        const { error } = await supabase
-          .from("product_categories")
-          .update({ ...rest, updated_at: new Date().toISOString() })
-          .eq("id", id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from("product_categories")
-          .insert({ name: rest.name ?? "New category", ...rest });
-        if (error) throw error;
-      }
-    },
-    onSuccess: () => {
-      setCategoryError(null);
-      invalidate("categories");
-      qc.invalidateQueries({ queryKey: ["product-categories"] });
-    },
-    onError: (e: Error) => setCategoryError(e.message),
-  });
-
-  const refreshCategories = () => {
-    setCategoryError(null);
-    invalidate("categories");
-    qc.invalidateQueries({ queryKey: ["product-categories"] });
-  };
-
-  const deleteCategory = useMutation({
-    mutationFn: async (row: { id: string } & Record<string, unknown>) => {
-      const { error } = await supabase.from("product_categories").delete().eq("id", row.id);
-      if (error) throw error;
-      return row;
-    },
-    onSuccess: (row) => {
-      refreshCategories();
-      toast.success(`Deleted "${String(row["name"] ?? "category")}"`, {
-        duration: 8000,
-        action: {
-          label: "Undo",
-          onClick: async () => {
-            const { error } = await supabase
-              .from("product_categories")
-              .insert(row as never);
-            if (error) toast.error(error.message);
-            else {
-              refreshCategories();
-              toast.success("Category restored");
-            }
-          },
-        },
-      });
-    },
-    onError: (e: Error) => setCategoryError(e.message),
-  });
-
-  const handleCategoryUpload = async (id: string, file: File) => {
-    const localUrl = URL.createObjectURL(file);
-    setPreviews((p) => ({ ...p, [id]: localUrl }));
-    setUploadingId(id);
-    setCategoryError(null);
-    try {
-      const { url, path } = await uploadCategoryImage(file);
-      await saveCategory.mutateAsync({ id, image_url: url, storage_path: path });
-      setPreviews((p) => ({ ...p, [id]: url }));
-    } catch (e) {
-      setCategoryError(e instanceof Error ? e.message : "Upload failed");
-      setPreviews((p) => {
-        const next = { ...p };
-        delete next[id];
-        return next;
-      });
-    } finally {
-      URL.revokeObjectURL(localUrl);
-      setUploadingId(null);
-    }
-  };
-
   const saveProduct = useMutation({
     mutationFn: async (row: ProductPatch & { id?: string }) => {
       const { id, ...rest } = row;
@@ -384,38 +291,13 @@ function AdminConsole() {
 
 
   /* --------------------------------------------- card popups + drag ordering */
-  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
   const sortedCategories = [...(categories.data ?? [])].sort((a, b) => a.sort_order - b.sort_order);
   const sortedProducts = [...(products.data ?? [])].sort(
     (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
   );
-  const editingCategory = sortedCategories.find((c) => c.id === editingCategoryId) ?? null;
   const editingProduct = sortedProducts.find((p) => p.id === editingProductId) ?? null;
-
-  const reorderCategories = async (orderedIds: string[]) => {
-    const byId = new Map(sortedCategories.map((c) => [c.id, c]));
-    const next = orderedIds.map((id, i) => ({ ...byId.get(id)!, sort_order: i + 1 }));
-    qc.setQueryData(["admin", "categories"], next);
-    try {
-      for (const [i, c] of next.entries()) {
-        const before = byId.get(c.id)!;
-        if (before.sort_order === i + 1) continue;
-        const { error } = await supabase
-          .from("product_categories")
-          .update({ sort_order: i + 1, updated_at: new Date().toISOString() })
-          .eq("id", c.id);
-        if (error) throw error;
-      }
-      setCategoryError(null);
-    } catch (e) {
-      setCategoryError(e instanceof Error ? e.message : "Could not save order");
-    } finally {
-      void invalidate("categories");
-      void qc.invalidateQueries({ queryKey: ["product-categories"] });
-    }
-  };
 
   const reorderProducts = async (orderedIds: string[]) => {
     const byId = new Map(sortedProducts.map((p) => [p.id, p]));
@@ -460,27 +342,6 @@ function AdminConsole() {
     },
   });
 
-  const createCategory = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase
-        .from("product_categories")
-        .insert({ name: "New category", image_url: "", sort_order: sortedCategories.length + 1 })
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (row) => {
-      void invalidate("categories");
-      void qc.invalidateQueries({ queryKey: ["product-categories"] });
-      setEditingCategoryId(row.id);
-    },
-    onError: (e: Error) => setCategoryError(e.message),
-  });
-
-  const categoryDrag = useDragSort(sortedCategories.map((c) => c.id), (ids) =>
-    void reorderCategories(ids),
-  );
   const productDrag = useDragSort(sortedProducts.map((p) => p.id), (ids) =>
     void reorderProducts(ids),
   );
@@ -682,167 +543,6 @@ function AdminConsole() {
                     )}
                   </div>
                 </div>
-              </Panel>
-            )}
-
-            {active === "categories" && (
-              <Panel
-                title="Product Categories"
-                subtitle="Cards shown in the “Our Products” section on the homepage. Click a card to edit, drag to reorder."
-                right={
-                  <button
-                    type="button"
-                    onClick={() => createCategory.mutate()}
-                    className="label-xs inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground"
-                  >
-                    <Plus className="size-3.5" /> New category
-                  </button>
-                }
-              >
-                <CategoryLivePreview />
-
-                {categoryError && (
-                  <p className="mb-4 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                    {categoryError}
-                  </p>
-                )}
-
-                {categories.isLoading ? (
-                  <Loader2 className="size-5 animate-spin text-primary" />
-                ) : sortedCategories.length === 0 ? (
-                  <p className="text-sm italic text-muted-foreground/80">No categories yet.</p>
-                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {sortedCategories.map((c, index) => {
-                      const drag = categoryDrag.itemProps(c.id);
-                      const { className: dragClass, ...dragRest } = drag;
-                      const preview = previews[c.id] ?? c.image_url;
-                      return (
-                        <button
-                          key={c.id}
-                          type="button"
-                          {...dragRest}
-                          onClick={() => setEditingCategoryId(c.id)}
-                          className={`group overflow-hidden rounded-2xl border border-border text-left transition-all hover:border-primary ${dragClass}`}
-                        >
-                          <div className="relative aspect-[4/3] bg-muted">
-                            {preview ? (
-                              <img src={preview} alt={c.name} className="size-full object-cover" />
-                            ) : (
-                              <div className="flex size-full items-center justify-center text-muted-foreground">
-                                <ImagePlus className="size-6" />
-                              </div>
-                            )}
-                            <span className="label-xs absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-background/90 px-2.5 py-1 text-[10px]">
-                              <GripVertical className="size-3" /> #{index + 1}
-                            </span>
-                            {uploadingId === c.id && (
-                              <div className="absolute inset-0 flex items-center justify-center bg-background/70">
-                                <Loader2 className="size-5 animate-spin text-primary" />
-                              </div>
-                            )}
-                            <span
-                              role="button"
-                              tabIndex={0}
-                              aria-label={`Delete ${c.name}`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (window.confirm(`Delete category "${c.name}"?`))
-                                  deleteCategory.mutate(c);
-                              }}
-                              onKeyDown={(e) => e.stopPropagation()}
-                              className="absolute right-3 top-3 rounded-full bg-background/90 p-1.5 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
-                            >
-                              {deleteCategory.isPending && deleteCategory.variables?.id === c.id ? (
-                                <Loader2 className="size-3.5 animate-spin" />
-                              ) : (
-                                <Trash2 className="size-3.5" />
-                              )}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between gap-2 px-4 py-3">
-                            <p className="truncate text-sm font-semibold">{c.name}</p>
-                            <Pencil className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {editingCategory && (
-                  <AdminModal
-                    title={editingCategory.name || "Category"}
-                    subtitle="Edit the homepage category card."
-                    onClose={() => setEditingCategoryId(null)}
-                  >
-                    <div className="space-y-4">
-                      <div className="aspect-[16/9] overflow-hidden rounded-xl border border-border bg-muted">
-                        {(previews[editingCategory.id] ?? editingCategory.image_url) ? (
-                          <img
-                            src={previews[editingCategory.id] ?? editingCategory.image_url}
-                            alt={editingCategory.name}
-                            className="size-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex size-full items-center justify-center text-muted-foreground">
-                            <ImagePlus className="size-6" />
-                          </div>
-                        )}
-                      </div>
-                      <input
-                        defaultValue={editingCategory.name}
-                        placeholder="Category name"
-                        onBlur={(e) =>
-                          e.target.value !== editingCategory.name &&
-                          saveCategory.mutate({ id: editingCategory.id, name: e.target.value })
-                        }
-                        className={inputClass}
-                      />
-                      <input
-                        defaultValue={editingCategory.image_url}
-                        placeholder="Image URL (https://...)"
-                        onChange={(e) =>
-                          setPreviews((p) => ({ ...p, [editingCategory.id]: e.target.value }))
-                        }
-                        onBlur={(e) =>
-                          e.target.value !== editingCategory.image_url &&
-                          saveCategory.mutate({
-                            id: editingCategory.id,
-                            image_url: e.target.value,
-                            storage_path: null,
-                          })
-                        }
-                        className={inputClass}
-                      />
-                      <div className="flex flex-wrap items-center gap-3">
-                        <label className="label-xs inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 py-2.5 transition-colors hover:border-primary">
-                          <ImagePlus className="size-3.5" /> Upload image
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              e.target.value = "";
-                              if (file) void handleCategoryUpload(editingCategory.id, file);
-                            }}
-                          />
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            deleteCategory.mutate(editingCategory);
-                            setEditingCategoryId(null);
-                          }}
-                          className="label-xs ml-auto inline-flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="size-4" /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  </AdminModal>
-                )}
               </Panel>
             )}
 
