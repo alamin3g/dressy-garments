@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Linkedin, Instagram, Mail, ArrowUp } from "lucide-react";
 import { Logo } from "./site-header";
+import { usePageContent } from "@/lib/page-content";
 
 type FooterLink = {
   label: string;
@@ -50,24 +51,23 @@ const FOOTER: { title: string; links: FooterLink[] }[] = [
 ];
 
 export function SiteFooter() {
+  const c = usePageContent("/footer");
   return (
     <footer className="mx-auto max-w-[1400px] px-6 py-14 md:px-10">
       <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,1fr)]">
         <div>
           <Logo />
-          <p className="mt-4 text-xs text-muted-foreground">
-            Garments made to
-            <br />
-            move brands.
+          <p className="mt-4 whitespace-pre-line text-xs text-muted-foreground">
+            {c("footer_tagline", "Garments made to\nmove brands.")}
           </p>
           <div className="mt-10 flex items-center gap-5 text-muted-foreground">
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-primary">
+            <a href={c("footer_linkedin", "https://www.linkedin.com")} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-primary">
               <Linkedin className="size-4" />
             </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-primary">
+            <a href={c("footer_instagram", "https://www.instagram.com")} target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-primary">
               <Instagram className="size-4" />
             </a>
-            <a href="mailto:info@dressyclothing.com" aria-label="Email" className="hover:text-primary">
+            <a href={`mailto:${c("footer_email", "Khairul@dressyltd.com")}`} aria-label="Email" className="hover:text-primary">
               <Mail className="size-4" />
             </a>
           </div>
@@ -101,16 +101,16 @@ export function SiteFooter() {
                 rel="noreferrer"
                 className="hover:text-foreground transition-colors inline-block"
               >
-                House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206
+                {c("footer_address", "House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206")}
               </a>
             </li>
             <li>
-              <a href="tel:+8801754104307" className="hover:text-foreground">+88 01754104307</a>
+              <a href={`tel:${c("footer_phone_1", "+8801754104307").replace(/\s/g, "")}`} className="hover:text-foreground">{c("footer_phone_1", "+88 01754104307")}</a>
               {" & "}
-              <a href="tel:+8801751244211" className="hover:text-foreground">+88 01751244211</a>
+              <a href={`tel:${c("footer_phone_2", "+8801751244211").replace(/\s/g, "")}`} className="hover:text-foreground">{c("footer_phone_2", "+88 01751244211")}</a>
             </li>
             <li>
-              <a href="mailto:Khairul@dressyltd.com" className="hover:text-foreground">Khairul@dressyltd.com</a>
+              <a href={`mailto:${c("footer_email", "Khairul@dressyltd.com")}`} className="hover:text-foreground">{c("footer_email", "Khairul@dressyltd.com")}</a>
             </li>
           </ul>
         </div>
@@ -118,7 +118,7 @@ export function SiteFooter() {
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
         <p className="text-[11px] text-muted-foreground">
-          © 2026 Dressy Clothing Ltd. All rights reserved.
+          {c("footer_copyright", "© 2026 Dressy Clothing Ltd. All rights reserved.")}
         </p>
         <div className="flex items-center gap-6">
           <p className="text-[11px] text-muted-foreground">

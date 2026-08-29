@@ -488,6 +488,29 @@ export const PAGE_CONTENT: PageDef[] = [
       },
     ],
   },
+  {
+    path: "/footer",
+    title: "Footer",
+    sections: [
+      {
+        name: "Footer",
+        fields: [
+          text("footer_tagline", "Tagline", "Garments made to move brands."),
+          area(
+            "footer_address",
+            "Address",
+            "House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206",
+          ),
+          text("footer_phone_1", "Phone 1", "+88 01754104307"),
+          text("footer_phone_2", "Phone 2", "+88 01751244211"),
+          text("footer_email", "Email", "Khairul@dressyltd.com"),
+          text("footer_linkedin", "LinkedIn URL", "https://www.linkedin.com"),
+          text("footer_instagram", "Instagram URL", "https://www.instagram.com"),
+          text("footer_copyright", "Copyright", "© 2026 Dressy Clothing Ltd. All rights reserved."),
+        ],
+      },
+    ],
+  },
 ];
 
 export const pageContentKey = (path: string, key: string) => `page:${path}:${key}`;

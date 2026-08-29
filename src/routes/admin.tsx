@@ -27,7 +27,7 @@ import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
 import { useDragSort } from "@/components/admin-sortable";
-import { AdminPageStudio } from "@/components/admin-page-studio";
+import { AdminSimplePageEditor } from "@/components/admin-simple-page-editor";
 import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 import { ProductLivePreview } from "@/components/admin-live-preview";
@@ -951,34 +951,31 @@ function AdminConsole() {
             )}
 
             {active === "pages" && (
-              <Panel title="Pages" subtitle="Public routes on the website. Click a page to open the full editor with a live preview.">
-                <div className="grid gap-3 sm:grid-cols-2">
+              <Panel title="Pages" subtitle="Public routes on the website. Click a page to edit its content.">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {PAGE_CONTENT.map((p) => (
-                    <div key={p.path} onClick={() => setEditingPage(p)} className="group cursor-pointer rounded-xl border border-border p-4 transition-colors hover:border-primary">
+                    <button
+                      key={p.path}
+                      type="button"
+                      onClick={() => setEditingPage(p)}
+                      className={`group rounded-xl border p-4 text-left transition-colors ${editingPage?.path === p.path ? "border-primary bg-primary/10" : "border-border hover:border-primary"}`}
+                    >
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-semibold">{p.title}</p>
-                        <div className="flex items-center gap-2">
-                          <Pill value="Live" />
-                          <button
-                            type="button"
-                            aria-label={`Edit ${p.title} page`}
-                            onClick={() => setEditingPage(p)}
-                            className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
-                          >
-                            <Pencil className="size-3.5" />
-                          </button>
-                        </div>
+                        <Pill value="Live" />
                       </div>
                       <p className="mt-1 font-mono text-xs text-muted-foreground">{p.path}</p>
                       <p className="mt-2 text-xs text-muted-foreground">
                         {visitorRows.filter((v) => v.path === p.path).length} recent visits
                       </p>
-                    </div>
+                    </button>
                   ))}
                 </div>
 
                 {editingPage && (
-                  <AdminPageStudio page={editingPage} onDone={() => setEditingPage(null)} />
+                  <div className="mt-6">
+                    <AdminSimplePageEditor page={editingPage} onDone={() => setEditingPage(null)} />
+                  </div>
                 )}
               </Panel>
             )}
