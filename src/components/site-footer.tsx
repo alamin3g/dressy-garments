@@ -12,14 +12,28 @@ type FooterLink = {
 
 const FOOTER: { title: string; links: FooterLink[] }[] = [
   {
+    title: "Explore",
+    links: [
+      { label: "Home", to: "/" },
+      { label: "About", to: "/about" },
+      { label: "Capabilities", to: "/capabilities" },
+      { label: "Products", to: "/products" },
+      { label: "Factory", to: "/factory" },
+      { label: "Compliance", to: "/compliance" },
+      { label: "Contact", to: "/contact" },
+    ],
+  },
+  {
     title: "Company",
     links: [
       { label: "About Dressy", to: "/about", hash: "story" },
+      { label: "Managing Director", to: "/about", hash: "md-message" },
       { label: "Our Factory", to: "/factory" },
       { label: "Leadership", to: "/about", hash: "leadership" },
       { label: "Global Presence", to: "/about", hash: "global" },
     ],
   },
+
   {
     title: "Capabilities",
     links: [
@@ -54,7 +68,7 @@ export function SiteFooter() {
   const c = usePageContent("/footer");
   return (
     <footer className="mx-auto max-w-[1400px] px-6 py-14 md:px-10">
-      <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,1fr)]">
+      <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(3,1fr)] xl:grid-cols-[1.2fr_repeat(6,1fr)]">
         <div>
           <Logo />
           <p className="mt-4 whitespace-pre-line text-xs text-muted-foreground">
