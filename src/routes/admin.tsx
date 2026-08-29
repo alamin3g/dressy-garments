@@ -27,7 +27,7 @@ import { AdminProductEditor } from "@/components/admin-product-editor";
 import { AdminGate } from "@/components/admin-gate";
 import { AdminModal } from "@/components/admin-modal";
 import { useDragSort } from "@/components/admin-sortable";
-import { AdminPageStudio } from "@/components/admin-page-studio";
+import { AdminSimplePageEditor } from "@/components/admin-simple-page-editor";
 import { PAGE_CONTENT, type PageDef } from "@/lib/page-content";
 import { parseColor } from "@/lib/product-media";
 import { ProductLivePreview } from "@/components/admin-live-preview";
