@@ -68,7 +68,7 @@ export function SiteFooter() {
   const c = usePageContent("/footer");
   return (
     <footer className="mx-auto max-w-[1400px] px-6 py-14 md:px-10">
-      <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,1fr)]">
+      <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(3,1fr)] xl:grid-cols-[1.2fr_repeat(6,1fr)]">
         <div>
           <Logo />
           <p className="mt-4 whitespace-pre-line text-xs text-muted-foreground">

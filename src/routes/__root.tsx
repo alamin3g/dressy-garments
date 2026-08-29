@@ -101,6 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "96x96" },
       { rel: "icon", href: "/icon-512.png", type: "image/png", sizes: "512x512" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [
       {
@@ -118,6 +119,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               logo: {
                 "@type": "ImageObject",
                 url: "https://dressyltd.com/dressy-logo.png",
+                width: 1024,
+                height: 419,
+                caption: "Dressy Clothing LTD logo",
               },
               image: "https://dressyltd.com/dressy-logo.png",
               description:
