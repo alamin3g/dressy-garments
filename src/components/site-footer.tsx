@@ -51,6 +51,7 @@ const FOOTER: { title: string; links: FooterLink[] }[] = [
 ];
 
 export function SiteFooter() {
+  const c = usePageContent("/footer");
   return (
     <footer className="mx-auto max-w-[1400px] px-6 py-14 md:px-10">
       <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,1fr)]">
