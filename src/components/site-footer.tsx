@@ -118,7 +118,7 @@ export function SiteFooter() {
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
         <p className="text-[11px] text-muted-foreground">
-          © 2026 Dressy Clothing Ltd. All rights reserved.
+          {c("footer_copyright", "© 2026 Dressy Clothing Ltd. All rights reserved.")}
         </p>
         <div className="flex items-center gap-6">
           <p className="text-[11px] text-muted-foreground">
