@@ -1,0 +1,7 @@
+INSERT INTO public.products (name, category, moq, status, description, sort_order, images, colors) VALUES
+('Knit Essentials', 'Knit', '1,500 pcs', 'Live', 'Premium knitwear — t-shirts, polos and fleece styles crafted with care.', 1, ARRAY['/__l5e/assets-v1/f56ba34d-8d70-496a-8c1d-6e41818f4ba3/product-knit.png'], ARRAY['#1a1a1a','#f5f0e6']),
+('Woven Classics', 'Woven', '1,500 pcs', 'Live', 'Shirts, trousers and woven staples with precise construction.', 2, ARRAY['/__l5e/assets-v1/1618aa9e-2fe5-41f2-ac21-d5ff7e135e63/product-woven.png'], ARRAY['#1a1a1a','#f5f0e6']),
+('Outerwear Series', 'Outerwear', '1,500 pcs', 'Live', 'Jackets and parkas built for performance and durability.', 3, ARRAY['/__l5e/assets-v1/c101a3d1-1685-4ef1-9c5d-688ac5a64fcc/product-outerwear.png'], ARRAY['#1a1a1a','#f5f0e6']),
+('Fleece Collection', 'Fleece', '1,500 pcs', 'Live', 'Hoodies, sweatshirts and fleece layers in soft, durable fabrics.', 4, ARRAY['/__l5e/assets-v1/ba8324ec-8480-49d9-bd28-30ecf3832aaa/product-fleece.png'], ARRAY['#1a1a1a','#f5f0e6']),
+('Workwear Line', 'Workwear', '1,500 pcs', 'Live', 'Industrial workwear engineered for safety and long wear.', 5, ARRAY['/__l5e/assets-v1/ee008a05-9b0e-4384-99bc-d558d6bd07a7/product-workwear.png'], ARRAY['#1a1a1a','#f5f0e6']),
+('Development Range', 'Development', '1,500 pcs', 'Live', 'New styles in sampling and development for upcoming seasons.', 6, ARRAY['/__l5e/assets-v1/221c6662-3dc0-4427-a2d4-3877b3c289a2/product-development.png'], ARRAY['#1a1a1a','#f5f0e6']);
