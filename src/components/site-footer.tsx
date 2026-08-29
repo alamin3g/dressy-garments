@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Linkedin, Instagram, Mail, ArrowUp } from "lucide-react";
 import { Logo } from "./site-header";
+import { usePageContent } from "@/lib/page-content";
 
 type FooterLink = {
   label: string;
