@@ -4,11 +4,9 @@ import {
   Check,
   GripVertical,
   Loader2,
-  Monitor,
   Plus,
   RefreshCw,
   RotateCcw,
-  Smartphone,
   Trash2,
   Upload,
   X,
@@ -244,24 +242,6 @@ export function AdminPageStudio({ page, onDone }: { page: PageDef; onDone: () =>
           </h2>
         </div>
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-1 rounded-xl border border-border p-1 sm:flex">
-            <button
-              type="button"
-              aria-label="Desktop preview"
-              onClick={() => setDevice("desktop")}
-              className={`rounded-lg p-2 transition-colors ${device === "desktop" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
-            >
-              <Monitor className="size-4" />
-            </button>
-            <button
-              type="button"
-              aria-label="Mobile preview"
-              onClick={() => setDevice("mobile")}
-              className={`rounded-lg p-2 transition-colors ${device === "mobile" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
-            >
-              <Smartphone className="size-4" />
-            </button>
-          </div>
           <button
             type="button"
             onClick={() => setFrameKey((k) => k + 1)}
