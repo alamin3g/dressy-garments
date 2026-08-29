@@ -954,7 +954,7 @@ function AdminConsole() {
               <Panel title="Pages" subtitle="Public routes on the website. Click a page to open the full editor with a live preview.">
                 <div className="grid gap-3 sm:grid-cols-2">
                   {PAGE_CONTENT.map((p) => (
-                    <div key={p.path} className="group rounded-xl border border-border p-4 transition-colors hover:border-primary">
+                    <div key={p.path} onClick={() => setEditingPage(p)} className="group cursor-pointer rounded-xl border border-border p-4 transition-colors hover:border-primary">
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-semibold">{p.title}</p>
                         <div className="flex items-center gap-2">
