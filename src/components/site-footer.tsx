@@ -12,14 +12,28 @@ type FooterLink = {
 
 const FOOTER: { title: string; links: FooterLink[] }[] = [
   {
+    title: "Explore",
+    links: [
+      { label: "Home", to: "/" },
+      { label: "About", to: "/about" },
+      { label: "Capabilities", to: "/capabilities" },
+      { label: "Products", to: "/products" },
+      { label: "Factory", to: "/factory" },
+      { label: "Compliance", to: "/compliance" },
+      { label: "Contact", to: "/contact" },
+    ],
+  },
+  {
     title: "Company",
     links: [
       { label: "About Dressy", to: "/about", hash: "story" },
+      { label: "Managing Director", to: "/about", hash: "md-message" },
       { label: "Our Factory", to: "/factory" },
       { label: "Leadership", to: "/about", hash: "leadership" },
       { label: "Global Presence", to: "/about", hash: "global" },
     ],
   },
+
   {
     title: "Capabilities",
     links: [
