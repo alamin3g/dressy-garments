@@ -101,16 +101,16 @@ export function SiteFooter() {
                 rel="noreferrer"
                 className="hover:text-foreground transition-colors inline-block"
               >
-                House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206
+                {c("footer_address", "House # 475, Flat # B3, Road # 08/A DOHS Baridhara, Dressy Clothing LTD Kathgara, Ashulia, Dhaka Bangladesh 1206")}
               </a>
             </li>
             <li>
-              <a href="tel:+8801754104307" className="hover:text-foreground">+88 01754104307</a>
+              <a href={`tel:${c("footer_phone_1", "+8801754104307").replace(/\s/g, "")}`} className="hover:text-foreground">{c("footer_phone_1", "+88 01754104307")}</a>
               {" & "}
-              <a href="tel:+8801751244211" className="hover:text-foreground">+88 01751244211</a>
+              <a href={`tel:${c("footer_phone_2", "+8801751244211").replace(/\s/g, "")}`} className="hover:text-foreground">{c("footer_phone_2", "+88 01751244211")}</a>
             </li>
             <li>
-              <a href="mailto:Khairul@dressyltd.com" className="hover:text-foreground">Khairul@dressyltd.com</a>
+              <a href={`mailto:${c("footer_email", "Khairul@dressyltd.com")}`} className="hover:text-foreground">{c("footer_email", "Khairul@dressyltd.com")}</a>
             </li>
           </ul>
         </div>
