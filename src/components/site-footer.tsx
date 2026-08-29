@@ -122,7 +122,16 @@ export function SiteFooter() {
         </p>
         <div className="flex items-center gap-6">
           <p className="text-[11px] text-muted-foreground">
-            Build by FlamaFlys.
+            Build by{" "}
+            <a
+              href="https://flamaflys.com"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              FlamaFlys
+            </a>
+            .
           </p>
           <Link to="/privacy" className="text-[11px] text-muted-foreground transition-colors hover:text-foreground">
             Privacy Policy
