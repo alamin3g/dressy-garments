@@ -58,7 +58,6 @@ export const Route = createFileRoute("/admin")({
 
 type SectionId =
   | "dashboard"
-  | "categories"
   | "products"
   | "inquiries"
   | "popup"
@@ -68,7 +67,6 @@ type SectionId =
 
 const MENU: { id: SectionId; label: string; icon: typeof LayoutDashboard; hint: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, hint: "Overview" },
-  { id: "categories", label: "Categories", icon: ImagePlus, hint: "Homepage categories" },
   { id: "products", label: "Products", icon: Shirt, hint: "Catalogue" },
   { id: "inquiries", label: "Inquiries", icon: Inbox, hint: "Leads" },
   { id: "popup", label: "PopUp Email", icon: Mail, hint: "Captured emails" },
