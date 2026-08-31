@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { usePageContent, renderRichText, mergeList, DEFAULTS } from "@/lib/page-content";
+import { supabase } from "@/integrations/supabase/client";
 import { fetchProductCategories } from "@/lib/product-categories";
 import { AnimatedCounter } from "@/components/animated-counter";
 import ogImage from "@/assets/dressy-og.jpg.asset.json";
@@ -157,12 +158,38 @@ function Index() {
     refetchOnWindowFocus: true,
   });
 
+  // Live products drive the homepage imagery, so an image changed in the admin
+  // "Products" section shows up here immediately.
+  const { data: liveProducts } = useQuery({
+    queryKey: ["public", "products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("category,images")
+        .eq("status", "Live")
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
+  });
+
+  const productImageByCategory = new Map<string, string>();
+  for (const p of liveProducts ?? []) {
+    const img = (p.images as string[] | null)?.[0];
+    const key = (p.category ?? "").toLowerCase();
+    if (img && key && !productImageByCategory.has(key)) productImageByCategory.set(key, img);
+  }
+
   const productCards =
     categories && categories.length > 0
       ? categories.map((c, i) => ({
           n: String(i + 1).padStart(2, "0"),
           name: c.name,
           img:
+            productImageByCategory.get(c.name.toLowerCase()) ||
             c.image_url ||
             PRODUCTS.find((p) => p.name.toLowerCase() === c.name.toLowerCase())?.img ||
             pDevelopment,
