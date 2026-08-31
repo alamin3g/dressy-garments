@@ -68,6 +68,14 @@ function CompliancePage() {
       <section id="certifications" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
           <p className="label-xs text-primary">{c("certs_label", "Certifications")}</p>
+          <div className="mt-10 overflow-hidden border border-border">
+            <img
+              src={c("certs_banner", certsBanner)}
+              alt="Dressy Clothing certifications: BSCI, OEKO-TEX Standard 100, Sedex, and Global Recycled Standard"
+              className="h-auto w-full object-cover"
+              loading="lazy"
+            />
+          </div>
           <div className="mt-10 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
             {certs.map((c) => (
               <div key={c.name} className="bg-background p-8">
