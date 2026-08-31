@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, Loader2, RotateCcw, X } from "lucide-react";
 
@@ -102,7 +102,7 @@ function ListField({
   );
 }
 
-function FieldEditor({
+const FieldEditor = memo(function FieldEditor({
   field,
   value,
   onChange,
@@ -149,7 +149,7 @@ function FieldEditor({
       {field.hint && field.type !== "list" && <p className="mt-1.5 text-[11px] text-muted-foreground">{field.hint}</p>}
     </div>
   );
-}
+});
 
 export function AdminSimplePageEditor({ page, onDone }: { page: PageDef; onDone: () => void }) {
   const qc = useQueryClient();
@@ -170,7 +170,18 @@ export function AdminSimplePageEditor({ page, onDone }: { page: PageDef; onDone:
     draft ??
     Object.fromEntries(fields.map((f) => [f.key, map?.[pageContentKey(page.path, f.key)] ?? ""]));
 
-  const set = (key: string, value: string) => setDraft({ ...values, [key]: value });
+  const baseRef = useRef(values);
+  baseRef.current = values;
+
+  const handlersRef = useRef(new Map<string, (v: string) => void>());
+  const set = useCallback((key: string) => {
+    const cached = handlersRef.current.get(key);
+    if (cached) return cached;
+    const fn = (value: string) =>
+      setDraft((prev) => ({ ...(prev ?? baseRef.current), [key]: value }));
+    handlersRef.current.set(key, fn);
+    return fn;
+  }, []);
 
   const save = useMutation({
     mutationFn: async () => {
@@ -228,7 +239,7 @@ export function AdminSimplePageEditor({ page, onDone }: { page: PageDef; onDone:
               <div className="grid gap-4 sm:grid-cols-2">
                 {section.fields.map((f) => (
                   <div key={f.key} className={f.type === "textarea" || f.type === "list" ? "sm:col-span-2" : ""}>
-                    <FieldEditor field={f} value={values[f.key] ?? ""} onChange={(v) => set(f.key, v)} />
+                    <FieldEditor field={f} value={values[f.key] ?? ""} onChange={set(f.key)} />
                   </div>
                 ))}
               </div>
