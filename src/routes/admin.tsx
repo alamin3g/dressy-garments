@@ -17,7 +17,7 @@ import {
   Loader2,
   CheckCircle2,
   ImagePlus,
-  Mail,
+
 
 } from "lucide-react";
 
