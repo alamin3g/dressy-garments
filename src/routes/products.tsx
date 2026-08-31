@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useCatalogRealtime } from "@/hooks/use-realtime-sync";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
 import { getSEOMetadata } from "@/lib/seo";
-import { usePageContent } from "@/lib/page-content";
-import { parseColor } from "@/lib/product-media";
 
 
 import pKnitAsset from "@/assets/product-knit.png.asset.json";
@@ -258,96 +255,9 @@ function ProductsPage() {
         </div>
       </section>
 
-      <LiveStyles search={q} />
     </PageShell>
   );
 }
 
-
-function LiveStyles({ search }: { search: string }) {
-  useCatalogRealtime();
-  const cc = usePageContent("/products");
-  const { data: all } = useLiveProducts();
-
-  const data = (all ?? []).filter(
-    (p) =>
-      !search ||
-      [p.name, p.category, p.description, p.moq]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(search),
-  );
-
-  if (data.length === 0) return null;
-
-
-  return (
-    <section className="border-b border-border">
-      <div className="mx-auto max-w-[1400px] px-6 py-12 md:px-10">
-        <h2 className="display text-4xl">{cc("styles_title", "Current Styles")}</h2>
-        <div className="mt-8 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {data.map((p) => {
-            const images = (p.images ?? []) as string[];
-            const colors = (p.colors ?? []) as string[];
-            return (
-              <article key={p.id} className="group bg-background">
-                {images.length > 0 && (
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={images[0]}
-                      alt={`${p.name} — ${p.category}`}
-                      loading="lazy"
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    {images.length > 1 && (
-                      <div className="absolute bottom-3 left-3 flex gap-2">
-                        {images.slice(1, 5).map((src, i) => (
-                          <img
-                            key={`${src}-${i}`}
-                            src={src}
-                            alt=""
-                            loading="lazy"
-                            className="size-10 rounded-md border border-background/60 object-cover"
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-                <div className="p-6">
-                  <p className="label-xs text-primary">{p.category}</p>
-                  <h3 className="display mt-3 text-2xl">{p.name}</h3>
-                  {p.description && (
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {p.description}
-                    </p>
-                  )}
-                  {colors.length > 0 && (
-                    <div className="mt-5 flex flex-wrap items-center gap-2">
-                      {colors.map((c, i) => {
-                        const { name, hex } = parseColor(c);
-                        return (
-                          <span
-                            key={`${c}-${i}`}
-                            title={name}
-                            aria-label={name}
-                            className="size-6 rounded-full border border-border shadow-sm"
-                            style={{ backgroundColor: hex }}
-                          />
-                        );
-                      })}
-                    </div>
-                  )}
-                  <p className="label-xs mt-5 text-muted-foreground">MOQ / {p.moq}</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
