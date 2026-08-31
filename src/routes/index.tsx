@@ -30,7 +30,7 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { AutoReveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
-import { EmailGatePopup } from "@/components/email-gate-popup";
+
 import { Globe } from "@/components/ui/cobe-globe";
 
 
@@ -489,7 +489,7 @@ function Index() {
       </AutoReveal>
 
       <SiteFooter />
-      <EmailGatePopup />
+      
 
     </div>
   );
