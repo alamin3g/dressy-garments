@@ -140,9 +140,17 @@ function ProductsPage() {
     !q ||
     [p.name, p.group, p.body, p.moq, ...p.items].join(" ").toLowerCase().includes(q);
 
+  const liveImageByCategory = new Map<string, string>();
+  (live ?? []).forEach((p) => {
+    const img = Array.isArray(p.images) ? p.images[0] : undefined;
+    if (p.category && img && !liveImageByCategory.has(p.category)) {
+      liveImageByCategory.set(p.category, img);
+    }
+  });
+
   const visible = PRODUCTS.filter(
     (p) => (filter === "All" || p.group === filter) && matches(p),
-  );
+  ).map((p) => ({ ...p, img: liveImageByCategory.get(p.name) ?? p.img }));
 
   return (
     <PageShell
