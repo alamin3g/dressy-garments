@@ -15,7 +15,6 @@ export function AdminModal({
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
@@ -31,7 +30,7 @@ export function AdminModal({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="animate-fade-up w-full max-w-3xl rounded-2xl border border-border bg-background shadow-2xl"
+        className="animate-fade-up my-4 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
       >
         <div className="flex items-start justify-between gap-4 border-b border-border/60 px-6 py-5">
           <div>
@@ -47,7 +46,7 @@ export function AdminModal({
             <X className="size-4" />
           </button>
         </div>
-        <div className="px-6 py-6">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-6">{children}</div>
       </div>
     </div>
   );

@@ -532,9 +532,9 @@ export function usePageContentMap() {
   return useQuery({
     queryKey: ["page-content"],
     queryFn: fetchPageContent,
-    staleTime: 0,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
+    staleTime: 30_000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 }
 
