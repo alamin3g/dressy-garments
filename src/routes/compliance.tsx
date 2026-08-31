@@ -3,6 +3,9 @@ import { ShieldCheck, Baby, Flame, HeartPulse, HandHeart, Recycle, Droplets, Lea
 import { PageShell } from "@/components/page-shell";
 import { getSEOMetadata } from "@/lib/seo";
 import { usePageContent, mergeList, DEFAULTS } from "@/lib/page-content";
+import certsBannerAsset from "@/assets/certifications-banner.webp.asset.json";
+
+const certsBanner = certsBannerAsset.url;
 
 
 export const Route = createFileRoute("/compliance")({
