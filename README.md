@@ -1,26 +1,5 @@
-# Open Sesame
+# Dressy Clothing — Official Website Source Code
 
-Please open this project
+Provide the complete source code for the official Dressy Clothing website, including the frontend, backend, UI design, pages, components, database connections, and all existing functionality.
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://dressy-garments.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/223658a1-dd45-4802-b5ae-04f402dcf7e5).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+Keep the original website layout, design, and features unchanged.
